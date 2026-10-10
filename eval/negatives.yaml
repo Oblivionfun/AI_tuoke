@@ -1,0 +1,41 @@
+# 评测集里的反例：应当判为 unfit 的公司（同行制造商、反倾销申诉方）。
+# 每条都在对方官网或 ITAC 公告里核对过，核对依据写在 notes。
+items:
+  - name: CBC Fasteners (Pty) Ltd
+    website: https://www.cbc-fasteners.co.za/
+    country: ZA
+    company_type: 紧固件制造商（同行）
+    known_contacts: [info@cbc.co.za]
+    red_flags: [南非本地紧固件制造商, SAFMA 成员、反倾销申诉方]
+    notes: 官网首页写明 "largest manufacturer of fasteners in South Africa"、15 台 boltmaker、10 台 nut former；ITAC 公告列为 SAFMA 成员。
+  - name: Impala Bolt and Nut (Pty) Ltd
+    website: https://impalabolt.co.za/
+    country: ZA
+    company_type: 紧固件制造商（同行）
+    red_flags: [南非本地紧固件制造商, SAFMA 成员、反倾销申诉方]
+    notes: 官网 About 页自述 "member of the South African Fasteners Manufacturers' Association (SAFMA)"，是螺栓螺母制造公司。
+  - name: Rivco
+    website: https://rivets.co.za/
+    country: ZA
+    company_type: 铆钉制造商（同行）
+    red_flags: [自述生产实心和半空心铆钉]
+    notes: 南非调研子代理核对时发现官网自述生产铆钉，已从候选中剔除。
+  - name: Classic Metallic Sheets Factory LLC
+    website: https://classicmetallic.com/
+    country: AE
+    company_type: 紧固件制造商（同行）
+    red_flags: [沙迦 12,000 平方米工厂，自产锚栓、螺柱、六角螺栓、干壁钉]
+    notes: 官网首页和 About 页自述 "manufacturer of premium quality fasteners in Sharjah"。
+  - name: Precision Metal Industries FZC
+    website: https://precisionmetal.me/
+    country: AE
+    company_type: 紧固件制造商（同行）
+    known_contacts: [info@precisionmetal.me]
+    red_flags: [沙迦机场自贸区的螺栓螺柱制造商]
+    notes: 官网自述 "prominent manufacturer of bolts, studs, nuts, washers"，含热锻工艺。
+  - name: Smart Engineering & Fasteners FZC
+    website: https://sefuae.com/
+    country: AE
+    company_type: 紧固件制造商（同行）
+    red_flags: [自有冷镦、热锻、热处理和镀锌产线]
+    notes: 官网 About 页列出 in-house hot forging、cold forging、thread rolling、heat treatment。

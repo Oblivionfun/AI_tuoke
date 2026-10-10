@@ -1,0 +1,63 @@
+{# 今日审核右侧的决策面板。需要 current（公司）。决定后整块 #review 被替换为下一张卡。 #}
+{% from "components.html" import icon, rubric, queue_badge, review_line %}
+{% set c = current %}
+{% set src = view.SourceIndex() %}
+{% set d = c.dossier or {} %}
+<article class="panel decision-panel" id="decision" aria-labelledby="card-title">
+  <header class="card-body" style="padding-bottom: 0">
+    <div class="card-head">
+      <div style="min-width: 0">
+        <h2 id="card-title" translate="no">{{ c.name }}</h2>
+        <div class="card-meta">
+          <a href="{{ c.website }}" target="_blank" rel="noopener noreferrer" translate="no">{{ c.domain }}{{ icon("external") }}</a>
+          <span>{{ (d.city or {}).value if (d.city or {}).value and d.city.value != "未找到" else "城市未知" }}，{{ view.COUNTRIES.get(c.country, c.country) }}</span>
+          {% if c.source == "catalog" %}<span>样册附带的候选</span>{% endif %}
+        </div>
+        <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap">{{ queue_badge(c.queue) }}{{ review_line(c.review) }}</div>
+      </div>
+      <div class="card-score">
+        <div class="label"><span class="muted small">评分</span><span class="score-num" style="font-size: 28px">{{ c.score if c.score is not none else "—" }}</span></div>
+        {{ rubric(d, "lg") }}
+      </div>
+    </div>
+  </header>
+
+  <div class="card-body">
+    {% include "partials/dossier_summary.html" %}
+    <p style="margin-top: 20px" class="small"><a href="/companies/{{ c.id }}">查看完整档案、全部来源和评分理由</a></p>
+  </div>
+
+  <footer class="decision-bar">
+    {% if c.status == CompanyStatus.QUEUED %}
+    {% set hx = 'hx-target="#review" hx-select="#review" hx-swap="outerHTML" hx-disabled-elt="find button"' %}
+    <form method="post" action="/companies/{{ c.id }}/review" hx-post="/companies/{{ c.id }}/review" {{ hx | safe }}>
+      <input type="hidden" name="decision" value="accept">
+      <button class="btn btn-primary" type="submit" data-key="a">接受并写首封<span class="kbd">A</span></button>
+    </form>
+    <button class="btn" type="button" data-reveal="evidence-form" data-key="e">补证<span class="kbd">E</span></button>
+    <button class="btn btn-danger" type="button" data-reveal="unfit-form" data-key="x">不合适<span class="kbd">X</span></button>
+    <span class="hint"><span><span class="kbd">J</span> <span class="kbd">K</span> 上下切换</span><span><span class="kbd">?</span> 全部快捷键</span></span>
+
+    <form class="reason-form" id="evidence-form" method="post" action="/companies/{{ c.id }}/review" hx-post="/companies/{{ c.id }}/review" {{ hx | safe }}>
+      <input type="hidden" name="decision" value="needs_evidence">
+      <label class="visually-hidden" for="evidence-note">要补什么证据</label>
+      <input class="input" id="evidence-note" name="note" required placeholder="例如：补查供应商注册入口…" autocomplete="off">
+      <button class="btn btn-primary" type="submit">退回补证</button>
+      <button class="btn btn-quiet" type="button" data-close>取消</button>
+    </form>
+    <form class="reason-form" id="unfit-form" method="post" action="/companies/{{ c.id }}/review" hx-post="/companies/{{ c.id }}/review" {{ hx | safe }}>
+      <input type="hidden" name="decision" value="unfit">
+      <label class="visually-hidden" for="unfit-note">不合适的原因</label>
+      <input class="input" id="unfit-note" name="note" required placeholder="选一个常用原因，或者自己写…" autocomplete="off">
+      <span class="chips">{% for r in view.UNFIT_REASONS %}<button class="chip" type="button" data-fill="unfit-note">{{ r }}</button>{% endfor %}</span>
+      <button class="btn btn-danger" type="submit">标记不合适</button>
+      <button class="btn btn-quiet" type="button" data-close>取消</button>
+    </form>
+    {% elif c.status == CompanyStatus.ACCEPTED %}
+    <span class="status status-pass">已接受，文案 agent 会写好首封草稿</span>
+    <a class="btn" href="/companies/{{ c.id }}?tab=drafts" style="margin-left: auto">打开草稿</a>
+    {% else %}
+    {{ view.STATUS_LABELS[c.status] }}{% if c.decision_note %}<span class="muted small">{{ c.decision_note }}</span>{% endif %}
+    {% endif %}
+  </footer>
+</article>

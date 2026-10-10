@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, rubric, company_status, review_line %}
+{% block title %}客户 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>客户</h1>
+    <p>所有调研过的公司，按处理阶段分组。点一行看完整档案。</p>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="处理阶段">
+  {% for key, label, n in tabs %}
+  <a href="?stage={{ key }}{% if country %}&country={{ country }}{% endif %}{% if q %}&q={{ q | urlencode }}{% endif %}" {% if key == stage %}aria-current="page"{% endif %}>{{ label }}<span class="n">{{ n }}</span></a>
+  {% endfor %}
+</nav>
+
+<section class="panel" id="company-list">
+  <form class="toolbar" method="get" hx-get="/companies" hx-target="#company-list" hx-select="#company-list" hx-swap="outerHTML" hx-trigger="input changed delay:300ms from:input[name=q], change" hx-push-url="true">
+    <input type="hidden" name="stage" value="{{ stage }}">
+    <div class="segmented" role="radiogroup" aria-label="国家">
+      {% for code, label in [("", "全部国家")] + view.COUNTRIES.items() | list %}
+      <input type="radio" name="country" id="country-{{ code or 'all' }}" value="{{ code }}" {% if code == country %}checked{% endif %}>
+      <label for="country-{{ code or 'all' }}">{{ label }}</label>
+      {% endfor %}
+    </div>
+    <label class="search"><span class="visually-hidden">搜索公司名或域名</span><input class="input" type="search" name="q" value="{{ q }}" placeholder="公司名或域名…" autocomplete="off" spellcheck="false"></label>
+  </form>
+
+  {% if rows %}
+  <table class="table">
+    <thead><tr><th>公司</th><th>国家</th><th>评分</th><th>审查</th><th>下一步</th><th class="num">更新</th></tr></thead>
+    <tbody>
+    {% for c in rows %}
+      <tr data-href="/companies/{{ c.id }}">
+        <td class="company-cell" translate="no"><a href="/companies/{{ c.id }}">{{ c.name }}</a><span class="muted">{{ c.domain }}</span></td>
+        <td class="nowrap">{{ view.COUNTRIES.get(c.country, c.country) }}</td>
+        <td class="score-cell">{% if c.dossier %}<div class="score"><span class="score-num" style="font-size: var(--text-md)">{{ c.score }}</span>{{ rubric(c.dossier) }}</div>{% else %}<span class="muted">未调研</span>{% endif %}</td>
+        <td>{% if c.review %}{{ review_line(c.review) }}{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td class="nowrap">{{ company_status(c.status) if c.status in [CompanyStatus.RESEARCHING, CompanyStatus.FAILED] else view.next_step(c) }}</td>
+        <td class="num muted nowrap">{{ view.ago(c.updated_at, now) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <h2>这里还没有公司</h2>
+    <p>换一个阶段或国家看看，或者去运行页发起一次寻客。</p>
+    <a class="btn" href="/runs">发起寻客</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

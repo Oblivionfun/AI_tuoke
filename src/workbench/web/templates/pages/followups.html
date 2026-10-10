@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}跟进 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>跟进</h1>
+    <p>邮件开门，WhatsApp 成交。对方回复或加了 WhatsApp 后，在客户档案里记一笔，报价打样转到 WhatsApp 上谈。</p>
+  </div>
+</div>
+
+<div class="board">
+  <section class="panel board-col" aria-labelledby="col-drafts">
+    <div class="toolbar"><h2 id="col-drafts" style="font-size: var(--text-md)">待发送的草稿</h2><span class="muted small">{{ drafts | length }}</span></div>
+    {% for dr in drafts %}
+    <a class="item" href="/companies/{{ dr.company.id }}?tab=drafts"><strong>{{ dr.company.name }}</strong>
+      <p>{{ "征求同意信" if dr.kind == "consent_request" else "首封邮件" }}：{{ dr.subject_en }}</p></a>
+    {% else %}<p class="empty small">没有待发送的草稿</p>{% endfor %}
+  </section>
+
+  <section class="panel board-col" aria-labelledby="col-waiting">
+    <div class="toolbar"><h2 id="col-waiting" style="font-size: var(--text-md)">等对方回复</h2><span class="muted small">{{ waiting | length }}</span></div>
+    {% for c in waiting %}
+    {% set sent = c.interactions | selectattr("direction", "eq", Direction.OUT) | first %}
+    <a class="item" href="/companies/{{ c.id }}?tab=followup"><strong>{{ c.name }}</strong>
+      <p>{% if sent %}{{ view.ago(sent.happened_at, now) }}发出，{{ view.COUNTRIES.get(c.country, c.country) }}{% else %}{{ view.COUNTRIES.get(c.country, c.country) }}{% endif %}</p></a>
+    {% else %}<p class="empty small">发出首封后会出现在这里</p>{% endfor %}
+  </section>
+
+  <section class="panel board-col" aria-labelledby="col-replied">
+    <div class="toolbar"><h2 id="col-replied" style="font-size: var(--text-md)">已回复</h2><span class="muted small">{{ replied | length }}</span></div>
+    {% for c in replied %}
+    {% set last_in = c.interactions | selectattr("direction", "eq", Direction.IN) | first %}
+    <a class="item" href="/companies/{{ c.id }}?tab=followup"><strong>{{ c.name }}</strong>
+      <p>{{ last_in.summary if last_in else "已回复" }}{% if c.rfqs %}，{{ c.rfqs | length }} 条 RFQ{% endif %}</p></a>
+    {% else %}<p class="empty small">对方回复后，在客户档案里记一笔就会出现在这里</p>{% endfor %}
+  </section>
+</div>
+
+<section class="panel" style="margin-top: 16px">
+  <div class="toolbar"><h2 style="font-size: var(--text-md)">询价（RFQ）</h2><span class="muted small">{{ rfqs | length }}</span></div>
+  {% if rfqs %}
+  <table class="table">
+    <thead><tr><th>公司</th><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th></tr></thead>
+    <tbody>{% for r in rfqs %}
+      <tr><td><a href="/companies/{{ r.company.id }}?tab=followup">{{ r.company.name }}</a></td><td>{{ r.products }}</td><td>{{ r.quantity }}</td><td>{{ r.incoterm }}</td>
+        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td></tr>
+    {% endfor %}</tbody>
+  </table>
+  {% else %}<p class="empty small">有询价时在客户档案的跟进页记录</p>{% endif %}
+</section>
+{% endblock %}

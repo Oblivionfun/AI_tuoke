@@ -1,0 +1,336 @@
+# 冠维评测集：每次改提示词前后各跑一次 `workbench eval run`。
+# verified=false 的样本是研究子代理初标，业务员核对后改为 true；报告会分开统计。
+# 重新生成：workbench eval golden（会保留 verified=true 的人工标注）。
+version: '2026-10-10'
+cases:
+- id: ae-zujertrading
+  name: Zujer Trading Company L.L.C.
+  website: https://www.zujertrading.com/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 进口 + 库存批发：About 页自述 specialist importer and stockist，产品从合格制造
+    known_contacts:
+    - info@zujertrading.com
+    red_flags: []
+    notes: 无红线；在售品类与我方 5 个品类重合，官网有通用邮箱和表单；但没有直接采购证据（未收到询价、未公开招募供应商），所以只能是可首触，不是合格买家
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-alshamsfasteners
+  name: Al Shams Fasteners Accessories Trading Co. L.L.C.
+  website: https://alshamsfasteners.ae/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 进口 + 库存批发，有门市：首页和 2019 年简介自述 leading importers and stockists
+    known_contacts:
+    - sales@alshamsfasteners.ae
+    red_flags: []
+    notes: 无红线：官网虽然长期无人维护，但第三方点评显示 2025 年仍在经营，不算停业；品类与我方 6 个品类重合，有公开邮箱和电话。没有直接采购证据，只能是可首触
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-hamzafasteners
+  name: Hamza Fasteners Building Materials Trading LLC
+  website: https://www.hamzafasteners.com/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 库存批发 + 出口转口：About 页明确回答 Are you a stockist or a manufacturer
+    known_contacts:
+    - sales@hamzafasteners.com
+    red_flags: []
+    notes: 无红线；产品族与我方 5 个品类重合，有销售邮箱和表单；没有直接采购证据（未收到询价、未招募供应商），只能是可首触
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-boltonhw
+  name: Bolton Hardware Co. L.L.C
+  website: https://boltonhw.com/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 五金贸易（批发为主，也有线上零售）：官网称为承包商、建筑商和工业客户供货，接受单品或整单批量询价；询价页页脚有 Shop
+    known_contacts:
+    - sales@boltonhw.com
+    red_flags: []
+    notes: 无红线；产品族与我方 6 个品类重合，有邮箱和 WhatsApp；没有直接采购证据，只能是可首触
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-daruwalabros
+  name: Daruwala Brothers L.L.C.
+  website: https://www.daruwalabros.com/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 工业五金分销 + 展厅门市：About 页称分销全球知名制造商的品牌，客户包括政府部门、跨国公司、工程车间、船舶和玻璃行
+    known_contacts:
+    - daruwalabros@hotmail.com
+    red_flags: []
+    notes: 无红线（假货投诉为单方说法，不构成红线）；产品族与我方 5 个品类重合，有公开邮箱和 WhatsApp；没有直接采购证据，只能是可首触，优先级低于专营紧固件的进口商
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-roxon
+  name: Roxon General Trading LLC (Roxon Fasteners)
+  website: https://www.roxon.ae/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 批发 + 库存：首页称大批量订单是专长、有大量库存，并向五金店和建材供应商供货；About 页称每件产品来源可追溯（so
+    known_contacts:
+    - sales@roxon.ae
+    red_flags: []
+    notes: 无红线（定制加工只是可能的兼营，没有自有工厂证据）；产品族与我方 4 个品类重合，有邮箱和 RFQ 表单；没有直接采购证据，只能是可首触
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-fastenerworld
+  name: Fastener World FZCO
+  website: https://fastenerworld.ae/
+  country: AE
+  label:
+    expected_queue: unfit
+    company_type: 库存供应商，但属于紧固件制造商集团：自身官网称从全球制造商采购、持有数百万件库存；关联公司 Asia Bolts Ind
+    known_contacts:
+    - info@fastenerworld.ae
+    red_flags:
+    - Our Associates 页列出 Asia Bolts Industries LLC 和沙特 Metal Fastener Mfr Co.Ltd 为关联公司，本公司属于同行制造商集团的贸易平台
+    - 关联公司 Asia Bolts Industries 官网自称中东最大紧固件制造商，工厂在 Dubai Investment Park-2，产品与我方螺栓、螺柱、地脚螺栓、螺母直接重合
+    notes: 红线：官网关联公司页显示它与迪拜紧固件制造商 Asia Bolts Industries 同属一个集团，是同行制造商的贸易平台。总分虽有 72，但按口径有红线即判不合适。寻客阶段只看了首页和 About，调研时在 Our Associates 页发现了这层关系
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: ae-alphasolutionsuae
+  name: Alpha Solutions LLC F.Z.C
+  website: https://alphasolutionsuae.com/
+  country: AE
+  label:
+    expected_queue: first_touch
+    company_type: 贸易 / 采购服务：首页称为阿联酋承包商、钢构加工和制造企业提供紧固件、钢材、脚手架、阀门工具的采购支持，按规格寻源后报
+    known_contacts:
+    - alphasolutionsllc.uae@gmail.com
+    red_flags: []
+    notes: 无红线；产品族与我方多个品类重合，有邮箱、WhatsApp 和表单；没有直接采购证据，只能是可首触。身份信息偏薄，适合用按图定制、小批量试单来试探
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: sa-khamisainhardware
+  name: Branch Al-Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C)
+  website: https://khamisainhardware.com/
+  country: SA
+  label:
+    expected_queue: unfit
+    company_type: 紧固件库存批发 + 零售门店，官网首页自述 'Stockist, Supplier & Fabricator'（有加工能
+    known_contacts:
+    - info@khamisainhardware.com
+    red_flags:
+    - 同行：本公司是 Fastener World International Co. L.L.C 的分支，被 Asia Bolts 集团官网列为集团公司；Asia Bolts Industries LLC 自称 'Largest Fastener Manufacturer in Middle East'，集团在达曼另有 Metal Fastener Mfr Co.（与本公司同为 P.O. Box
+      5541 King Saud Street）。本公司属紧固件制造集团的沙特销售渠道，按知识包红线视为同行
+    notes: 命中红线'紧固件制造商同行'：本公司是 Fastener World International Co. L.L.C 的沙特分支，被 Asia Bolts 集团（自称中东最大紧固件制造商）列为集团公司，集团在达曼另有制造厂且与本公司同一邮箱号。产品重合和联系入口都具备，但按口径有红线即为 unfit
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: sa-masdar
+  name: Masdar Building Materials CJSC (Masdar Technical Supplies)
+  website: https://masdar.co/
+  country: SA
+  label:
+    expected_queue: first_touch
+    company_type: 建材连锁批发分销（五金、钢材、木材、紧固件等），紧固件板块兼营加工：自行加工地脚螺栓、U 形螺栓、弯头螺栓和卡箍，并提供
+    known_contacts:
+    - info@mbm.com.sa
+    - 105@mts.com.sa
+    - 204@mts.com.sa
+    - 320@mts.com.sa
+    red_flags: []
+    notes: 无红线；产品族对上内六角螺钉、双头螺柱、吊环螺栓、地脚螺栓、U 形螺栓、锚栓等多个品类；有通用邮箱、总机和联系表单。总分 74，但'开发新供应商'只是公司战略的泛泛表述，没有针对我方品类的招募、询价或招标，属于没有直接采购证据，所以是 first_touch 而不是 qualified
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: sa-salaba
+  name: Salaba Fasteners (Salaba Energy)
+  website: https://salaba.com.sa/
+  country: SA
+  label:
+    expected_queue: first_touch
+    company_type: 紧固件、螺钉和工业工具的批发供应为主，面向项目客户；兼有制造：2023 年简介列有 'Manufacturing Dep
+    known_contacts:
+    - Info@salaba.com.sa
+    red_flags: []
+    notes: 无红线（制造为兼营，主业是紧固件供应）；产品族对上六角螺栓、内六角螺钉、地脚螺栓、法兰螺母、拉铆螺母、垫圈等；有电话、联系表单和 LinkedIn 公司页。没有对方询价、招标或招募供应商等直接采购证据，所以是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: sa-blackwellarabia
+  name: ABAR AL SUDAA AL ARABIA TRADING EST. (Black Well)
+  website: https://www.blackwellarabia.com/
+  country: SA
+  label:
+    expected_queue: first_touch
+    company_type: 工业品（MRO）和安全用品贸易：安全防护、紧固件、磨料、钢材等，客户为油气、制造、建筑企业；官网和 Brochure 未
+    known_contacts:
+    - sales@blackwellarabia.com
+    red_flags: []
+    notes: 无红线（名称有两种写法但地址、电话一致，身份未到无法确认的程度）；产品族对上自钻螺钉、六角螺栓、螺母、垫圈、U 形螺栓等；有邮箱、电话、WhatsApp 和表单。没有直接采购证据，所以是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-nssfasteners
+  name: NSS Fasteners (Pty) Ltd.
+  website: https://nssfasteners.co.za/
+  country: ZA
+  label:
+    expected_queue: first_touch
+    company_type: 进口 + 批发库存：从全球进口紧固件，在约翰内斯堡中央仓库分销到南非全国和周边国家；为下游分销商提供“直接用我们的库存”
+    known_contacts:
+    - info@nssfasteners.co.za
+    - marketing@nssfasteners.co.za
+    red_flags: []
+    notes: 无红线（只有 1 条黄色风险）；在售自钻螺钉、抽芯铆钉、拉铆螺母、垫圈、锚栓等，与我方 6 个品类重合，官网有通用邮箱；但没有直接采购证据（未见招募供应商、招标或对方询价），按口径只能是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-boltfast
+  name: Boltfast (Pty) Ltd
+  website: https://boltfast.co.za/
+  country: ZA
+  label:
+    expected_queue: first_touch
+    company_type: 工业紧固件分销 / 库存商：About 页自称 one of the leading distributors of i
+    known_contacts: []
+    red_flags: []
+    notes: 无红线；在售自钻螺钉、抽芯铆钉、拉铆螺母、垫圈、锚栓，与我方 5 个品类重合，有电话和在线询价入口；没有直接采购证据，只能是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-mrboltandnut
+  name: Mr Bolt and Nut
+  website: https://www.mrboltandnut.co.za/
+  country: ZA
+  label:
+    expected_queue: first_touch
+    company_type: 以进口 + 分销为主：首页和 2026 年 5 月目录都自述 importer and distributor；首页另称
+    known_contacts:
+    - sales@mrboltandnut.co.za
+    red_flags: []
+    notes: 无红线（以进口分销为主，特制螺栓制造只记黄色风险）；在售自钻螺钉、铆钉、垫圈、锚栓、钉子等，与我方 6 个品类重合，有 sales@ 邮箱；没有直接采购证据，所以是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-ftsboltworld
+  name: Boltworld
+  website: https://ftsboltworld.co.za/
+  country: ZA
+  label:
+    expected_queue: first_touch
+    company_type: 进口 + 批发分销：官网写明 import and stock a vast range of Fasteners，自称
+    known_contacts:
+    - info@boltworld.co.za
+    - bwsales@boltworld.co.za
+    - JHB@boltworld.co.za
+    - CPT@boltworld.co.za
+    - DBN@boltworld.co.za
+    red_flags: []
+    notes: 无红线（已核查 Hudaco 集团不属紧固件制造集团）；抽芯铆钉、拉铆螺母、自钻螺钉、垫圈、锚栓等与我方 6 个品类重合，邮箱齐全；但没有直接采购证据，只能是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-thefastenerfactory
+  name: The Fastener Factory
+  website: https://www.thefastenerfactory.co.za/
+  country: ZA
+  label:
+    expected_queue: first_touch
+    company_type: 工业品分销商：供应紧固件、工具、磨具和工程耗材，是德国 HEICO 紧固件在南部非洲的独家分销商，同时经销 Gedore
+    known_contacts:
+    - info@thefastenerfactory.co.za
+    red_flags: []
+    notes: 无红线（官网和 LinkedIn 简介都是独立多品牌分销 / 进口身份，未查到制造集团归属）；首推品类全部在售，与我方 5 个品类重合，有通用邮箱和询价表单；没有直接采购证据，所以是 first_touch
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-trufix
+  name: Tru-Fix Fasteners
+  website: https://www.trufix.co.za/
+  country: ZA
+  label:
+    expected_queue: unfit
+    company_type: '制造 + 分销（官网自述）：首页可见文字自称 Distributor of Top Quality Fasteners '
+    known_contacts:
+    - info@trufix.co.za
+    red_flags:
+    - 官网自述制造商：首页源码 meta description 写 “Trufix is the leading manufacturer and distributors of Fastening systems to the Building and Allied industries”；按 ZA.md，南非本地紧固件制造商是同行，红线
+    - 锚栓产品页自述生产：Tru-Sleeve 页 meta description 写 “Trufix manufactures hiqh quality Tru-sleeve anchors”，Nail-in、Tru-rnd 锚栓页也写 “Trufix manufactures…”；第三方目录 Brabys 同样归入 Fastening Systems Manufacturers。质量页的海外采购说法较旧，不足以排除本地生产
+    notes: 红线：官网自述紧固件（锚栓）制造商。首页源码 meta description 写 “leading manufacturer and distributors of Fastening systems”，Tru-Sleeve、Nail-in、Tru-rnd 锚栓页 meta 写 “Trufix manufactures…”；按 ZA.md，南非本地紧固件制造商标 red、队列
+      unfit。质量页称从海外制造商采购，但内容较旧（约 2019 年口径），不足以排除本地生产。
+  labeled_by: 研究子代理初标，待业务员核对
+  verified: false
+- id: za-cbc-fasteners
+  name: CBC Fasteners (Pty) Ltd
+  website: https://www.cbc-fasteners.co.za/
+  country: ZA
+  label:
+    expected_queue: unfit
+    company_type: 紧固件制造商（同行）
+    known_contacts:
+    - info@cbc.co.za
+    red_flags:
+    - 南非本地紧固件制造商
+    - SAFMA 成员、反倾销申诉方
+    notes: 官网首页写明 "largest manufacturer of fasteners in South Africa"、15 台 boltmaker、10 台 nut former；ITAC 公告列为 SAFMA 成员。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true
+- id: za-impalabolt
+  name: Impala Bolt and Nut (Pty) Ltd
+  website: https://impalabolt.co.za/
+  country: ZA
+  label:
+    expected_queue: unfit
+    company_type: 紧固件制造商（同行）
+    known_contacts: []
+    red_flags:
+    - 南非本地紧固件制造商
+    - SAFMA 成员、反倾销申诉方
+    notes: 官网 About 页自述 "member of the South African Fasteners Manufacturers' Association (SAFMA)"，是螺栓螺母制造公司。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true
+- id: za-rivets
+  name: Rivco
+  website: https://rivets.co.za/
+  country: ZA
+  label:
+    expected_queue: unfit
+    company_type: 铆钉制造商（同行）
+    known_contacts: []
+    red_flags:
+    - 自述生产实心和半空心铆钉
+    notes: 南非调研子代理核对时发现官网自述生产铆钉，已从候选中剔除。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true
+- id: ae-classicmetallic
+  name: Classic Metallic Sheets Factory LLC
+  website: https://classicmetallic.com/
+  country: AE
+  label:
+    expected_queue: unfit
+    company_type: 紧固件制造商（同行）
+    known_contacts: []
+    red_flags:
+    - 沙迦 12
+    - 000 平方米工厂，自产锚栓、螺柱、六角螺栓、干壁钉
+    notes: 官网首页和 About 页自述 "manufacturer of premium quality fasteners in Sharjah"。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true
+- id: ae-precisionmetal
+  name: Precision Metal Industries FZC
+  website: https://precisionmetal.me/
+  country: AE
+  label:
+    expected_queue: unfit
+    company_type: 紧固件制造商（同行）
+    known_contacts:
+    - info@precisionmetal.me
+    red_flags:
+    - 沙迦机场自贸区的螺栓螺柱制造商
+    notes: 官网自述 "prominent manufacturer of bolts, studs, nuts, washers"，含热锻工艺。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true
+- id: ae-sefuae
+  name: Smart Engineering & Fasteners FZC
+  website: https://sefuae.com/
+  country: AE
+  label:
+    expected_queue: unfit
+    company_type: 紧固件制造商（同行）
+    known_contacts: []
+    red_flags:
+    - 自有冷镦、热锻、热处理和镀锌产线
+    notes: 官网 About 页列出 in-house hot forging、cold forging、thread rolling、heat treatment。
+  labeled_by: 人工核对官网 / ITAC 公告
+  verified: true

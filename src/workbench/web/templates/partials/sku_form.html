@@ -1,0 +1,30 @@
+{# 确认首推 SKU 的抽屉内容。只写工厂确认过的信息：确认后会进入知识包，文案会照写。 #}
+{% from "components.html" import icon %}
+<form method="post" action="/skus/{{ p.id }}/confirm" autocomplete="off">
+  <div class="drawer-head">
+    <div>
+      <h2 style="font-size: var(--text-lg)">{{ p.name_zh }}</h2>
+      <p class="muted small">{{ p.name_en }}，样册第 {{ p.source_page }} 页，{{ p.id }}</p>
+    </div>
+    <button class="btn btn-quiet btn-sm" type="button" data-dialog-close aria-label="关闭">{{ icon("x") }}</button>
+  </div>
+  <div class="drawer-body">
+    {% if p.id in suggested %}<p class="callout">建议优先确认：{{ suggested[p.id] }}</p>{% endif %}
+    {% if p.source_issue %}<p class="callout callout-caution">{{ icon("alert") }}<span>样册待核对：{{ p.source_issue }}</span></p>{% endif %}
+    <label class="field"><span>执行标准</span><input class="input" name="standard" value="{{ v.standard if v else '' }}" placeholder="例如：DIN 7504N…"></label>
+    <label class="field"><span>材质与等级</span><input class="input" name="material" value="{{ v.material if v else p.material_declared }}"></label>
+    <label class="field"><span>规格范围</span><input class="input" name="sizes" value="{{ v.sizes if v else '' }}" placeholder="例如：ST4.2-ST6.3 × 13-100mm…"></label>
+    <label class="field"><span>表面处理</span><input class="input" name="finish" value="{{ v.finish if v else '' }}" placeholder="例如：蓝白锌…"></label>
+    <div class="form-row">
+      <label class="field"><span>起订量</span><input class="input" name="moq" value="{{ v.moq if v else '' }}"></label>
+      <label class="field"><span>交期</span><input class="input" name="lead_time" value="{{ v.lead_time if v else '' }}"></label>
+    </div>
+    <label class="field"><span>备注</span><input class="input" name="note" value="{{ v.note if v else '' }}" placeholder="认证、包装等，只写确认过的…">
+      <span class="field-hint">确认后，调研 agent 会按这些规格匹配客户，文案 agent 会照写进信里。</span></label>
+  </div>
+  <div class="drawer-foot">
+    {% if p.sales_ready %}<button class="btn btn-danger" type="submit" formaction="/skus/{{ p.id }}/unconfirm" formnovalidate data-confirm="取消首推后，文案不会再引用这个 SKU 的规格。确定吗？" style="margin-right: auto">取消首推</button>{% endif %}
+    <button class="btn" type="button" data-dialog-close>取消</button>
+    <button class="btn btn-primary" type="submit">工厂已确认</button>
+  </div>
+</form>

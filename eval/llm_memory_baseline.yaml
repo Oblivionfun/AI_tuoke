@@ -1,0 +1,204 @@
+source: "LLM 凭记忆列出（未联网查证）"
+asked_at: "2026-10-10"
+question: "I am a Chinese fastener factory. List 20 fastener wholesalers or importers in the United Arab Emirates, 10 in South Africa and 10 in Saudi Arabia that could buy from us. For each give the company name, city, official website and a contact email."
+items:
+  - country: AE
+    name: "Würth Gulf FZE"
+    city: "Dubai"
+    website: "https://www.wurth.ae"
+    email: "info@wurth.ae"
+  - country: AE
+    name: "Hilti Emirates LLC"
+    city: "Dubai"
+    website: "https://www.hilti.ae"
+    email: "info@hilti.ae"
+  - country: AE
+    name: "Fischer Middle East FZE"
+    city: "Dubai"
+    website: "https://www.fischer.ae"
+    email: "info@fischer.ae"
+  - country: AE
+    name: "Unifast Industrial Fasteners LLC"
+    city: "Sharjah"
+    website: "https://www.unifastgulf.com"
+    email: "sales@unifastgulf.com"
+  - country: AE
+    name: "Emirates Fasteners Trading LLC"
+    city: "Dubai"
+    website: "https://www.emiratesfasteners.com"
+    email: "info@emiratesfasteners.com"
+  - country: AE
+    name: "Gulf Fasteners Trading Co. LLC"
+    city: "Sharjah"
+    website: "https://www.gulffasteners.com"
+    email: "sales@gulffasteners.com"
+  - country: AE
+    name: "Al Jaber Fasteners LLC"
+    city: "Abu Dhabi"
+    website: "https://www.aljaberfasteners.com"
+    email: "info@aljaberfasteners.com"
+  - country: AE
+    name: "Middle East Fasteners (MEF) LLC"
+    city: "Dubai"
+    website: "https://www.mefasteners.com"
+    email: "info@mefasteners.com"
+  - country: AE
+    name: "Dubai Bolts & Nuts Trading LLC"
+    city: "Dubai"
+    website: "https://www.dubaiboltsnuts.com"
+    email: "sales@dubaiboltsnuts.com"
+  - country: AE
+    name: "Arabian Fasteners Trading LLC"
+    city: "Dubai"
+    website: "https://www.arabianfasteners.com"
+    email: "info@arabianfasteners.com"
+  - country: AE
+    name: "Top Fasteners Trading LLC"
+    city: "Sharjah"
+    website: "https://www.topfasteners.ae"
+    email: "info@topfasteners.ae"
+  - country: AE
+    name: "Galaxy Fasteners Trading LLC"
+    city: "Dubai"
+    website: "https://www.galaxyfasteners.ae"
+    email: "sales@galaxyfasteners.ae"
+  - country: AE
+    name: "Bin Hilal Bolts & Fasteners Trading"
+    city: "Ajman"
+    website: "https://www.binhilalfasteners.com"
+    email: "info@binhilalfasteners.com"
+  - country: AE
+    name: "Precision Fasteners Trading LLC"
+    city: "Dubai"
+    website: "https://www.precisionfasteners.ae"
+    email: "info@precisionfasteners.ae"
+  - country: AE
+    name: "Al Kamal Fasteners & Industrial Supplies"
+    city: "Sharjah"
+    website: "https://www.alkamalfasteners.com"
+    email: "sales@alkamalfasteners.com"
+  - country: AE
+    name: "Mega Bolts Trading LLC"
+    city: "Dubai"
+    website: "https://www.megabolts.ae"
+    email: "info@megabolts.ae"
+  - country: AE
+    name: "Fasteners & Fixings Middle East LLC"
+    city: "Dubai"
+    website: "https://www.fastenersfixingsme.com"
+    email: "info@fastenersfixingsme.com"
+  - country: AE
+    name: "Venus Fasteners Trading LLC"
+    city: "Sharjah"
+    website: "https://www.venusfasteners.com"
+    email: "sales@venusfasteners.com"
+  - country: AE
+    name: "Al Fahad Bolts & Nuts Trading LLC"
+    city: "Abu Dhabi"
+    website: "https://www.alfahadfasteners.com"
+    email: "info@alfahadfasteners.com"
+  - country: AE
+    name: "Ram Fasteners Industrial Supplies LLC"
+    city: "Dubai"
+    website: "https://www.ramfasteners.ae"
+    email: "info@ramfasteners.ae"
+  - country: ZA
+    name: "Bolt and Engineering Distributors (BED)"
+    city: "Johannesburg"
+    website: "https://www.bolt.co.za"
+    email: "sales@bolt.co.za"
+  - country: ZA
+    name: "SA Bolt Manufacturers (Pty) Ltd"
+    city: "Germiston"
+    website: "https://www.sabolt.co.za"
+    email: "info@sabolt.co.za"
+  - country: ZA
+    name: "Würth South Africa (Pty) Ltd"
+    city: "Johannesburg"
+    website: "https://www.wurth.co.za"
+    email: "info@wurth.co.za"
+  - country: ZA
+    name: "Cape Fasteners (Pty) Ltd"
+    city: "Cape Town"
+    website: "https://www.capefasteners.co.za"
+    email: "sales@capefasteners.co.za"
+  - country: ZA
+    name: "Allfix Fasteners (Pty) Ltd"
+    city: "Durban"
+    website: "https://www.allfix.co.za"
+    email: "info@allfix.co.za"
+  - country: ZA
+    name: "Fastener Distributors SA"
+    city: "Johannesburg"
+    website: "https://www.fastenerdistributors.co.za"
+    email: "sales@fastenerdistributors.co.za"
+  - country: ZA
+    name: "Africa Fasteners (Pty) Ltd"
+    city: "Pretoria"
+    website: "https://www.africafasteners.co.za"
+    email: "info@africafasteners.co.za"
+  - country: ZA
+    name: "Bolts & Nuts Wholesale"
+    city: "Port Elizabeth"
+    website: "https://www.boltsandnuts.co.za"
+    email: "orders@boltsandnuts.co.za"
+  - country: ZA
+    name: "Rawlplug South Africa"
+    city: "Johannesburg"
+    website: "https://www.rawlplug.co.za"
+    email: "info@rawlplug.co.za"
+  - country: ZA
+    name: "Fasteners Centre (Pty) Ltd"
+    city: "Durban"
+    website: "https://www.fastenerscentre.co.za"
+    email: "sales@fastenerscentre.co.za"
+  - country: SA
+    name: "Saudi Fasteners Company"
+    city: "Riyadh"
+    website: "https://www.saudifasteners.com"
+    email: "info@saudifasteners.com"
+  - country: SA
+    name: "Arabian Fasteners Factory"
+    city: "Dammam"
+    website: "https://www.arabianfastenersfactory.com"
+    email: "sales@arabianfastenersfactory.com"
+  - country: SA
+    name: "Hilti Saudi Arabia"
+    city: "Riyadh"
+    website: "https://www.hilti.sa"
+    email: "info@hilti.sa"
+  - country: SA
+    name: "Würth Saudi Arabia Co. Ltd"
+    city: "Jeddah"
+    website: "https://www.wurth.sa"
+    email: "info@wurth.sa"
+  - country: SA
+    name: "Al Rashed Fasteners Trading Est."
+    city: "Riyadh"
+    website: "https://www.alrashedfasteners.com"
+    email: "info@alrashedfasteners.com"
+  - country: SA
+    name: "Gulf Fastener Est."
+    city: "Jubail"
+    website: "https://www.gulffastener.com.sa"
+    email: "sales@gulffastener.com.sa"
+  - country: SA
+    name: "Fasteners Trading Co. (FASCO)"
+    city: "Dammam"
+    website: "https://www.fasco.com.sa"
+    email: "info@fasco.com.sa"
+  - country: SA
+    name: "Al Jazirah Bolts & Nuts Trading"
+    city: "Jeddah"
+    website: "https://www.aljazirahfasteners.com"
+    email: "sales@aljazirahfasteners.com"
+  - country: SA
+    name: "Jeddah Fasteners & Industrial Supplies"
+    city: "Jeddah"
+    website: "https://www.jeddahfasteners.com"
+    email: "info@jeddahfasteners.com"
+  - country: SA
+    name: "Eastern Province Bolts Co."
+    city: "Al Khobar"
+    website: "https://www.epbolts.com.sa"
+    email: "info@epbolts.com.sa"

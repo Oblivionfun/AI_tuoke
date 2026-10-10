@@ -1,0 +1,114 @@
+{
+  "country": "SA",
+  "round": 1,
+  "reviews": {
+    "khamisainhardware.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://khamisainhardware.com/",
+        "https://khamisainhardware.com/ContactUs/Default.aspx",
+        "https://khamisainhardware.com/AboutUs/Default.aspx",
+        "https://khamisainhardware.com/News/Default.aspx",
+        "https://khamisainhardware.com/Products/Default.aspx",
+        "https://khamisainhardware.com/Services/Default.aspx",
+        "https://khamisainhardware.com/Register/Enquiry.aspx",
+        "https://khamisainhardware.com/Careers/Default.aspx",
+        "https://asia-bolt.com/ourassociation.php",
+        "https://asia-bolt.com/index.php",
+        "https://www.metal-fasteners.com/ourassociation.php",
+        "https://www.metal-fasteners.com/"
+      ],
+      "issues": [
+        {
+          "field": "risks[0]",
+          "problem": "把 Asia Bolts 页面写成“'Group of Companies' 页、列为集团公司”不够准确，页面原文用的是“Our Associates（关联公司）”；另外“Largest Fastener Manufacturer in Middle East”这句话出自 Asia Bolts 首页，但这条风险的来源只写了 ourassociation.php，应补上 https://asia-bolt.com/index.php",
+          "evidence": "https://asia-bolt.com/ourassociation.php 浏览器标题为 'Asia Bolts Group of Companies'，正文栏目是 'Our Associates'，列出 'Branch Al Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C) P.O.Box 5541, Dammam 31432, King Saud Street, Opposite Al Hayat Plaza, Al Jalawiyah, Dammam 32246' 和 'Metal Fastener Mfr Co.Ltd P.O.Box 5541 King Saud Street, Dammam 31432'；'Largest Fastener Manufacturer in Middle East' 出现在 https://asia-bolt.com/index.php。https://www.metal-fasteners.com/ourassociation.php 的栏目名也是 'associate'。fastenerworld.net 本次复核同样打不开（连接失败）。",
+          "severity": "minor"
+        },
+        {
+          "field": "queue_reason",
+          "problem": "红线结论成立，但依据要写完整：知识包 02-icp 写明“'制造+贸易'兼营的可以保留”，本公司官网只自述 'Stockist, Supplier & Fabricator'，没有写自有工厂、生产线或冷镦机。判为同行靠的是“它是紧固件制造集团的销售分支”，知识包没有逐字点名这种情况，属于对“同行制造商”和“海外办事处是竞争对手”两条的类推，queue_reason 应把这条推理链写清楚",
+          "evidence": "官网标题和 News 页 2011-04-02 条目写明 'AL-Khamisain is now a branch of \"Fastener World International Co. L.L.C.\"'；Asia Bolts 的 'Our Associates' 把它和制造厂 Metal Fastener Mfr Co.Ltd 列在一起，两者同为 P.O.Box 5541 King Saud Street；Asia Bolts 首页自称 'Largest Fastener Manufacturer in Middle East'；Metal Fasteners 首页写 'MFC manufactures a broad range of … Stud Bolts, Anchor Bolts, U Bolts, Threaded Bars'。这些事实都在所引来源上，足以支撑“制造集团自有销售渠道”的判断，unfit 与 03-rubric 红线口径一致，不需要改队列。",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "联系方式、地址、产品和集团关系均已逐条核对属实；它是 Asia Bolts 紧固件制造集团的沙特分支，判为不合适有据可查，暂不联系。"
+    },
+    "masdar.co": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://masdar.co/",
+        "https://masdar.co/about/",
+        "https://masdar.co/products-2/",
+        "https://masdar.co/contact/",
+        "https://masdar.co/join-us/",
+        "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf",
+        "https://www.linkedin.com/company/masdar-"
+      ],
+      "issues": [
+        {
+          "field": "buyer_role",
+          "problem": "“主体靠外购”是调研员的推断，来源没有这样写，应标注“推测”",
+          "evidence": "https://masdar.co/products-2/ 写 'Masdar distribute, fabricate, and stock extensive range of Fasteners … our manufacturing unit has a complete range of in-house production facility, that enables us to meet the requirements of our clients via custom-made Fasteners'；2025 年简介写 '2 Fabrication units'。来源能证明 27,000 个 SKU 和 'developing new vendors/suppliers' 的公司战略，但没有写外购比例。",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "公司身份、通用邮箱和总机、三个紧固件区域销售邮箱、产品和本地化风险均已核对属实，可以使用；首次联系先电话或 LinkedIn 征求同意，避开它自行加工的地脚螺栓和 U 形螺栓。"
+    },
+    "salaba.com.sa": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://salaba.com.sa/",
+        "https://salaba.com.sa/about-us-english/",
+        "https://salaba.com.sa/contact-us-english/",
+        "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf",
+        "https://sa.linkedin.com/company/salabaksaa"
+      ],
+      "issues": [
+        {
+          "field": "risks[0]",
+          "problem": "兼营制造的依据只引了 LinkedIn，官网 About 页本身就写了厂房和制造部门，应补上官网来源",
+          "evidence": "https://salaba.com.sa/about-us-english/ 写 'With 40,000 square feet of factory and warehouse at the Jeddah Industrial city II'，Departments 列有 'Manufacturing'；同页 'Partnering with the best suppliers and manufacturers in the industry' 说明有外购。主业仍是供应，按 02-icp“制造+贸易兼营”标黄色风险是对的。",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "电话、表单、地址、董事长和 CEO 姓名、2023 年简介里的邮箱和产品均已核对属实，可以使用；它兼营制造和热镀锌，邮箱是 2023 年信息，先电话或 LinkedIn 征求同意。"
+    },
+    "blackwellarabia.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.blackwellarabia.com/",
+        "https://www.blackwellarabia.com/about",
+        "https://www.blackwellarabia.com/contact",
+        "https://www.blackwellarabia.com/Fasteners",
+        "https://www.blackwellarabia.com/products",
+        "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf"
+      ],
+      "issues": [
+        {
+          "field": "identity",
+          "problem": "两种公司名称在所引 Brochure 里已经能对上，不必写“属推断，需核实”；risks[0] 和 missing[0] 里“名称不一致”这一点可以删去（CR 和成立年份仍缺，“身份信息薄”的黄色风险可以保留）",
+          "evidence": "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf 是图片版 PDF（本次用 OCR 加看图核对）：封面英文为 'BLACKWELL ARABIA TRADING EST.'，封底阿拉伯文名称为 'مؤسسة الابار السوداء العربية للتجارة'（即 Abar Al Sudaa Al Arabia Trading Est.），地址 'King Abdullah Street | Dammam - 32275'、电话 '+966 13 8320929' 与官网一致；封底另列 info@blackwellarabia.com。",
+          "severity": "minor"
+        },
+        {
+          "field": "missing[4]",
+          "problem": "“'Anchors Bolts' 是膨胀锚栓还是地脚螺栓未确认”可以从 Brochure 确认：配图是套管式膨胀锚栓，与 products 里对应的“膨胀锚栓组合”一致，可从缺失项删除",
+          "evidence": "Brochure 第 6 页写 'ANCHORS BOLTS AVAILABLE TYPE GAL, CHROME COATED, S.S.'，配图为带套管的膨胀锚栓；官网 Fasteners 页只写 'Anchors Bolts'。",
+          "severity": "minor"
+        },
+        {
+          "field": "risks[0]",
+          "problem": "“首页表单提交到模板演示站”的依据在首页，但这条风险的来源只写了 /about，应补上首页",
+          "evidence": "https://www.blackwellarabia.com/ 首页表单 action 为 'https://htmldemo.zcubethemes.com/indobi/mail.php'；联系页表单 action 为站内 'send-mails'；/about 页的 Mission/Vision 确实写的是消防产品（'Fire Fighting Technology'）。",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "销售邮箱、电话、WhatsApp、联系页表单、地址和自钻螺钉、六角螺栓等产品均已核对属实，可以使用；公司身份资料较薄（无 CR 和成立年份），首次通话时顺便核实。"
+    }
+  }
+}

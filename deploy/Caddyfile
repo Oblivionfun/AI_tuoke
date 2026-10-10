@@ -1,0 +1,10 @@
+{$DOMAIN} {
+	encode gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy same-origin
+	}
+	# SSE（运行页实时步骤）：Caddy 对 text/event-stream 会立即刷新，不需要额外配置
+	reverse_proxy web:8000
+}

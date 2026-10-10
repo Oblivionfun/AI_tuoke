@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, run_status %}
+{% block title %}运行 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>运行</h1>
+    <p>寻客 agent 联网找候选，代码按域名去重，调研 agent 每家单独调查，审查 agent 点开来源复核。</p>
+  </div>
+</div>
+
+<section class="panel panel-pad" aria-labelledby="composer-title">
+  <div class="section-title"><h2 id="composer-title">发起寻客</h2><span class="muted">今天最多新增 {{ settings.daily_candidate_limit }} 家候选</span></div>
+  <form class="composer" method="post" action="/runs/prospect" autocomplete="off">
+    <div class="row">
+      <fieldset class="field" style="border: 0; padding: 0; margin: 0">
+        <legend class="small muted" style="margin-bottom: 6px">目标国家</legend>
+        <div class="segmented">
+          {% for code, label in view.COUNTRIES.items() %}
+          <input type="radio" name="country" id="c-{{ code }}" value="{{ code }}" {% if loop.first %}checked{% endif %}><label for="c-{{ code }}">{{ label }}</label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <label class="field stepper"><span>最多几家</span><input class="input" type="number" name="count" min="1" max="30" value="{{ settings.prospect_batch_size }}" inputmode="numeric"></label>
+    </div>
+    <fieldset class="field" style="border: 0; padding: 0; margin: 0">
+      <legend class="small muted" style="margin-bottom: 6px">主推产品组</legend>
+      <div class="chips choice">
+        <input type="radio" name="product_group" id="g-any" value="" checked><label class="chip" for="g-any">不限</label>
+        {% for g in view.PRODUCT_GROUPS %}<input type="radio" name="product_group" id="g-{{ loop.index }}" value="{{ g }}"><label class="chip" for="g-{{ loop.index }}">{{ g }}</label>{% endfor %}
+      </div>
+    </fieldset>
+    <details>
+      <summary class="small" style="cursor: pointer; color: var(--blue-zinc)">已经有官网网址，或者有补充要求</summary>
+      <div class="composer" style="margin-top: 12px">
+        <label class="field"><span>官网网址（每行一个，填了就跳过寻客，直接调研）</span><textarea class="textarea" name="urls" rows="3" placeholder="https://www.example-fasteners.ae/…"></textarea></label>
+        <label class="field"><span>补充要求</span><input class="input" name="note" placeholder="例如：优先沙迦的批发商…" autocomplete="off"></label>
+      </div>
+    </details>
+    <div><button class="btn btn-primary" type="submit">开始寻客</button></div>
+  </form>
+</section>
+
+<section class="panel" id="run-list" {% if live %}hx-get="/runs" hx-select="#run-list" hx-target="this" hx-swap="outerHTML" hx-trigger="every 4s"{% endif %}>
+  <div class="toolbar"><h2 style="font-size: var(--text-md)">最近的运行</h2>{% if live %}<span class="status status-live">有任务在运行，列表自动刷新</span>{% endif %}</div>
+  {% if rows %}
+  <table class="table">
+    <thead><tr><th>运行</th><th>状态</th><th>进度</th><th>结果</th><th class="num">花费</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      {% set ch = children.get(r.id) %}
+      <tr data-href="/runs/{{ r.id }}">
+        <td><a href="/runs/{{ r.id }}" style="font-weight: 500; color: var(--graphite)">
+          {% if r.company %}{{ view.RUN_KIND_LABELS[r.kind] }}：{{ r.company.name }}
+          {% else %}{{ view.COUNTRIES.get(r.params.country, r.params.country) }}{{ "，" ~ r.params.product_group if r.params.product_group }}{% endif %}</a>
+          <span class="muted small" style="display: block">{{ r.created_at | localtime }}，{{ "演示数据" if r.params.demo else (r.created_by or "系统") }}</span></td>
+        <td>{{ run_status(r.status) }}</td>
+        <td class="small nowrap">{% if ch %}<div style="display: flex; gap: 8px; align-items: center"><div class="progress" style="width: 80px"><i style="width: {{ (100 * ch.done / ch.total) | round }}%"></i></div>{{ ch.done }}/{{ ch.total }} 家</div>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td class="small" style="max-width: 420px">{{ r.summary or r.error }}</td>
+        <td class="num">${{ "%.3f" | format(r.cost_usd + (ch.cost if ch else 0)) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><h2>还没有运行过</h2><p>在上面选国家和产品组，开始第一次寻客。</p></div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+# 新加坡 VPS 部署：web（网页）、worker（执行 agent 任务）、caddy（HTTPS 反向代理）。
+# 数据都在 ./data（SQLite 数据库、制裁名单、备份）。每日备份由宿主机 cron 调用 deploy/backup.sh。
+services:
+  web:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/data
+    command: ["workbench", "serve", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  worker:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/data
+    command: ["workbench", "worker"]
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    depends_on:
+      - web
+
+volumes:
+  caddy_data:
+  caddy_config:

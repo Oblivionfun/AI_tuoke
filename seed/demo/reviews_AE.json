@@ -1,0 +1,225 @@
+{
+  "country": "AE",
+  "round": 1,
+  "reviews": {
+    "zujertrading.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.zujertrading.com/",
+        "https://www.zujertrading.com/about-us-1/",
+        "https://www.zujertrading.com/contact-us/",
+        "https://www.zujertrading.com/downloads1/",
+        "https://www.zujertrading.com/categories/blind-rivets/",
+        "https://www.zujertrading.com/categories/rivet-nuts/",
+        "https://www.zujertrading.com/categories/self-drilling-screws/",
+        "https://www.zujertrading.com/categories/drywall-wood-screws/",
+        "https://www.zujertrading.com/categories/machine-screw/",
+        "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/",
+        "https://www.zujertrading.com/categories/cd-weld-studs/",
+        "https://www.linkedin.com/company/zujer-trading-co.-llc"
+      ],
+      "issues": [
+        {
+          "field": "contact_route",
+          "problem": "首封建议写「可按其自有品牌贴牌」。贴牌不在知识包允许写的卖点里（工厂直供、品类全、可按图定制、可小批量试单），属于没确认过的承诺。可以把对方的自有品牌当切入背景，但我方能否贴牌要先问工厂，再决定写不写进信里",
+          "evidence": "知识包 01-seller：只有已确认 SKU 里写明的规格、标准、起订量、交期可以写进信里，卖点清单里没有贴牌。About 页确实写了「In 2016 company registered their brand in UAE and since all products are sold under this brand」，LinkedIn 写了「KHADS Brand Industrial Fasteners」",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "官网身份、info@ 邮箱、座机、表单、创始人和 KHADS 自有品牌都已逐条核对属实，产品页与档案一致，可以使用；首封不要直接承诺贴牌。"
+    },
+    "alshamsfasteners.ae": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://alshamsfasteners.ae/",
+        "https://alshamsfasteners.ae/home-2/contact-us/",
+        "https://alshamsfasteners.ae/about-us/",
+        "https://alshamsfasteners.ae/products/",
+        "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf",
+        "https://exa.ai/library/place/89shs8g19z5",
+        "https://www.yellowpages-uae.com/uae/shear-stud"
+      ],
+      "issues": [
+        {
+          "field": "contacts",
+          "problem": "漏收官网首页的 WhatsApp 号。档案只收录了 2019 年简介里的手机 050 13 14 305，联系路线第 3 步也建议去问这个旧号；官网现在挂的 WhatsApp 按钮用的是另一个号，更可能有人在用。建议加一条 kind=whatsapp、值 054 233 2253、来源官网首页，联系路线第 3 步优先用它",
+          "evidence": "https://alshamsfasteners.ae/ 页面源码里的 WhatsApp 按钮链接是 api.whatsapp.com/send?phone=0542332253，预设文字「Hello Al Shams Fastner, I found your website and would like to enquire about your fasteners」",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "名称、Musaffah 地址、销售邮箱、座机、2019 年简介里的负责人和产品都已核对属实，地图点评显示 2025 年仍在营业，可以使用；官网被挂赌博垃圾内容，发邮件后尽快电话确认，WhatsApp 可试官网按钮上的 054 233 2253。"
+    },
+    "hamzafasteners.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.hamzafasteners.com/",
+        "https://www.hamzafasteners.com/about",
+        "https://www.hamzafasteners.com/contact/",
+        "https://www.hamzafasteners.com/product/mild-steel-self-drilling-screw/",
+        "https://www.hamzafasteners.com/sitemap_index.xml",
+        "https://www.hamzafasteners.com/page-sitemap.xml",
+        "https://www.hamzafasteners.com/post-sitemap.xml",
+        "https://www.hamzafasteners.com/product-sitemap.xml",
+        "https://www.linkedin.com/company/hamza-fasteners-building-materials-trading-llc",
+        "https://exa.ai/library/place/z7gxk0dgf0l"
+      ],
+      "issues": [
+        {
+          "field": "missing[2]",
+          "problem": "「官网称可通过 WhatsApp 发清单，但没写明哪个号码是 WhatsApp」不准确。官网三个号码都带 WhatsApp 链接，询价按钮固定用 +971 54 493 3717。建议把它补成 kind=whatsapp 的联系方式，联系路线第 3 步可以直接写这个号",
+          "evidence": "首页、About 页、联系页源码里都有 wa.me/971505178672、wa.me/971506240048、wa.me/971544933717；首页和 About 页的「WhatsApp Enquiry」询价按钮指向 wa.me/971544933717（预设文字「Hi, I'd like a quote for fasteners.」）",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "公司名、Deira 地址、销售邮箱、三个电话、产品、代理品牌和第三方点评都已核对属实，全站没有向伊朗、叙利亚、俄罗斯等地转口的内容，可以使用。"
+    },
+    "boltonhw.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://boltonhw.com/",
+        "https://boltonhw.com/about",
+        "https://boltonhw.com/contact",
+        "https://boltonhw.com/products",
+        "https://boltonhw.com/inquiry",
+        "https://www.reachuae.com/sharjah/bolton-hardware-co-llc-l9526",
+        "https://exa.ai/library/place/jy4nvpmpcym",
+        "https://2gis.ae/sharjah/firm/70000001019433455"
+      ],
+      "issues": [
+        {
+          "field": "contact_route",
+          "problem": "首封建议写「可按其品牌贴牌」。贴牌不在知识包允许写的卖点里，而且 BHC 品牌只来自第三方目录，没得到对方确认。建议首封只写可按图定制、可小批量试单",
+          "evidence": "知识包 01-seller 的卖点清单里没有贴牌；BHC 只出现在 ReachUAE 目录的 Brands 栏（「BHC Allen Bolts, Hex Bolts, Lock Nuts, SS Bolts...」），官网没提",
+          "severity": "minor"
+        },
+        {
+          "field": "signals[0]",
+          "problem": "「说明有贴牌采购」是推断，说得过满：目录只列了品牌名，看不出它向工厂贴牌采购。按 04-sources，目录站只能当线索。建议改成「第三方目录登记自有品牌 BHC，待对方确认」；purchase_signal 给 8 分也略高，按口径「只有在售」是 5 分",
+          "evidence": "ReachUAE 页面只写「1 brand · 5 categories」和 BHC 的品类，没有任何采购或进口说法；官网 About 只写「built strong relationships with suppliers and customers」",
+          "severity": "minor"
+        },
+        {
+          "field": "missing[0]",
+          "problem": "档案写「没有街道门牌」，但 2GIS 上有街道地址，手机号也和官网一致，可以补成第三方地址（label 注明第三方目录、可能过时）",
+          "evidence": "https://2gis.ae/sharjah/firm/70000001019433455：「Bolton Hardware, Trading shop, 20, 74 street, G Floor, Al Darari Commercial, Sharjah Industrial Area, Sharjah, 61184」，电话 +971558782052，P.O.Box 28991",
+          "severity": "minor"
+        },
+        {
+          "field": "business_type",
+          "problem": "官网首页产品分类里有一张「FABRICATION WORKS」卡片，档案没提。目前没看到自有工厂、生产线、冷镦机，不构成同行红线；建议在风险或缺失信息里记一句，首次沟通时问清加工的是什么",
+          "evidence": "https://boltonhw.com/ 的分类卡片有「FABRICATION WORKS · View all」，点进去只是产品总页，没有说明文字；产品页的分类只有 BOLTS、NUTS、WASHERS、SCREWS、RIGGING、NYLON、PVC、TEFLON",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "销售邮箱、座机、手机、WhatsApp、询价清单和产品列表都已核对属实，可以使用；自有品牌 BHC 只来自第三方目录，首封不要承诺贴牌。"
+    },
+    "daruwalabros.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.daruwalabros.com/",
+        "https://www.daruwalabros.com/about",
+        "https://www.daruwalabros.com/contact",
+        "https://www.daruwalabros.com/products.json",
+        "https://exa.ai/library/place/glw4fr9x3j0",
+        "https://2gis.ae/sharjah/firm/70000001019433177",
+        "https://www.daruwalabrothers.com/"
+      ],
+      "issues": [
+        {
+          "field": "identity / risks[1]",
+          "problem": "把 2GIS 上的 Daruwala Brothers LLC 定性为「另一家同名公司」说得过满。那条记录标注有 2 个分店，对方官网又打不开，两者是不是同一家族的关联门店无法确认。用域名和电话区分、不合并的做法是对的，措辞建议改成「沙迦另有一条同名登记，与本公司关系未确认」",
+          "evidence": "2GIS 页面写「Daruwala Brothers LLC, 8, Khalid Bin Al Waleed street, G Floor, 2 branches, Al Ghuwair」，电话 +97165617758，网站 www.daruwalabrothers.com，P.O.Box 5217；打开 https://www.daruwalabrothers.com/ 返回 500，打不开",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "hotmail 邮箱、座机、两个 WhatsApp、1976 年创办人和产品数据都已核对属实，可以首触；有一条客户点评投诉其换牌销售（单方说法），合作时注意品牌和包装。"
+    },
+    "roxon.ae": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.roxon.ae/",
+        "https://www.roxon.ae/about-us",
+        "https://www.roxon.ae/contactus",
+        "https://www.roxon.ae/terms",
+        "https://www.roxon.ae/bolts",
+        "https://www.roxon.ae/expansion-anchors",
+        "https://www.roxon.ae/screws",
+        "https://www.roxon.ae/cast-in-anchor-bolts",
+        "https://www.roxon.ae/en_GB/nuts",
+        "https://exa.ai/library/place/njrwwbsvdn4"
+      ],
+      "issues": [
+        {
+          "field": "contact_route / contacts[2]",
+          "problem": "联系路线写「官网未公开 WhatsApp」，不准确。官网的 WhatsApp 按钮用的就是档案已收录的页脚电话。建议把 +971-569603670 标为 whatsapp，第 3 步直接用它",
+          "evidence": "首页和联系页源码里的 WhatsApp 按钮链接是 api.whatsapp.com/send?phone=+971569603670",
+          "severity": "minor"
+        },
+        {
+          "field": "identity",
+          "problem": "法定名称少写了 SPC，应为 Roxon General Trading LLC SPC（商号 Roxon Fasteners）",
+          "evidence": "https://www.roxon.ae/terms：「Company Name: Roxon General Trading LLC SPC」「Trade Name: Roxon Fasteners」",
+          "severity": "minor"
+        },
+        {
+          "field": "products[8]",
+          "problem": "「SDS Hex Head YZP」是六角头自钻螺钉，档案却对应到「Pan head self-drilling screws / 盘头自钻螺钉」，头型不符；missing 里自己也写了我方没有六角头款。建议 our_product 改成「无对应产品卡，需工厂确认」，免得文案按盘头去推",
+          "evidence": "https://www.roxon.ae/screws 产品列表里唯一一款是「SDS Hex Head YZP (Pcs)」",
+          "severity": "minor"
+        },
+        {
+          "field": "products[9] / products[10]",
+          "problem": "机螺钉、木螺钉只出现在 screws 页的介绍文字里，产品列表里没有具体型号。可以保留，但要注明「介绍文字提到，未见具体型号」",
+          "evidence": "screws 页介绍文字：「machine screw for mechanical assemblies, wood screw for timber joints」；产品列表只有 SDS Hex Head YZP",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "销售邮箱、两个电话、RFQ 表单、地址和螺栓、螺母、锚栓产品都已核对属实，可以使用；页脚电话 +971 56 960 3670 就是官网 WhatsApp，现址在 M09 还是 MW5 待确认。"
+    },
+    "fastenerworld.ae": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://fastenerworld.ae/",
+        "https://fastenerworld.ae/about-company/",
+        "https://fastenerworld.ae/contact-us/",
+        "https://fastenerworld.ae/our-associates/",
+        "https://asia-bolt.com/"
+      ],
+      "issues": [
+        {
+          "field": "identity",
+          "problem": "「沙特 Metal Fastener Mfr Co.Ltd 及其达曼分支」表述不准：关联公司页第 4 条写的是 Fastener World International / Al Khamisain 的分支，没说是 Metal Fastener Mfr 的分支，两者只是 P.O. Box 相同。不影响红线判断",
+          "evidence": "Our Associates 页第 4 条：「Branch Al Khamisain Hardware Trading Co Fastener World International Co. LLC, King Saud Street, Opposite to Al-Hayat Plaza, Al Jalawiyah, P.O. Box 5541, Dammam」；Metal Fastener Mfr Co.Ltd 单列为「P.O.Box 5541 King Saud Street, Dammam」",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "联系方式和关联公司关系都已核对属实：关联公司 Asia Bolts 官网自称「Largest Fastener Manufacturer in Middle East」，工厂在 Dubai Investment Park-2，属于同行，判为不合适是对的，不要联系。"
+    },
+    "alphasolutionsuae.com": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://alphasolutionsuae.com/",
+        "https://alphasolutionsuae.com/industrial-fasteners-uae/",
+        "https://www.atninfo.com/uae/ajman/fasteners-industrial-568",
+        "https://en.52wmb.com/buyer/6424063"
+      ],
+      "issues": [
+        {
+          "field": "missing[2]",
+          "problem": "「是否自己进口」有一条可追的线索，但不能当证据用：海关数据站上有一个叫 alpha solutions 的买家从印度进口紧固件到阿治曼，同一页面还混着其他同名公司的记录，无法确认就是这家。如要用，需要对方确认或找到更可靠的来源",
+          "evidence": "52wmb 页面有 2024-10-31 的提单：供应商 bharath industrial supplier（印度），目的港 ajman，货物 COATED NUT / COATED STUD SET / THREAD BAR（HS 7318）；同页又有墨西哥地址和发往钦奈的金属探测器记录，明显混了多家同名主体。另外 whois 显示 alphasolutionsuae.com 注册于 2023-03-22，和档案一致",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "Gmail 邮箱、两个电话、WhatsApp、询价表单和阿治曼自贸区地址都已核对属实，可以首触；身份信息偏薄（免费邮箱、域名 2023 年注册），建议先用小批量试单试探。"
+    }
+  }
+}

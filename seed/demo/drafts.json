@@ -1,0 +1,59 @@
+{
+  "method": "按 prompts/writer.md 契约生成的演示草稿",
+  "items": [
+    {
+      "domain": "zujertrading.com",
+      "draft": {
+        "kind": "first_email",
+        "subject_en": "Blind rivets and rivet nuts, factory direct",
+        "body_en": "Dear Zujer Trading team,\n\nI read on your website that you are a specialist importer and stockist of blind rivets, rivet nuts and threaded fasteners, based in Ras Al Khor, Dubai. We are a fastener factory in Yongnian, Hebei, supplying bolts, nuts, screws, washers and rivets directly from our plant.\n\nFrom our side, the closest matches are open-end blind rivets, rivet nuts and pan head self-drilling screws. Since you sell under your own brand, it may also help that we produce to customer drawings and accept small trial orders.\n\nWould a catalogue, or a quote on the rivet sizes you sell most, be useful?\n\nIf this is not relevant, just reply and we will not contact you again.\n\nBest regards,\n[Your name]\nHandan Guanwei Fastener Manufacturing Co., Ltd.\nYongnian, Hebei, China\nWhatsApp: [to be filled]",
+        "subject_zh": "抽芯铆钉和拉铆螺母，工厂直供",
+        "body_zh": "尊敬的 Zujer Trading 团队：\n\n我在贵司官网上看到，贵司是位于迪拜 Ras Al Khor 的抽芯铆钉、拉铆螺母和螺纹紧固件专业进口及库存商。我们是河北永年的一家紧固件工厂，从自己的工厂直接供应螺栓、螺母、螺钉、垫圈和铆钉。\n\n在我们的产品里，和贵司最对口的是开口型抽芯铆钉、拉铆螺母和盘头自钻螺钉。由于贵司以自有品牌销售，我们可以按客户图纸生产、也接受小批量试单，这一点也许对贵司有用。\n\n需要我们发一份产品目录，或者就贵司卖得最多的几个铆钉规格报个价吗？\n\n如果这与贵司无关，直接回复我们即可，我们不会再联系您。\n\n祝好，\n[Your name]（你的名字）\n邯郸冠维紧固件制造有限公司\n中国河北永年\nWhatsApp：[待填写]",
+        "personalization_basis": [
+          "About 页自述是抽芯铆钉、拉铆螺母、螺纹紧固件的专业进口库存商（specialist importer and stockist）",
+          "联系页的仓库地址在迪拜 Ras Al Khor 工业区 2 区",
+          "About 页称 2016 年起以自有品牌销售全部产品（2016 年信息），信里据此提按图生产和小批量试单（均属知识包允许的卖点）",
+          "产品分类页在售开口抽芯铆钉（AS Open End Dome Head）、拉铆螺母（Round Rivet Nut）、盘头自钻螺钉（DIN7504-N PAN），对应我方开口型抽芯铆钉、拉铆螺母、盘头自钻螺钉；三项 match_level 均为 family，只写产品名",
+          "档案里没有公开的职务联系人，称呼用公司名"
+        ],
+        "send_tips_zh": "发送地址：官网联系页公开的通用邮箱 info@zujertrading.com（档案里没有采购专用邮箱或采购负责人，不要另猜地址）。发送时间：迪拜比北京晚 4 小时，建议在当地周一至周四上午发（约北京时间 12:00-15:00）。注意：1）一对一单独发送，不群发，首封不加附件和链接，对方要目录再发；2）3-5 个工作日没回复，按档案路线人工打官网座机 +971 - 4 - 2249 422（当地周一至周五 8:00-18:00、周六 8:00-14:30）；对方回复后再请对方提供 WhatsApp；如果对方回复不相关，按信中承诺停止一切联系；3）首次报价前先做制裁筛查（系统已做名称比对，仅供参考）；4）信里只说了可按图生产、可小批量试单，没有承诺贴牌包装；对方问自有品牌 KHADS 的包装、贴牌或认证要求时，先和工厂确认再答复；5）对方在售的 DIN7504-K 六角头自钻螺钉在我方产品卡里没有对应款，对方问起需先请工厂确认能否供货；6）目前没有已确认 SKU，规格、价格、交期都要等对方给出尺寸后由业务员人工处理。发送前把签名里的姓名和 WhatsApp 补上。"
+      }
+    },
+    {
+      "domain": "boltonhw.com",
+      "draft": {
+        "kind": "first_email",
+        "subject_en": "Foundation bolts and self-drilling screws, factory direct",
+        "body_en": "Dear Bolton Hardware team,\n\nI found your website while looking at hardware traders in Industrial Area 1, Sharjah, and saw your range of foundation L and J bolts, rivet nuts and self-drilling screws for contractors and builders. We are a fastener factory in Yongnian, Hebei, supplying bolts, nuts, screws, washers, rivets and anchors directly from our plant.\n\nThe best fits from our side are foundation bolts, rivet nuts and pan head self-drilling screws. We can also produce to drawings and start with a small trial order.\n\nWould a catalogue help, or could you send a list of your most-used sizes for a quote?\n\nIf this is not relevant, just reply and we will not contact you again.\n\nBest regards,\n[Your name]\nHandan Guanwei Fastener Manufacturing Co., Ltd.\nYongnian, Hebei, China\nWhatsApp: [to be filled]",
+        "subject_zh": "地脚螺栓和自钻螺钉，工厂直供",
+        "body_zh": "尊敬的 Bolton Hardware 团队：\n\n我在寻找沙迦 Industrial Area 1 的五金贸易商时看到了贵司官网，注意到贵司为承包商和建筑商供应 L 型和 J 型地脚螺栓、拉铆螺母和自钻螺钉。我们是河北永年的一家紧固件工厂，从自己的工厂直接供应螺栓、螺母、螺钉、垫圈、铆钉和锚栓。\n\n我们这边最对口的是地脚螺栓、拉铆螺母和盘头自钻螺钉。我们也可以按图纸生产，并可以先从小批量试单开始。\n\n需要一份产品目录吗？或者贵司能否把最常用的规格列个清单发给我们报价？\n\n如果这与贵司无关，直接回复我们即可，我们不会再联系您。\n\n祝好，\n[Your name]（你的名字）\n邯郸冠维紧固件制造有限公司\n中国河北永年\nWhatsApp：[待填写]",
+        "personalization_basis": [
+          "联系页地址在沙迦 Industrial Area 1",
+          "官网称为承包商、建筑商和工业客户供货",
+          "产品页列出 Foundation L Bolt / Foundation J Bolt、Rivet Nut、Pan Head Self Drilling Screw，对应我方地脚螺栓、拉铆螺母、盘头自钻螺钉；三项 match_level 均为 family，只写产品名",
+          "官网首页接受单品或整单批量询价，信里据此请对方发常用规格清单报价",
+          "档案里没有公开的职务联系人，称呼用公司名"
+        ],
+        "send_tips_zh": "发送地址：官网联系页的销售邮箱 sales@boltonhw.com（官网唯一公开的邮箱，没有采购专用邮箱）。发送时间：沙迦比北京晚 4 小时，建议在当地上午发（约北京时间 12:00-15:00），避开周日（官网写周日不营业）。注意：1）不要用官网询价清单页联系，那是买家下单询价、经 WhatsApp 发给对方销售的入口；首封也不要直接加 WhatsApp；2）3-5 个工作日无回复，人工打官网座机 +971 6 5333140（中午休息、周日不营业）；对方回复后再转官网公开的 WhatsApp +971 55 2302786；对方回复不相关就停止一切联系；3）首次报价前先做制裁筛查（系统已做名称比对，仅供参考）；4）自有品牌 BHC 只出现在第三方目录 ReachUAE、官网没写，信里没提，对方回复后可以问，是否自己进口也需对方确认；5）官网没有街道门牌，首页客户评价像模板文字，身份信息偏薄，报价前建议请对方提供营业执照；6）目前没有已确认 SKU，信里只写了产品名，规格、价格、交期等对方发清单后由业务员人工处理。发送前把签名里的姓名和 WhatsApp 补上。"
+      }
+    },
+    {
+      "domain": "nssfasteners.co.za",
+      "draft": {
+        "kind": "consent_request",
+        "subject_en": "May we send you our product information?",
+        "body_en": "Dear NSS Fasteners team,\n\nI found your email address on your website's contact page while looking at fastener importers and stockists in Germiston. We are Handan Guanwei Fastener Manufacturing Co., Ltd., a fastener factory in Yongnian, Hebei, China.\n\nWould you agree to receive our product information by email? If so, a short reply saying yes is enough.\n\nIf you prefer not to receive anything from us, simply ignore this email and we will not contact you again.\n\nBest regards,\n[Your name]\nHandan Guanwei Fastener Manufacturing Co., Ltd.\nYongnian, Hebei, China\nWhatsApp: [to be filled]",
+        "subject_zh": "可以给贵司发送我们的产品资料吗？",
+        "body_zh": "尊敬的 NSS Fasteners 团队：\n\n我在寻找 Germiston 的紧固件进口及库存商时，在贵司官网的联系页上看到了这个邮箱地址。我们是邯郸冠维紧固件制造有限公司，一家位于中国河北永年的紧固件工厂。\n\n请问贵司是否同意通过邮件接收我们的产品资料？如果同意，简单回复一句“yes”即可。\n\n如果贵司不希望收到我们的任何信息，直接忽略这封邮件即可，我们不会再联系您。\n\n祝好，\n[Your name]（你的名字）\n邯郸冠维紧固件制造有限公司\n中国河北永年\nWhatsApp：[待填写]",
+        "personalization_basis": [
+          "联系页公开的通用邮箱 info@nssfasteners.co.za，信中说明联系方式来自对方官网联系页",
+          "Careers 页和 About 页自述从全球进口紧固件、为下游分销商备库存（importer / stockist）",
+          "联系页地址在豪登省 Germiston",
+          "档案里没有公开的职务联系人，称呼用公司名",
+          "按 POPIA 第 69 条只征求一次同意，没有写产品清单、报价和链接"
+        ],
+        "send_tips_zh": "发送地址：官网联系页的通用邮箱 info@nssfasteners.co.za。不要同时发 marketing@nssfasteners.co.za（那是市场部邮箱；POPIA 只允许联系一次来征求同意，发两个地址等于联系两次）。供应商注册入口：档案已查首页导航、About、Contact、Careers、NSS Solutions 和客户开户申请页，都没有找到，所以直接发这封征求同意邮件；如果发送前在官网发现 Supplier / Vendor Registration 入口，改走注册入口，这封不发。发送时间：南非比北京晚 6 小时，建议当地周一至周四上午发（约北京时间 14:00-17:00）。注意：1）这封只能发一次，不附产品清单、报价、链接或附件；2）只有对方明确回复同意，才能发产品资料、加 WhatsApp；不回复或拒绝都不能再发；3）信里写了“忽略这封邮件我们就不再联系”，所以对方不回复时也不要再打电话；档案路线里的录音电话征求同意如果要用，应在发邮件之前决定，电话和邮件二选一；4）对方同意后，产品资料里也不要推六角螺栓、六角螺钉、六角螺母（ITAC 反倾销调查品类），首推自钻螺钉、抽芯铆钉、拉铆螺母、垫圈、膨胀锚栓；5）Careers 页的岗位方向里列有 Production and Manufacturing，对方回复后顺带确认它不是南非本地紧固件制造商或 SAFMA 成员，如果是就停止跟进。发送前把签名里的姓名和 WhatsApp 补上。"
+      }
+    }
+  ]
+}

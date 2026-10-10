@@ -1,0 +1,40 @@
+{% from "components.html" import mark %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef2f5">
+  <title>{% block title %}冠维获客工作台{% endblock %}</title>
+  <link rel="preload" href="/static/fonts/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="/static/js/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="/today">{{ mark() }}冠维获客</a>
+    <nav class="nav" aria-label="主导航">
+      <a href="/today" {% if nav == "today" %}aria-current="page"{% endif %}>今日审核{% if side.review %}<span class="count">{{ side.review }}</span>{% endif %}</a>
+      <a href="/companies" {% if nav == "companies" %}aria-current="page"{% endif %}>客户</a>
+      <a href="/runs" {% if nav == "runs" %}aria-current="page"{% endif %}>运行{% if side.running %}<span class="live" title="有任务正在运行"></span><span class="visually-hidden">（有任务正在运行）</span>{% endif %}</a>
+      <a href="/products" {% if nav == "products" %}aria-current="page"{% endif %}>产品库</a>
+      <a href="/followups" {% if nav == "followups" %}aria-current="page"{% endif %}>跟进{% if side.drafts %}<span class="count">{{ side.drafts }}</span>{% endif %}</a>
+    </nav>
+    <div class="sidebar-foot">
+      <span>近 7 天花费 <strong>${{ "%.2f" | format(side.usage.cost_usd) }}</strong></span>
+      <span>联网搜索 <strong>{{ side.usage.get("web_search_calls", 0) }}</strong> 次</span>
+      <form method="post" action="/logout"><button class="btn btn-quiet btn-sm" type="submit">{{ user }} 退出</button></form>
+    </div>
+  </aside>
+  <main class="main" id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+{% for f in flashes %}<template data-flash data-error="{{ 'true' if f.error else '' }}">{{ f.text }}</template>{% endfor %}
+{% block dialogs %}{% endblock %}
+</body>
+</html>

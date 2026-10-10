@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, rubric, queue_badge, review_line, company_status, cite, cites, sourced, contact_value %}
+{% block title %}{{ c.name }} · 冠维获客工作台{% endblock %}
+
+{% block content %}
+{% set src = view.SourceIndex() %}
+{% set d = c.dossier or {} %}
+<a class="crumb" href="/companies">{{ icon("back") }}客户</a>
+<div class="page-head">
+  <div style="min-width: 0">
+    <h1 translate="no">{{ c.name }}</h1>
+    <div class="card-meta">
+      <a href="{{ c.website }}" target="_blank" rel="noopener noreferrer">{{ c.domain }}{{ icon("external") }}</a>
+      <span>{{ view.COUNTRIES.get(c.country, c.country) }}</span>
+      {{ company_status(c.status) }}
+    </div>
+  </div>
+  <div class="actions">
+    {% if c.status == CompanyStatus.QUEUED %}<a class="btn btn-primary" href="/today?focus={{ c.id }}">去审核</a>
+    {% elif c.status == CompanyStatus.ACCEPTED %}<a class="btn btn-primary" href="?tab=drafts">去发送草稿</a>
+    {% elif c.status == CompanyStatus.CONTACTED %}<a class="btn btn-primary" href="?tab=followup">记录对方回复</a>
+    {% elif c.status == CompanyStatus.REPLIED %}<a class="btn btn-primary" href="?tab=followup">记录 RFQ</a>{% endif %}
+    {% if c.status != CompanyStatus.ARCHIVED or not c.decision_note.startswith("拒绝联系") %}
+    <form method="post" action="/runs/research"><input type="hidden" name="company_id" value="{{ c.id }}">
+      <button class="btn" type="submit">{{ "开始调研" if not c.dossier else "重新调研" }}</button></form>
+    {% endif %}
+  </div>
+</div>
+
+<div class="profile">
+  <div style="min-width: 0">
+    {% if c.dossier %}
+    <section class="panel panel-pad" aria-labelledby="verdict-title">
+      <h2 id="verdict-title" class="visually-hidden">结论</h2>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px">{{ queue_badge(c.queue) }}{{ review_line(c.review) }}</div>
+      {% include "partials/dossier_summary.html" %}
+      {% if c.decision_note %}<p class="callout" style="margin-top: 16px">{{ c.decision_note }}</p>{% endif %}
+    </section>
+    {% else %}
+    <section class="panel empty"><h2>还没有调研档案</h2><p>{{ (c.prospect_evidence or {}).get("why") or "点右上角开始调研。" }}</p></section>
+    {% endif %}
+
+    {% set tabs = [("dossier", "档案详情", none), ("drafts", "草稿", c.drafts | selectattr("status", "ne", DraftStatus.DISCARDED) | list | length), ("followup", "跟进", c.interactions | length + c.rfqs | length), ("runs", "运行记录", runs | length)] %}
+    <nav class="tabs" aria-label="档案分页" style="margin-top: 24px">
+      {% for key, label, n in tabs %}<a href="?tab={{ key }}" hx-get="?tab={{ key }}" hx-target="#tab-panel" hx-select="#tab-panel" hx-swap="outerHTML" hx-push-url="true" data-tab="{{ key }}" {% if key == tab %}aria-current="page"{% endif %}>{{ label }}{% if n %}<span class="n">{{ n }}</span>{% endif %}</a>{% endfor %}
+    </nav>
+    <div id="tab-panel" data-active-tab="{{ tab }}">
+      <h2 class="visually-hidden">{{ {"drafts": "草稿", "followup": "跟进", "runs": "运行记录"}.get(tab, "档案详情") }}</h2>
+      {% if tab == "drafts" %}
+        <section class="panel panel-pad">{% include "partials/drafts.html" %}</section>
+      {% elif tab == "followup" %}
+        {% include "partials/followup.html" %}
+      {% elif tab == "runs" %}
+        <section class="panel">
+          <table class="table">
+            <thead><tr><th>运行</th><th>状态</th><th>结果</th><th class="num">花费</th><th>trace</th></tr></thead>
+            <tbody>{% for r in runs %}
+              <tr data-href="/runs/{{ r.id }}"><td><a href="/runs/{{ r.id }}">{{ view.RUN_KIND_LABELS[r.kind] }} #{{ r.id }}</a><span class="muted small" style="display: block">{{ r.created_at | localtime }}</span></td>
+                <td>{{ view.RUN_STATUS_LABELS[r.status] }}</td><td class="small">{{ r.summary or r.error }}</td><td class="num">${{ "%.3f" | format(r.cost_usd) }}</td>
+                <td class="small">{% for call in r.agent_calls if call.trace_id %}<a href="{{ TRACE_URL.format(trace_id=call.trace_id) }}" target="_blank" rel="noopener noreferrer">{{ call.role }}</a> {% else %}<span class="muted">—</span>{% endfor %}</td></tr>
+            {% else %}<tr><td colspan="5" class="muted">还没有运行记录</td></tr>{% endfor %}</tbody>
+          </table>
+        </section>
+      {% else %}
+        <section class="panel panel-pad">
+          <dl class="dl">
+            <dt>身份</dt><dd>{{ sourced(src, d.identity) }}</dd>
+            <dt>业务类型</dt><dd>{{ sourced(src, d.business_type) }}</dd>
+            <dt>为什么会采购</dt><dd>{{ sourced(src, d.buyer_role) }}</dd>
+            <dt>城市</dt><dd>{{ sourced(src, d.city) }}</dd>
+          </dl>
+          <hr class="divider">
+          <div class="section-title"><h3>产品对应</h3><span class="muted">{{ (d.products or []) | length }} 项</span></div>
+          <table class="table">
+            <thead><tr><th>对方在售</th><th>我方产品</th><th>匹配</th></tr></thead>
+            <tbody>{% for p in d.products or [] %}
+              <tr><td>{{ p.their_product }}{{ cite(src, p.source) }}</td><td>{{ view.our_product(p.our_product) }}</td><td>{% if p.match_level == "sku" %}<span class="badge badge-pass">已确认 SKU</span>{% else %}<span class="badge">产品族</span>{% endif %}</td></tr>
+            {% else %}<tr><td colspan="3" class="notfound">未找到</td></tr>{% endfor %}</tbody>
+          </table>
+          <hr class="divider">
+          <div class="section-title"><h3>公开联系入口</h3><span class="muted">{{ (d.contacts or []) | length }} 个</span></div>
+          <table class="table">
+            <tbody>{% for ct in d.contacts or [] %}
+              <tr><td class="nowrap muted">{{ view.CONTACT_LABELS.get(ct.kind, ct.kind) }}</td><td style="word-break: break-all">{{ contact_value(ct) }}{{ cite(src, ct.source) }}</td><td class="small muted">{{ ct.label }}</td></tr>
+            {% else %}<tr><td class="notfound">未找到</td></tr>{% endfor %}</tbody>
+          </table>
+          <hr class="divider">
+          <div class="section-title"><h3>采购信号</h3></div>
+          <ul class="timeline">{% for s in d.signals or [] %}<li><time>{{ s.date if s.date != "未找到" else "日期不详" }}</time><span>{{ s.text }}{{ cite(src, s.source) }}</span></li>{% else %}<li><span></span><span class="notfound">没有找到采购信号</span></li>{% endfor %}</ul>
+          {% if d.risks %}<hr class="divider"><div class="section-title"><h3>全部风险</h3></div>
+          <ul class="timeline">{% for r in d.risks %}<li><span class="badge {{ 'badge-reject' if r.severity == 'red' else 'badge-caution' }}">{{ "红线" if r.severity == "red" else "注意" }}</span><span>{{ r.text }}{{ cite(src, r.source) }}</span></li>{% endfor %}</ul>{% endif %}
+          {% if d.missing %}<hr class="divider"><div class="section-title"><h3>还缺的信息</h3></div><ul class="small muted" style="margin: 0; padding-left: 18px">{% for m in d.missing %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+          {% set pe = c.prospect_evidence or {} %}
+          {% if pe.criteria_met %}<hr class="divider"><div class="section-title"><h3>为什么被找到</h3><span class="muted">寻客依据</span></div>
+          <ul class="small" style="margin: 0; padding-left: 18px">{% for x in pe.criteria_met %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
+        </section>
+      {% endif %}
+    </div>
+  </div>
+
+  <aside class="aside">
+    {% if c.dossier %}
+    <section class="panel panel-pad" aria-labelledby="score-title">
+      <div class="section-title"><h2 id="score-title">评分构成</h2>{{ queue_badge(c.queue) }}</div>
+      <div class="score score-lg"><span class="score-num">{{ c.score }}</span>{{ rubric(d, "lg") }}</div>
+      <div class="rubric-legend">
+        {% for p in view.rubric(d) %}
+        <div class="rubric-row {{ 'weak' if p.weak }}"><span>{{ p.label }}</span><span class="bar"><i style="width: {{ p.pct }}%"></i></span><span class="val">{{ p.score }}/{{ p.max_score }}</span>
+          {% if p.reason %}<span class="rubric-reason">{{ p.reason }}</span>{% endif %}</div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if c.review %}
+    <section class="panel panel-pad" aria-labelledby="review-title">
+      <div class="section-title"><h2 id="review-title">审查意见</h2><span class="muted">返工 {{ c.revisions }} 次</span></div>
+      <p class="callout {{ 'callout-pass' if c.review.verdict == 'pass' else 'callout-reject' }}">{{ c.review.summary_zh }}</p>
+      {% if c.review.issues %}
+      <ul class="small" style="list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px">
+        {% for i in c.review.issues %}<li><span class="badge {{ 'badge-reject' if i.severity == 'must_fix' else '' }}">{{ "必须修改" if i.severity == "must_fix" else "小问题" }}</span> {{ i.problem }}<span class="muted" style="display: block">{{ i.evidence }}</span></li>{% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    {% if src.urls %}
+    <section class="panel panel-pad" aria-labelledby="sources-title">
+      <div class="section-title"><h2 id="sources-title">来源</h2><span class="muted">{{ src.urls | length }} 个页面</span></div>
+      <ol class="sources">{% for u in src.urls %}<li id="src-{{ loop.index }}"><a href="{{ u }}" target="_blank" rel="noopener noreferrer">{{ u | short_url }}</a></li>{% endfor %}</ol>
+    </section>
+    {% endif %}
+
+    {% if c.status != CompanyStatus.ARCHIVED %}
+    <section class="panel panel-pad">
+      <div class="section-title"><h2>对方不想再被联系</h2></div>
+      <form method="post" action="/companies/{{ c.id }}/suppress" class="field" data-confirm="加入拒绝联系名单后，以后的寻客都会跳过这家公司。确定吗？">
+        <label class="visually-hidden" for="suppress-reason">原因</label>
+        <input class="input" id="suppress-reason" name="reason" required placeholder="例如：对方回复不需要…" autocomplete="off">
+        <button class="btn btn-danger" type="submit">加入拒绝联系名单</button>
+      </form>
+    </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

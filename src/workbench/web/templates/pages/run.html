@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, run_status %}
+{% block title %}运行 #{{ run.id }} · 冠维获客工作台{% endblock %}
+
+{% macro step(e) -%}
+<li class="k-{{ e.kind }}"><time>{{ e.created_at | localtime("%H:%M:%S") }}</time>{{ icon({"search": "search", "open": "page", "review": "shield", "status": "check"}.get(e.kind, "dot")) }}<span>{{ e.text }}</span></li>
+{%- endmacro %}
+
+{% block content %}
+<a class="crumb" href="/runs">{{ icon("back") }}运行</a>
+<div class="page-head">
+  <div>
+    <h1>{% if run.company %}{{ view.RUN_KIND_LABELS[run.kind] }}：{{ run.company.name }}{% else %}寻客：{{ view.COUNTRIES.get(run.params.country, run.params.country) }}{{ "，" ~ run.params.product_group if run.params.product_group }}{% endif %}</h1>
+    <p>{{ run.created_at | localtime }} 由 {{ run.created_by or "系统" }} 发起</p>
+  </div>
+  <div class="actions" id="run-state">{% if finished %}{{ run_status(run.status) }}{% else %}<span class="status status-live">运行中</span>{% endif %}</div>
+</div>
+
+<section class="panel panel-pad" style="margin-bottom: 16px">
+  <div class="stats">
+    <div class="stat"><strong>{{ lanes | length }}</strong><span>家公司</span></div>
+    <div class="stat"><strong data-stat="done">{{ lanes | selectattr("stage", "eq", "done") | list | length }}</strong><span>已出结论</span></div>
+    <div class="stat"><strong data-stat="searches">{{ searches or (lanes | sum(attribute="searches")) }}</strong><span>次搜索</span></div>
+    <div class="stat"><strong data-stat="opened">{{ lanes | sum(attribute="opened") }}</strong><span>个页面已打开</span></div>
+    <div class="stat"><strong>${{ "%.3f" | format(cost) }}</strong><span>估算花费</span></div>
+  </div>
+  {% if run.params.demo %}<p class="callout" style="margin-top: 16px">这是演示数据：由研究子代理按同一份提示词契约联网完成，步骤是它实际打开过的页面。配置 API key 后，系统 agent 会在这里实时显示每一步。</p>{% endif %}
+  {% if run.summary or run.error %}<p class="callout {{ 'callout-reject' if run.error }}" style="margin-top: 16px">{{ run.summary or run.error }}</p>{% endif %}
+</section>
+
+{% if own_steps %}
+<section class="panel" style="margin-bottom: 16px">
+  <div class="toolbar"><h2 style="font-size: var(--text-md)">寻客与去重</h2></div>
+  <ol class="steps" data-steps="{{ run.id }}" style="padding-top: 12px">{% for e in own_steps %}{{ step(e) }}{% endfor %}</ol>
+</section>
+{% elif not lanes | selectattr("events") | list and not finished %}
+<section class="panel empty" id="waiting"><h2>等待 worker 接手</h2><p>worker 空闲时会马上开始，步骤会实时出现在这里。</p></section>
+{% endif %}
+
+<section class="panel">
+  {% for lane in lanes %}
+  <details class="lane" data-lane="{{ lane.run.id }}" {% if lanes | length == 1 or lane.run.status == RunStatus.RUNNING %}open{% endif %}>
+    <summary>
+      <span style="min-width: 0">
+        <span class="lane-title">{% if lane.run.company %}<a href="/companies/{{ lane.run.company.id }}">{{ lane.title }}</a>{% else %}{{ lane.title }}{% endif %}</span>
+        <span class="lane-result" style="display: block">{{ lane.run.error if lane.run.error else view.lane_result(lane.run.company, lane.run.summary or "进行中") }}</span>
+      </span>
+      <span class="stages" aria-label="进度">{% for key, label in stages %}<span class="{{ 'on' if loop.index <= lane.stage_index }}">{{ label }}</span>{% if not loop.last %}<span class="sep"></span>{% endif %}{% endfor %}</span>
+      {{ run_status(lane.run.status) }}
+    </summary>
+    <ol class="steps" data-steps="{{ lane.run.id }}">{% for e in lane.events %}{{ step(e) }}{% else %}<li class="muted"><span></span><span></span><span>排队中</span></li>{% endfor %}</ol>
+  </details>
+  {% endfor %}
+</section>
+
+{% if not finished %}<span hidden data-run-stream="/runs/{{ run.id }}/events?after={{ last_event_id }}" data-root-run="{{ run.id }}"></span>{% endif %}
+{% endblock %}

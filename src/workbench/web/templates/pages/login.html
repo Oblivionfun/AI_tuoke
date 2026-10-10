@@ -1,0 +1,24 @@
+{% from "components.html" import mark %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录 · 冠维获客工作台</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<main class="login">
+  <form method="post" action="/login" class="panel panel-pad">
+    <span class="brand">{{ mark() }}冠维获客</span>
+    {% if not has_users %}
+    <p class="callout">还没有账号。请在服务器上执行 <code>workbench user-add 用户名</code> 创建。</p>
+    {% endif %}
+    {% if error %}<p class="callout callout-reject" role="alert">{{ error }}</p>{% endif %}
+    <label class="field"><span>账号</span><input class="input" name="username" autocomplete="username" value="{{ username or '' }}" required autofocus></label>
+    <label class="field"><span>密码</span><input class="input" type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn btn-primary" type="submit">登录</button>
+  </form>
+</main>
+</body>
+</html>

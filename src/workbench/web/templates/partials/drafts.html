@@ -1,0 +1,41 @@
+{# 草稿区。文案 agent 运行期间每 3 秒刷新一次。系统不代发：复制到企业邮箱发出后点"我已从企业邮箱发出"。 #}
+{% from "components.html" import icon %}
+<div id="draft-list" {% if writing %}hx-get="/companies/{{ c.id }}/drafts" hx-trigger="every 3s" hx-swap="outerHTML" aria-busy="true"{% endif %}>
+  {% if writing %}<p class="callout" style="margin-bottom: 16px"><span class="status status-live">文案 agent 正在写草稿，写好后会出现在这里</span></p>{% endif %}
+  {% for dr in c.drafts if dr.status != DraftStatus.DISCARDED %}
+  <form class="draft" method="post" action="/drafts/{{ dr.id }}" autocomplete="off" data-dirty-guard>
+    <div class="draft-head">
+      <span>
+        <strong>{{ "征求同意信" if dr.kind == "consent_request" else "首封邮件" }}</strong>
+        {% if dr.status == DraftStatus.SENT %}<span class="badge badge-pass" style="margin-left: 8px">{{ icon("check") }}{{ dr.sent_at | localtime }} 由 {{ dr.sent_by }} 发出</span>{% endif %}
+      </span>
+      <span class="muted small">{{ dr.created_at | localtime }} 生成</span>
+    </div>
+    <div class="draft-body">
+      <div>
+        <label class="field"><span>收件地址</span><input class="input" type="email" name="to_address" value="{{ dr.to_address }}" inputmode="email" spellcheck="false" placeholder="例如：purchasing@example.ae…"></label>
+        <label class="field"><span>主题</span><input class="input" id="subject-{{ dr.id }}" name="subject_en" value="{{ dr.subject_en }}"></label>
+        <label class="field"><span>正文（可以直接改）</span><textarea class="textarea" id="body-{{ dr.id }}" name="body_en" rows="12">{{ dr.body_en }}</textarea></label>
+      </div>
+      <div>
+        <span class="muted small">中文对照</span>
+        <p class="draft-zh"><strong>{{ dr.subject_zh }}</strong>
+
+{{ dr.body_zh }}</p>
+        {% if dr.notes.send_tips_zh %}<p class="callout">{{ dr.notes.send_tips_zh }}</p>{% endif %}
+        {% if dr.notes.personalization_basis %}<p class="small muted">用到的档案事实：{{ dr.notes.personalization_basis | join("；") }}</p>{% endif %}
+      </div>
+    </div>
+    {% if dr.status == DraftStatus.DRAFT %}
+    <div class="draft-foot">
+      <button class="btn" type="button" data-copy-subject="subject-{{ dr.id }}" data-copy-body="body-{{ dr.id }}">{{ icon("copy") }}复制主题和正文</button>
+      <button class="btn" name="action" value="save">保存修改</button>
+      <button class="btn btn-primary" name="action" value="mark_sent">我已从企业邮箱发出</button>
+      <button class="btn btn-quiet" name="action" value="discard" style="margin-left: auto" data-confirm="丢弃后这封草稿不会再出现，确定吗？">丢弃</button>
+    </div>
+    {% endif %}
+  </form>
+  {% else %}
+    {% if not writing %}<div class="empty"><h2>还没有草稿</h2><p>在今日审核里接受这家公司后，文案 agent 会写好首封。</p></div>{% endif %}
+  {% endfor %}
+</div>

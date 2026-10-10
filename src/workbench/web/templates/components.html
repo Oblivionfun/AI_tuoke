@@ -1,0 +1,79 @@
+{# 全站共用的小组件。颜色只表达状态，状态总配文字。 #}
+
+{% set ICONS = {
+  "check": '<polyline points="20 6 9 17 4 12"/>',
+  "x": '<path d="M18 6 6 18M6 6l12 12"/>',
+  "alert": '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+  "shield": '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+  "external": '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  "copy": '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  "search": '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  "page": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+  "dot": '<circle cx="12" cy="12" r="2.5"/>',
+  "keyboard": '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  "back": '<path d="m15 18-6-6 6-6"/>',
+  "mail": '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+  "nut": '<path d="M12 2.5 20.2 7.25v9.5L12 21.5 3.8 16.75v-9.5z"/><circle cx="12" cy="12" r="3.6"/>',
+} %}
+
+{% macro icon(name, label="") -%}
+<svg class="icon" viewBox="0 0 24 24" {% if label %}role="img" aria-label="{{ label }}"{% else %}aria-hidden="true"{% endif %}>{{ ICONS[name] | safe }}</svg>
+{%- endmacro %}
+
+{# 品牌标志：六角螺母轮廓 #}
+{% macro mark() -%}
+<svg viewBox="0 0 24 24" aria-hidden="true">{{ ICONS["nut"] | safe }}</svg>
+{%- endmacro %}
+
+{% macro company_status(status) -%}
+<span class="status status-{{ view.STATUS_TONE.get(status, '') }}">{{ view.STATUS_LABELS[status] }}</span>
+{%- endmacro %}
+
+{% macro run_status(status) -%}
+<span class="status status-{{ view.RUN_STATUS_TONE[status] }}">{{ view.RUN_STATUS_LABELS[status] }}</span>
+{%- endmacro %}
+
+{% macro queue_badge(queue) -%}
+{% if queue == Queue.QUALIFIED %}<span class="badge badge-pass">{{ icon("check") }}合格买家</span>
+{% elif queue == Queue.FIRST_TOUCH %}<span class="badge badge-blue">可首触</span>
+{% elif queue == Queue.UNFIT %}<span class="badge">不合适</span>{% endif %}
+{%- endmacro %}
+
+{# 评分构成条：五段的宽度按口径 25/35/15/15/10，填充按得分；不到一半的段用琥珀色提示短板 #}
+{% macro rubric(dossier, size="") -%}
+{% set parts = view.rubric(dossier) %}
+<div class="rubric {{ 'rubric-' ~ size if size }}" role="img"
+     aria-label="评分构成：{% for p in parts %}{{ p.label }} {{ p.score }}/{{ p.max_score }}{{ '，' if not loop.last }}{% endfor %}">
+  {% for p in parts %}<span class="rubric-seg {{ 'weak' if p.weak and p.score > 0 }} {{ 'zero' if p.score <= 0 }}" style="flex: {{ p.max_score }}" title="{{ p.label }} {{ p.score }}/{{ p.max_score }}"><i style="width: {{ p.pct }}%"></i></span>{% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro review_line(review) -%}
+{% set tone, text = view.review_summary(review) %}
+{% if tone == "pass" %}<span class="badge badge-pass">{{ icon("shield") }}{{ text }}</span>
+{% elif tone == "reject" %}<span class="badge badge-reject">{{ icon("alert") }}{{ text }}</span>
+{% else %}<span class="badge">{{ text }}</span>{% endif %}
+{%- endmacro %}
+
+{# 来源角标：正文只露编号，悬停或键盘聚焦才显示网址；编号对应页面底部的来源列表 #}
+{% macro cite(src, url) -%}
+{% set n = src.ref(url) %}{% if n %}<span class="cite"><a href="{{ url }}" target="_blank" rel="noopener noreferrer" aria-label="来源 {{ n }}：{{ url | short_url }}">{{ n }}</a><span class="tip" aria-hidden="true">{{ url | short_url }}</span></span>{% endif %}
+{%- endmacro %}
+
+{% macro cites(src, urls) -%}
+{% for u in urls %}{{ cite(src, u) }}{% endfor %}
+{%- endmacro %}
+
+{% macro sourced(src, item) -%}
+{% if not item or item.value == "未找到" %}<span class="notfound">未找到</span>{% else %}{{ item.value }}{{ cites(src, item.sources) }}{% endif %}
+{%- endmacro %}
+
+{% macro ticks(done, total) -%}
+<span class="ticks" role="img" aria-label="{{ done }} / {{ total }}">{% for i in range(total) %}<i class="{{ 'on' if i < done }}"></i>{% endfor %}</span>
+{%- endmacro %}
+
+{% macro contact_value(contact) -%}
+{% if contact.kind == "email" %}<a href="mailto:{{ contact.value }}">{{ contact.value }}</a>
+{% elif contact.value.startswith("http") %}<a href="{{ contact.value }}" target="_blank" rel="noopener noreferrer">{{ contact.value | short_url }}</a>
+{% else %}{{ contact.value }}{% endif %}
+{%- endmacro %}

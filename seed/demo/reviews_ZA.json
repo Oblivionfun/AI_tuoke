@@ -1,0 +1,112 @@
+{
+  "country": "ZA",
+  "round": 2,
+  "revised": ["trufix.co.za"],
+  "reviews": {
+    "nssfasteners.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://nssfasteners.co.za/careers",
+        "https://nssfasteners.co.za/about-us",
+        "https://itac.org.za/wp-content/uploads/Set-Screws-Notice.pdf",
+        "https://www.gov.za/sites/default/files/gcis_document/202610/55525gen4189.pdf"
+      ],
+      "issues": [
+        {
+          "field": "scores[4].reason",
+          "problem": "上轮次要问题未处理：SAFMA 成员名单仍只列 2023 年公告的 CBC、SA Bolt、T&I Chalmers，漏了知识包点名的 Impala 和近两年 ITAC 公告里的 TPN、Tel-Screw。NSS 不在任何名单里，结论不变",
+          "evidence": "ITAC 2024-07 立案公告（Set-Screws-Notice.pdf）列 SAFMA 成员 CBC、TPN、Impala、Tel-Screw；2026-10 六角螺母立案公告（55525gen4189.pdf）申请方 SAFMA，含 CBC 和 Impala 数据，TPN、Tel-Screw 支持",
+          "severity": "minor"
+        },
+        {
+          "field": "signals[0]",
+          "problem": "上轮次要问题未处理：「实地审核供应商」仍只标 Careers 页，Careers 页只写审核流程，「实地走访」出自 About 页",
+          "evidence": "https://nssfasteners.co.za/careers 写 'our suppliers undergo an extensive vetting process'；https://nssfasteners.co.za/about-us 写 'we have visited and qualified each supplier'",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：招聘页「Production and Manufacturing」岗位已记为黄色风险；联系路线改为只向 info@ 发一封征求同意邮件、不再打电话，符合南非规则，可以使用。"
+    },
+    "boltfast.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://boltfast.co.za/about/",
+        "https://boltfast.co.za/catalogue/screws.html",
+        "https://boltfast.co.za/contact-us/"
+      ],
+      "issues": [],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：DIN 571 六角头木螺钉已移出匹配、列入不推；官网没有邮箱，唯一一次征求同意改为只打一通录音电话、事后不再补发邮件，符合南非规则，可以使用。"
+    },
+    "mrboltandnut.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.mrboltandnut.co.za/wp-content/uploads/MrBoltandNut_FastenerCatalogue_May2026_reduced.pdf",
+        "https://www.mrboltandnut.co.za/",
+        "https://itac.org.za/wp-content/uploads/Set-Screws-Notice.pdf",
+        "https://www.gov.za/sites/default/files/gcis_document/202610/55525gen4189.pdf"
+      ],
+      "issues": [
+        {
+          "field": "risks[0]",
+          "problem": "上轮次要问题未处理：风险里仍写「未出现在 ITAC 2023 年公告点名的 SAFMA 主要成员中」，没有对照 Impala、TPN、Tel-Screw。Mr Bolt and Nut 不在其中，黄色风险判定不变",
+          "evidence": "ITAC 2024-07 和 2026-10 立案公告列出的 SAFMA 成员为 CBC、TPN、Impala、Tel-Screw；均不含 Mr Bolt and Nut",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：目录第 8-11 页新增的抽芯铆钉、实心铆钉、圆钉、纤维板螺钉均已核对属实；联系路线改为只向 sales@ 发一封征求同意邮件，符合南非规则，可以使用；对方兼做特制螺栓，留意。"
+    },
+    "ftsboltworld.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.hudaco.co.za/activities.htm",
+        "https://rutherford.africa/wp/about-us/",
+        "https://ftsboltworld.co.za/ftsboltworld/contact/"
+      ],
+      "issues": [],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：Hudaco 集团业务页把 Boltworld 列为紧固件分销商，集团内的制造单位（输送滚筒、铸件、液压件等）都不生产紧固件，不触发制造集团红线；联系路线只向 info@ 发一封征求同意邮件，可以使用。"
+    },
+    "thefastenerfactory.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.thefastenerfactory.co.za/fasteners",
+        "https://www.thefastenerfactory.co.za/screw-type-fasteners",
+        "https://za.linkedin.com/company/thefastenerfactory",
+        "https://www.heico-group.com/en/company/international/"
+      ],
+      "issues": [
+        {
+          "field": "missing[4]",
+          "problem": "档案写「HEICO 集团官网国际页面靠脚本加载，未能核对」；该页可以打开，能补成依据：HEICO 自己的集团公司名单里没有南非公司，支持「独立分销商、不属于制造集团」的结论",
+          "evidence": "https://www.heico-group.com/en/company/international/ 列出 11 家集团公司（德国 2 家及英、法、西、意、荷、波、捷、美、中各 1 家），全文没有 South Africa、Africa 或 The Fastener Factory",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：Distributors / Resellers 的出处已改对；HEICO 集团公司名单里没有南非公司，对方是独立分销商，不触发制造集团红线；联系路线只向 info@ 发一封征求同意邮件，可以使用。"
+    },
+    "trufix.co.za": {
+      "verdict": "pass",
+      "checked_sources": [
+        "https://www.trufix.co.za/",
+        "https://www.trufix.co.za/tru-sleeve-anchors.html",
+        "https://www.trufix.co.za/nail-in-anchors.html",
+        "https://www.trufix.co.za/tru-rnd-anchors.html",
+        "https://www.trufix.co.za/quality-certifications.html"
+      ],
+      "issues": [
+        {
+          "field": "products[5]",
+          "problem": "上轮次要问题未处理：Coach Screws（六角头木螺钉）仍未注明南非不主推；因已判 unfit、不联系，不影响使用",
+          "evidence": "首页列有 'Coach Screws & Plugs'",
+          "severity": "minor"
+        }
+      ],
+      "notes_for_researcher": "无",
+      "summary_zh": "复查通过：官网首页和 Tru-Sleeve、Nail-in、Tru-rnd 三个锚栓页源码都自述 manufacturer / manufactures，已按南非规则判为本地同行、不合适；不要联系。"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{# 结论优先：一句话结论 → 对得上什么 / 怎么联系 / 要注意（各最多 3 条）→ 联系路线。需要 c（公司）和 src（来源编号）。 #}
+{% from "components.html" import icon, cite, contact_value %}
+{% set d = c.dossier or {} %}
+{% if c.sanctions_hint and c.sanctions_hint.hit %}
+<div class="callout callout-reject" style="margin-bottom: 16px">{{ icon("alert") }}<span>名称与制裁名单上的 {{ c.sanctions_hint.listed_name }} 相似（{{ c.sanctions_hint.source }}）。只是提示，报价前请人工核查。</span></div>
+{% endif %}
+<p class="verdict">{{ d.summary_zh or "还没有调研结论。" }}</p>
+
+<div class="facts">
+  <section>
+    <h3>对得上的产品</h3>
+    <ul>
+      {% for p in (d.products or [])[:3] %}
+      <li>{{ p.their_product }}{{ cite(src, p.source) }}
+        <span class="match-our">对应{{ view.our_product(p.our_product) }}{% if p.match_level == "sku" %}，已确认 SKU{% endif %}</span></li>
+      {% else %}<li class="notfound">没有找到对应产品</li>{% endfor %}
+    </ul>
+    {% if (d.products or []) | length > 3 %}<p class="more">另有 {{ d.products | length - 3 }} 项，见档案详情</p>{% endif %}
+  </section>
+
+  <section>
+    <h3>怎么联系</h3>
+    {% set contact, others = view.primary_contact(d) %}
+    {% if contact %}
+    <ul>
+      <li>
+        <span class="muted small">{{ contact.label or view.CONTACT_LABELS.get(contact.kind, contact.kind) }}</span>
+        <span class="contact-primary">{{ contact_value(contact) }}{{ cite(src, contact.source) }}
+          <button class="btn btn-quiet btn-sm" type="button" data-copy="{{ contact.value }}" aria-label="复制 {{ contact.value }}">{{ icon("copy") }}</button>
+        </span>
+      </li>
+    </ul>
+    {% if others %}<p class="more">另有 {{ others }} 个公开入口</p>{% endif %}
+    {% else %}<p class="notfound small">没有找到公开联系入口</p>{% endif %}
+  </section>
+
+  <section>
+    <h3>要注意</h3>
+    <ul>
+      {% for r in view.top_risks(d) %}
+      <li class="risk risk-{{ r.severity }}">{{ icon("alert") }}<span><span class="visually-hidden">{{ "红线" if r.severity == "red" else "注意" }}：</span>{{ r.text }}{{ cite(src, r.source) }}</span></li>
+      {% else %}<li class="muted">没有发现风险</li>{% endfor %}
+    </ul>
+    {% if d.missing %}<p class="more">还缺 {{ d.missing | length }} 项信息</p>{% endif %}
+  </section>
+</div>
+
+{% set steps = view.route_steps(d.contact_route) %}
+{% if steps %}
+<p class="route-title">联系路线</p>
+{% if steps | length > 1 %}<ol class="route">{% for s in steps %}<li>{{ s }}</li>{% endfor %}</ol>
+{% else %}<p class="route" style="padding-left: 16px">{{ steps[0] }}</p>{% endif %}
+{% endif %}

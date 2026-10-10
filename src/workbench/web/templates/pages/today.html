@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, rubric, ticks %}
+{% block title %}今日审核 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>今日审核</h1>
+    <p>每天最多 {{ limit }} 张。接受后文案 agent 写首封，补证会退回调研，不合适直接归档。</p>
+  </div>
+  <div class="actions">
+    <button class="btn btn-quiet" type="button" data-dialog-open="keys-dialog">{{ icon("keyboard") }}快捷键</button>
+    <a class="btn" href="/runs">发起寻客</a>
+  </div>
+</div>
+
+<div class="review" id="review">
+  {% set total = pending | length + decided | length %}
+  <nav class="panel queue" aria-label="今天的卡片">
+    <div class="queue-split" style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px">
+      <span>已处理 {{ decided | length }} / {{ total }}</span>{{ ticks(decided | length, [total, 1] | max) }}
+    </div>
+    {% for c in pending %}{{ queue_item(c, False) }}{% endfor %}
+    {% if decided %}<p class="queue-split">已处理</p>{% for c in decided %}{{ queue_item(c, True) }}{% endfor %}{% endif %}
+    {% if not total %}<p class="queue-split">队列是空的</p>{% endif %}
+  </nav>
+
+  {% if current %}
+    {% include "partials/review_card.html" %}
+  {% else %}
+  <section class="panel empty">
+    <h2>今天没有要审核的卡片</h2>
+    <p>发起一次寻客，调研和审查完成的公司会出现在这里。</p>
+    <a class="btn btn-primary" href="/runs">发起寻客</a>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% macro queue_item(c, done) -%}
+{% set marks = {
+  CompanyStatus.ACCEPTED: ("accepted", "check", "已接受"),
+  CompanyStatus.NEEDS_EVIDENCE: ("evidence", "dot", "补证中"),
+  CompanyStatus.ARCHIVED: ("unfit", "x", "已归档"),
+} %}
+{% set mark = marks.get(c.status, ("", "", "待审核")) %}
+<a class="queue-item {{ 'decided' if done }}" href="/today?focus={{ c.id }}" data-queue-item
+   hx-get="/today?focus={{ c.id }}" hx-target="#review" hx-select="#review" hx-swap="outerHTML" hx-push-url="true"
+   {% if current and c.id == current.id %}aria-current="true"{% endif %}>
+  <span class="queue-mark {{ mark[0] }}">{% if mark[1] %}{{ icon(mark[1]) }}{% endif %}<span class="visually-hidden">{{ mark[2] }}</span></span>
+  <span class="name truncate" translate="no">{{ c.name }}</span>
+  <span class="num">{{ c.score if c.score is not none else "—" }}</span>
+  <span class="meta"><span>{{ c.country }}</span>{{ rubric(c.dossier) }}</span>
+</a>
+{%- endmacro %}
+
+{% block dialogs %}
+<dialog class="modal" id="keys-dialog" aria-labelledby="keys-title">
+  <div class="drawer-head"><h2 id="keys-title" style="font-size: var(--text-lg)">快捷键</h2><button class="btn btn-quiet btn-sm" type="button" data-dialog-close aria-label="关闭">{{ icon("x") }}</button></div>
+  <div class="drawer-body keys">
+    <span class="kbd">J</span><span>下一张</span>
+    <span class="kbd">K</span><span>上一张</span>
+    <span class="kbd">A</span><span>接受并写首封</span>
+    <span class="kbd">E</span><span>补证（填写要补什么）</span>
+    <span class="kbd">X</span><span>不合适（填写原因）</span>
+    <span class="kbd">Esc</span><span>取消输入</span>
+    <span class="kbd">?</span><span>打开这个说明</span>
+  </div>
+</dialog>
+{% endblock %}

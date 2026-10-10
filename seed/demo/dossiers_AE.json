@@ -1,0 +1,845 @@
+{
+  "country": "AE",
+  "researched_at": "2026-10-10",
+  "method": "按 prompts/researcher.md 契约人工驱动的研究子代理，联网核实",
+  "items": [
+    {
+      "candidate": {
+        "name": "Zujer Trading Company L.L.C.",
+        "website": "https://www.zujertrading.com/",
+        "country": "AE",
+        "city": "Dubai",
+        "company_type": "紧固件进口库存商（抽芯铆钉、拉铆螺母、自钻螺钉专营）",
+        "criteria_met": [
+          "首页产品分类列出抽芯铆钉、拉铆螺母、机螺钉、自攻螺钉、自钻螺钉、干壁钉/木螺钉、六角螺栓螺母垫圈",
+          "About 页写明 specialist importer and stockist of blind rivets, blind rivet nuts, threaded fasteners",
+          "联系页地址在迪拜 Ras Al Khor 工业区 2 区 87 San’a Road"
+        ],
+        "sources": [
+          "https://www.zujertrading.com/",
+          "https://www.zujertrading.com/about-us-1/",
+          "https://www.zujertrading.com/contact-us/"
+        ],
+        "why": "迪拜的紧固件专业进口库存商，主营抽芯铆钉、拉铆螺母和自钻螺钉，正是阿联酋首推品类"
+      },
+      "dossier": {
+        "company_name": "Zujer Trading Company L.L.C.",
+        "website": "https://www.zujertrading.com/",
+        "country": "AE",
+        "city": {
+          "value": "迪拜（Ras Al Khor 工业区 2 区）",
+          "sources": ["https://www.zujertrading.com/contact-us/"]
+        },
+        "identity": {
+          "value": "法定名称 Zujer Trading Co LLC（官网写作 Zujer Trading Company L.L.C.）。About 页称 2000 年由 Zujer Bhaijee 创办，前身是建材零售店 Khalaf Al Shamsi Trading，2001 年转做紧固件进口库存，2007 年正式改名。仓库地址 Warehouse # 3, Plot # 613-1067, 87 San’a Road, Ras Al Khor Ind. Area 2, Dubai。下载页公开了营业执照（Trade Licence）和迪拜商会证书。LinkedIn 公司页地址相同，规模 11-50 人，成立于 2000 年。",
+          "sources": [
+            "https://www.zujertrading.com/about-us-1/",
+            "https://www.zujertrading.com/contact-us/",
+            "https://www.zujertrading.com/downloads1/",
+            "https://www.linkedin.com/company/zujer-trading-co.-llc"
+          ]
+        },
+        "business_type": {
+          "value": "进口 + 库存批发：About 页自述 specialist importer and stockist，产品从合格制造商采购，供应阿联酋和海湾地区的紧固件分销商和终端用户；LinkedIn 写 wholesalers/distributors，客户包括建材转售商。未见制造。",
+          "sources": [
+            "https://www.zujertrading.com/about-us-1/",
+            "https://www.linkedin.com/company/zujer-trading-co.-llc"
+          ]
+        },
+        "buyer_role": {
+          "value": "向工厂采购后以自有品牌销售：About 页称 2016 年在阿联酋注册自有品牌、此后所有产品以该品牌销售，产品 sourced from quality assured manufacturers；LinkedIn 写明自有品牌为 KHADS。适合作为贴牌供货对象。",
+          "sources": [
+            "https://www.zujertrading.com/about-us-1/",
+            "https://www.linkedin.com/company/zujer-trading-co.-llc"
+          ]
+        },
+        "products": [
+          {"their_product": "AS – Alum/Steel Open End Dome Head blind rivets, 2.4mm-6.4mm", "our_product": "Open-end blind rivets / 开口型抽芯铆钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/blind-rivets/"},
+          {"their_product": "ASCE – Alum/Steel Closed End Dome Head", "our_product": "Closed-end blind rivets / 封闭型抽芯铆钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/blind-rivets/"},
+          {"their_product": "ASCSK – Alum/Steel Open End Countersink Head", "our_product": "Countersunk head blind rivets / 沉头抽芯铆钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/blind-rivets/"},
+          {"their_product": "AS Coloured – Alum/Steel Open End Dome Head (ex stock White & Black)", "our_product": "Painted blind rivets / 彩色抽芯铆钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/blind-rivets/"},
+          {"their_product": "Round Rivet Nut ZN Large Flange, M3 to M12", "our_product": "Rivet nut / 拉铆螺母", "match_level": "family", "source": "https://www.zujertrading.com/categories/rivet-nuts/"},
+          {"their_product": "DIN7504-N Self Drilling PAN Philip Head ZN", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/self-drilling-screws/"},
+          {"their_product": "DIN7504-P Self Drilling CSK Philip Head ZN", "our_product": "Countersunk self-drilling screws / 沉头自钻螺钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/self-drilling-screws/"},
+          {"their_product": "DIN7504-N Self Drilling WAFER Philip Head ZN", "our_product": "Truss head self-drilling screws / 大扁头自钻螺钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/self-drilling-screws/"},
+          {"their_product": "Drywall COARSE Thread Bugle Philip Head Screws Black Phosphated", "our_product": "Drywall screws / 干壁钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/drywall-wood-screws/"},
+          {"their_product": "Wood Screws CSK Philips Head ZN", "our_product": "Wood screws / 木螺钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/drywall-wood-screws/"},
+          {"their_product": "DIN7985 Machine Screw PAN Philip Head ZN", "our_product": "Machine screws / 机螺钉", "match_level": "family", "source": "https://www.zujertrading.com/categories/machine-screw/"},
+          {"their_product": "DIN933 Hex Bolts Gr8.8 ZN, M6 To M12", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN934 Hex Nuts ZN & SS304", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN6923 Hex Flange Nuts ZN", "our_product": "Hex flange nut / 六角法兰螺母", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN982 & 985 Hex Nylon Insert Lock Nut", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN125A Flat Washers ZN + SS304", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN127B Spring Washers ZN + SS304", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "DIN580 Lifting Eye Bolt ZN", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://www.zujertrading.com/categories/hex-bolt-nut-and-washers/"},
+          {"their_product": "CD Weld Studs, MS Copper Coated, Alum & Stainless Steel", "our_product": "Weld stud (type to confirm) / 焊接螺柱（类型待确认）", "match_level": "family", "source": "https://www.zujertrading.com/categories/cd-weld-studs/"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "info@zujertrading.com", "label": "官网联系页的通用邮箱", "source": "https://www.zujertrading.com/contact-us/"},
+          {"kind": "phone", "value": "+971 - 4 - 2249 422", "label": "官网联系页座机（周一至周五 8:00-18:00，周六 8:00-14:30）", "source": "https://www.zujertrading.com/contact-us/"},
+          {"kind": "form", "value": "https://www.zujertrading.com/contact-us/", "label": "官网联系页的留言表单", "source": "https://www.zujertrading.com/contact-us/"},
+          {"kind": "address", "value": "87 San’a Road, Ras Al Khor Ind. Area 2 Warehouse # 3, Plot # 613-1067, (Landmark: Near Al Abbar R/A) Dubai, U.A.E.", "label": "官网联系页的仓库地址", "source": "https://www.zujertrading.com/contact-us/"},
+          {"kind": "linkedin", "value": "https://www.linkedin.com/company/zujer-trading-co.-llc", "label": "LinkedIn 公司主页", "source": "https://www.linkedin.com/company/zujer-trading-co.-llc"}
+        ],
+        "signals": [
+          {"text": "About 页自述专业进口商和库存商，产品从合格制造商采购，供应阿联酋和海湾地区的分销商与终端用户", "date": "未找到", "source": "https://www.zujertrading.com/about-us-1/"},
+          {"text": "2016 年在阿联酋注册自有品牌，此后所有产品以自有品牌销售（2016 年信息），说明向工厂贴牌采购", "date": "2016", "source": "https://www.zujertrading.com/about-us-1/"},
+          {"text": "LinkedIn 公司页称库存抽芯铆钉超过 5000 万件、紧固件超过 8000 万件，About 页称库存 300 吨以上、2500 多个品项", "date": "未找到", "source": "https://www.linkedin.com/company/zujer-trading-co.-llc"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "采购负责人和采购专用邮箱未找到，只有 info@ 通用邮箱",
+          "现有供应来源国家和年采购量未找到",
+          "官网没有供应商注册入口",
+          "自有品牌 KHADS 的包装、贴牌和认证要求需在首次沟通时询问",
+          "对方在售的 DIN7504-K 六角头自钻螺钉在我方产品卡里没有对应款，需工厂确认能否供货"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 24, "max_score": 25, "reason": "官网可访问，名称和地址在首页、About、联系页一致；下载页公开营业执照和迪拜商会证书，LinkedIn 公司页地址一致"},
+          {"dimension": "product_fit", "score": 32, "max_score": 35, "reason": "在售抽芯铆钉（开口、封闭、沉头、彩色）、拉铆螺母、自钻螺钉、干壁钉、木螺钉、机螺钉、六角螺栓、螺母、垫圈、焊钉，与我方螺栓、螺母、螺钉、垫圈、铆钉 5 个品类重合，且正是阿联酋首推品类；尚无已确认 SKU"},
+          {"dimension": "purchase_signal", "score": 13, "max_score": 15, "reason": "About 页自述进口商和库存商、从制造商采购，并以自有品牌销售；但没有公开招募供应商或招标"},
+          {"dimension": "reachability", "score": 13, "max_score": 15, "reason": "联系页有 info@ 通用邮箱、留言表单和座机；没有采购专用邮箱或供应商入口"},
+          {"dimension": "risk", "score": 7, "max_score": 10, "reason": "1 条黄色风险（阿联酋制裁筛查），扣 3 分；官网未提及向受制裁地区转口"}
+        ],
+        "total_score": 89,
+        "queue": "first_touch",
+        "queue_reason": "无红线；在售品类与我方 5 个品类重合，官网有通用邮箱和表单；但没有直接采购证据（未收到询价、未公开招募供应商），所以只能是可首触，不是合格买家",
+        "contact_route": "1. 先发首封邮件到官网通用邮箱 info@zujertrading.com：一对一，只谈抽芯铆钉、拉铆螺母或自钻螺钉中的一两个品类，可提可按其自有品牌贴牌、可小批量试单，文末附一句退订说明；2. 3-5 个工作日无回复，人工打官网座机 +971 - 4 - 2249 422（当地时间周一至周五 8:00-18:00、周六 8:00-14:30）；3. 对方回复后，请对方提供 WhatsApp，转到 WhatsApp 跟进（官网未公开 WhatsApp）。",
+        "summary_zh": "迪拜 Ras Al Khor 的紧固件专业进口库存商，2000 年成立，以自有品牌销售抽芯铆钉、拉铆螺母、自钻螺钉等，正对我方阿联酋首推品类。身份清楚（官网公开营业执照），有通用邮箱，建议优先首触，切入点是铆钉和自钻螺钉的贴牌供货。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Al Shams Fasteners Accessories Trading Co. L.L.C.",
+        "website": "https://alshamsfasteners.ae/",
+        "country": "AE",
+        "city": "Abu Dhabi",
+        "company_type": "紧固件进口库存商",
+        "criteria_met": [
+          "产品页列出膨胀锚栓（drop in、sleeve、wedge）、L/J 型地脚锚栓、U 形螺栓、抽芯铆钉、平垫圈和各类螺母",
+          "首页写明 One of the leading importers, Industrial Fasteners Distributor & stockists",
+          "首页页眉和 2019 年公司简介的地址在阿布扎比 Musaffah M-09"
+        ],
+        "sources": [
+          "https://alshamsfasteners.ae/",
+          "https://alshamsfasteners.ae/products/",
+          "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"
+        ],
+        "why": "阿布扎比 Musaffah 的紧固件进口库存商，螺栓、螺母、锚栓、垫圈品类齐全"
+      },
+      "dossier": {
+        "company_name": "Al Shams Fasteners Accessories Trading Co. L.L.C.",
+        "website": "https://alshamsfasteners.ae/",
+        "country": "AE",
+        "city": {
+          "value": "阿布扎比（Musaffah 工业区 M-09）",
+          "sources": [
+            "https://alshamsfasteners.ae/",
+            "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"
+          ]
+        },
+        "identity": {
+          "value": "公司简介 PDF（封面标 2019）写法定名称 AL Shams Fasteners Accessories Trdg. Co. L.L.C，自述成立于 2004 年，地址 Musaffah M-09, P.O.Box: 33068 Abu Dhabi，电话 02 55 44 016。第三方地图目录和 yellowpages-uae 目录登记的电话（+97125544016）、M9 地址和 P.O Box 33068 与官网一致；地图点评到 2025-08 仍有新评价，说明门店仍在经营。官网 About 页能打开但内容为空。",
+          "sources": [
+            "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf",
+            "https://alshamsfasteners.ae/",
+            "https://exa.ai/library/place/89shs8g19z5",
+            "https://www.yellowpages-uae.com/uae/shear-stud"
+          ]
+        },
+        "business_type": {
+          "value": "进口 + 库存批发，有门市：首页和 2019 年简介自述 leading importers and stockists，面向土建和钢结构工程项目；第三方点评称其为 Musaffah 的螺栓螺母门店，也接散客。未见制造。",
+          "sources": [
+            "https://alshamsfasteners.ae/",
+            "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf",
+            "https://exa.ai/library/place/89shs8g19z5"
+          ]
+        },
+        "buyer_role": {
+          "value": "自述进口商，库存覆盖各类螺栓、螺母、螺钉、垫圈、锚栓，供应土建和工程项目，需要持续补货。",
+          "sources": [
+            "https://alshamsfasteners.ae/",
+            "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"
+          ]
+        },
+        "products": [
+          {"their_product": "DROP IN ANCHORS / SLEEVE ANCHORS / WEDGE ANCHORS", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "L TYPE ANCHORS / J TYPE ANCHORS", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "U BOLTS DIN 3570", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "BLIND RIVETS DIN 7337", "our_product": "Open-end blind rivets / 开口型抽芯铆钉", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "RIVET NUTS", "our_product": "Rivet nut / 拉铆螺母", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "HEXAGONAL NUTS", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "NYLOCK NUTS", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "WELD NUTS", "our_product": "Weld nut / 焊接螺母", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "CASTLE NUTS", "our_product": "Castle nut / 开槽螺母", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "FLAT WASHERS DIN-125", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "BUTTON HEAD SKT SCREWS DIN 7380", "our_product": "Socket button head screw / 内六角圆头螺钉", "match_level": "family", "source": "https://alshamsfasteners.ae/products/"},
+          {"their_product": "Hexagon Bolts (Din 931/933) Gr. 8.8, 10.9, 12.9", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"their_product": "Socket Cap Screws (Din 912)", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"their_product": "Self-Drilling Screws (Din 7504/P/N)", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"their_product": "Drywall/Gypsum Screws", "our_product": "Drywall screws / 干壁钉", "match_level": "family", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"their_product": "Tapper Washers (Din 434)", "our_product": "Taper washer / 斜垫圈", "match_level": "family", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "sales@alshamsfasteners.ae", "label": "官网联系页和页眉的销售邮箱", "source": "https://alshamsfasteners.ae/home-2/contact-us/"},
+          {"kind": "phone", "value": "02 55 44 016", "label": "官网页眉座机（阿布扎比区号 02）", "source": "https://alshamsfasteners.ae/"},
+          {"kind": "phone", "value": "050 13 14 305", "label": "2019 年公司简介里的手机号（Mob），可能过时", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"kind": "address", "value": "Musaffah M-09, P.O.Box: 33068 Abu Dhabi, U.A.E", "label": "2019 年公司简介地址", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"kind": "address", "value": "9GG5+5MG - As Salami 2 St, Musaffah - Musaffah Industrial, 20347, United Arab Emirates", "label": "第三方地图目录地址，可能过时", "source": "https://exa.ai/library/place/89shs8g19z5"},
+          {"kind": "other", "value": "Hon. Mr. Sirajuddin Sidhpurwala (Chief Executive)", "label": "2019 年公司简介列出的公司负责人（职务联系人），可能已变动", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"}
+        ],
+        "signals": [
+          {"text": "官网首页自述 One of the leading importers, Industrial Fasteners Distributor & stockists", "date": "未找到", "source": "https://alshamsfasteners.ae/"},
+          {"text": "公司简介自述 2004 年成立，是各类螺栓、螺母、螺钉的主要进口和库存商（2019 年信息）", "date": "2019", "source": "https://alshamsfasteners.ae/wp-content/uploads/2020/12/AL-SHAMS-FASTENERS-PROFILE.pdf"},
+          {"text": "经营迹象：第三方地图点评 2025-07、2025-08 仍有客户评价其库存齐全，说明门店仍在营业", "date": "2025-08", "source": "https://exa.ai/library/place/89shs8g19z5"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"},
+          {"text": "官网首页被植入波兰语在线赌场和阿联酋网络赌场推广文字，网站疑似被黑且长期无人维护；官网邮箱可能没人看，首封邮件后要尽早电话确认", "severity": "yellow", "source": "https://alshamsfasteners.ae/"}
+        ],
+        "missing": [
+          "最新产品目录：官网只有封面标 2019 年的公司简介",
+          "官网 About、Brands 页面能打开但内容为空",
+          "官网博客 2023-2025 年的文章全是多语种赌博推广（见 WordPress 文章接口），真实紧固件页面最后修改于 2020-2022 年",
+          "官网邮箱 sales@alshamsfasteners.ae 目前是否有人处理未确认",
+          "采购负责人和采购专用邮箱未找到",
+          "成立年份只有 2019 年简介自述（2004 年），未查到工商登记"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 20, "max_score": 25, "reason": "官网可访问，名称和 Musaffah 地址在官网、2019 年简介、第三方目录中一致，地图点评到 2025-08 显示仍在经营；但官网被垃圾内容污染、About 页为空，身份信息主要来自 2019 年简介"},
+          {"dimension": "product_fit", "score": 30, "max_score": 35, "reason": "产品页和 2019 年简介列出螺栓、螺母、螺钉（含自钻螺钉、干壁钉）、垫圈、抽芯铆钉、膨胀锚栓和地脚螺栓，与我方 6 个品类重合；但产品信息多为 2019-2020 年，需取最新目录"},
+          {"dimension": "purchase_signal", "score": 11, "max_score": 15, "reason": "首页和简介自述进口商和库存商；没有公开招募供应商或近期招标"},
+          {"dimension": "reachability", "score": 11, "max_score": 15, "reason": "官网有销售邮箱和座机，但没有询价表单；网站长期无人维护，邮箱是否有效存疑"},
+          {"dimension": "risk", "score": 4, "max_score": 10, "reason": "2 条黄色风险（制裁筛查、官网被植入垃圾内容疑似弃管），各扣 3 分"}
+        ],
+        "total_score": 76,
+        "queue": "first_touch",
+        "queue_reason": "无红线：官网虽然长期无人维护，但第三方点评显示 2025 年仍在经营，不算停业；品类与我方 6 个品类重合，有公开邮箱和电话。没有直接采购证据，只能是可首触",
+        "contact_route": "1. 首封邮件发官网销售邮箱 sales@alshamsfasteners.ae：一对一，提膨胀锚栓、六角螺栓螺母中的一两项，请对方发最新产品清单，文末附一句退订说明；如果退信，直接进入第 2 步；2. 3-5 个工作日无回复，人工打官网座机 02 55 44 016（国际拨打 +971 2 554 4016），说明已发邮件，并确认对方现在的采购邮箱；3. 对方回复后转 WhatsApp（可先问 2019 年简介里的手机 050 13 14 305 是否仍在用）。",
+        "summary_zh": "阿布扎比 Musaffah 的紧固件进口库存商（自述 2004 年成立），螺栓、螺母、锚栓、垫圈品类齐全，第三方点评显示 2025 年仍在营业。但官网被挂赌博垃圾内容、资料停在 2019 年，邮件可能无人看，建议发邮件后尽快电话确认。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Hamza Fasteners Building Materials Trading LLC",
+        "website": "https://www.hamzafasteners.com/",
+        "country": "AE",
+        "city": "Dubai",
+        "company_type": "紧固件库存批发商（兼整柜出口转口）",
+        "criteria_met": [
+          "首页列出六角螺栓、膨胀锚栓（through bolt、Essar wedge anchor）、牙条、各类螺母、盘头自钻螺钉，FAQ 列出干壁钉、纤维板螺钉、木螺钉、地脚螺栓",
+          "About 页写明 We are a leading stockist and supplier of industrial fasteners，并提供批发价和整柜出口",
+          "联系页地址在迪拜 Deira（Nakheel）"
+        ],
+        "sources": [
+          "https://www.hamzafasteners.com/",
+          "https://www.hamzafasteners.com/about",
+          "https://www.hamzafasteners.com/contact/"
+        ],
+        "why": "迪拜 Deira 的紧固件库存批发商，向海湾和非洲整柜转口，品类与我方高度重合"
+      },
+      "dossier": {
+        "company_name": "Hamza Fasteners Building Materials Trading LLC",
+        "website": "https://www.hamzafasteners.com/",
+        "country": "AE",
+        "city": {
+          "value": "迪拜（Deira，Al Nakheel 一带）",
+          "sources": [
+            "https://www.hamzafasteners.com/contact/",
+            "https://www.linkedin.com/company/hamza-fasteners-building-materials-trading-llc"
+          ]
+        },
+        "identity": {
+          "value": "法定名称 Hamza Fasteners Building Materials Trading LLC；联系页地址 Nakheel, Deira- Dubai；LinkedIn 公司页地址 Al Nakheel Street, Deira，规模 11-50 人，类型 Partnership；第三方地图目录登记在 Naif - Deira，电话 +971505178672 与官网一致，有 56 条评价。官网自称 40 年经验、36 名员工、四地仓库共 120,000 平方英尺，但没有写成立年份。",
+          "sources": [
+            "https://www.hamzafasteners.com/contact/",
+            "https://www.hamzafasteners.com/about",
+            "https://www.linkedin.com/company/hamza-fasteners-building-materials-trading-llc",
+            "https://exa.ai/library/place/z7gxk0dgf0l"
+          ]
+        },
+        "business_type": {
+          "value": "库存批发 + 出口转口：About 页明确回答 Are you a stockist or a manufacturer? 为库存商和供应商；提供批发价、整柜和拼柜出口到海湾和东西非；只对地脚螺栓、牙条做切割定尺，不是制造商。",
+          "sources": [
+            "https://www.hamzafasteners.com/about",
+            "https://www.hamzafasteners.com/"
+          ]
+        },
+        "buyer_role": {
+          "value": "需要大量现货补库：首页称 25,000+ 个 SKU 现货，从杰贝阿里发整柜到海湾和非洲；分销 TUF-FIX、fischer、VIRAJ、STANLEY Engineered Fastening 等品牌，同时有自营库存线；第三方点评称沙迦同行从它这里按公斤进货再按件零售。官网未直接写 importer。",
+          "sources": [
+            "https://www.hamzafasteners.com/",
+            "https://exa.ai/library/place/z7gxk0dgf0l"
+          ]
+        },
+        "products": [
+          {"their_product": "Galvanized Hex Bolt – Grades 10.9, 12.9, 8.8 · fine thread & UNC", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Bolts: hex, flange, Allen (socket cap), CSK Allen", "our_product": "Flange bolt / 法兰螺栓", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Bolts: hex, flange, Allen (socket cap), CSK Allen", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Bolts: hex, flange, Allen (socket cap), CSK Allen", "our_product": "Hex socket countersunk bolt / 内六角沉头螺栓", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Galvanized Through Bolt / Galvanized Essar Anchor Bolt (wedge-type anchor for concrete)", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "anchor and foundation bolts (through bolts, Essar anchors, rawl bolts, L-bolts, J-bolts, U-bolts)", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "anchor and foundation bolts (through bolts, Essar anchors, rawl bolts, L-bolts, J-bolts, U-bolts)", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Galvanized Hex Nut – Standard hex nut, M6–M40", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Nuts: hex, heavy duty, low duty, dome (acorn), flange, nylon insert lock nut and pal nut", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Nuts: hex, heavy duty, low duty, dome (acorn), flange, nylon insert lock nut and pal nut", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "Galvanized Hex Pan Head Drilling Screw", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "MS Self Drilling Screw (Roofing / Cladding), bonded EPDM washer 16 / 19 / 22 mm", "our_product": "EPDM washer / EPDM垫圈", "match_level": "family", "source": "https://www.hamzafasteners.com/product/mild-steel-self-drilling-screw/"},
+          {"their_product": "Painted (colour-matched) heads available on request", "our_product": "Painted self-drilling screws / 彩色喷涂自钻螺钉", "match_level": "family", "source": "https://www.hamzafasteners.com/product/mild-steel-self-drilling-screw/"},
+          {"their_product": "drywall screws", "our_product": "Drywall screws / 干壁钉", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "chipboard screws", "our_product": "Chipboard screws / 纤维板螺钉", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "wood screws", "our_product": "Wood screws / 木螺钉", "match_level": "family", "source": "https://www.hamzafasteners.com/"},
+          {"their_product": "washers and spring washers", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://www.hamzafasteners.com/"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "sales@hamzafasteners.com", "label": "官网联系页的销售邮箱", "source": "https://www.hamzafasteners.com/contact/"},
+          {"kind": "phone", "value": "+971 50 517 8672", "label": "官网联系页电话（手机号）", "source": "https://www.hamzafasteners.com/contact/"},
+          {"kind": "phone", "value": "+971 50 624 0048", "label": "官网首页页脚电话（手机号）", "source": "https://www.hamzafasteners.com/"},
+          {"kind": "phone", "value": "+971 54 493 3717", "label": "官网首页页脚电话（手机号）", "source": "https://www.hamzafasteners.com/"},
+          {"kind": "form", "value": "https://www.hamzafasteners.com/contact/", "label": "官网联系页的留言表单", "source": "https://www.hamzafasteners.com/contact/"},
+          {"kind": "address", "value": "Nakheel, Deira- Dubai, UAE", "label": "官网联系页地址", "source": "https://www.hamzafasteners.com/contact/"},
+          {"kind": "linkedin", "value": "https://www.linkedin.com/company/hamza-fasteners-building-materials-trading-llc", "label": "LinkedIn 公司主页", "source": "https://www.linkedin.com/company/hamza-fasteners-building-materials-trading-llc"}
+        ],
+        "signals": [
+          {"text": "首页自述整柜和拼柜出口到海湾各国、东非、西非，持有 25,000+ 个 SKU 现货", "date": "未找到", "source": "https://www.hamzafasteners.com/"},
+          {"text": "第三方地图点评称沙迦的同行从 Hamza 按公斤进货再按件卖，说明它向下游批发", "date": "2025-05", "source": "https://exa.ai/library/place/z7gxk0dgf0l"},
+          {"text": "第三方地图点评提到其出口牙条到拉合尔、发货到津巴布韦", "date": "2025-06", "source": "https://exa.ai/library/place/z7gxk0dgf0l"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "成立年份未找到：官网称 40 年经验，但没有写成立年份",
+          "官网 About 页正文写 25,000+ SKU，页尾又写 500+ SKU，规模宣传需在沟通中核实",
+          "官网称可通过 WhatsApp 发清单，但没写明哪个号码是 WhatsApp",
+          "采购负责人和现有供应来源国家未找到",
+          "对方主推的六角头带 EPDM 垫圈屋面自钻螺钉在我方产品卡里没有完全对应款，需工厂确认"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 22, "max_score": 25, "reason": "官网可访问，法定名称和 Deira 地址在官网、LinkedIn 公司页、第三方地图目录中一致，电话一致；未查到成立年份和工商登记，官网规模数字前后不一"},
+          {"dimension": "product_fit", "score": 32, "max_score": 35, "reason": "在售六角、法兰、内六角螺栓，膨胀锚栓、地脚螺栓、U 形螺栓，各类螺母，自钻螺钉、干壁钉、纤维板螺钉、木螺钉，垫圈，与我方螺栓、螺母、螺钉、垫圈、锚固件 5 个品类重合且覆盖面广；首页提到铆钉但没有具体型号"},
+          {"dimension": "purchase_signal", "score": 11, "max_score": 15, "reason": "自述库存商、批发价、整柜出口到海湾和非洲，第三方点评显示同行向它进货；但官网未直接写进口，也没有招募供应商"},
+          {"dimension": "reachability", "score": 13, "max_score": 15, "reason": "联系页有销售邮箱、留言表单和三个电话；没有采购专用邮箱"},
+          {"dimension": "risk", "score": 7, "max_score": 10, "reason": "1 条黄色风险（制裁筛查），扣 3 分；出口目的地为海湾、巴基斯坦和非洲，未见伊朗、叙利亚、俄罗斯等受制裁地区"}
+        ],
+        "total_score": 85,
+        "queue": "first_touch",
+        "queue_reason": "无红线；产品族与我方 5 个品类重合，有销售邮箱和表单；没有直接采购证据（未收到询价、未招募供应商），只能是可首触",
+        "contact_route": "1. 首封邮件发官网销售邮箱 sales@hamzafasteners.com：一对一，提膨胀锚栓、自钻螺钉（可彩色喷涂）中的一两项，说明工厂直供适合其整柜出口业务，文末附一句退订说明；2. 3-5 个工作日无回复，人工打联系页电话 +971 50 517 8672；3. 对方回复后转 WhatsApp（以对方确认的号码为准）。",
+        "summary_zh": "迪拜 Deira 的紧固件库存批发商，自称 25,000+ SKU 现货，并向海湾和非洲整柜转口，第三方点评显示同行从它这里进货。螺栓、螺母、锚栓、自钻螺钉与我方高度重合，有销售邮箱和表单，适合首触；官网的规模宣传前后不一，沟通中需核实。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Bolton Hardware Co. L.L.C",
+        "website": "https://boltonhw.com/",
+        "country": "AE",
+        "city": "Sharjah",
+        "company_type": "五金紧固件贸易商",
+        "criteria_met": [
+          "产品页列出六角螺栓、内六角螺栓、地脚 L/J 螺栓、各类螺母、垫圈、盘头/沉头/大扁头自钻螺钉、抽芯铆钉",
+          "About 页写明 1990 年起做 hardware trading，为承包商、建筑商和工业客户供货",
+          "联系页地址在沙迦 Industrial Area 1"
+        ],
+        "sources": [
+          "https://boltonhw.com/products",
+          "https://boltonhw.com/about",
+          "https://boltonhw.com/contact"
+        ],
+        "why": "沙迦的老牌五金紧固件贸易商，品类与我方螺栓、螺母、螺钉、垫圈、铆钉、锚栓都重合"
+      },
+      "dossier": {
+        "company_name": "Bolton Hardware Co. L.L.C",
+        "website": "https://boltonhw.com/",
+        "country": "AE",
+        "city": {
+          "value": "沙迦（Industrial Area 1）",
+          "sources": ["https://boltonhw.com/contact"]
+        },
+        "identity": {
+          "value": "官网写法 Bolton Hardware Co. L.L.C，自述 1990 年成立；地址只写到 Industrial Area 1 – Sharjah，没有街道门牌。第三方目录 ReachUAE 登记名 BOLTON HARDWARE CO LLC、地址 Industrial area 1；第三方地图目录登记电话 +971552302786，与官网公开的 WhatsApp 号一致。首页客户评价像模板文字，不作为依据。",
+          "sources": [
+            "https://boltonhw.com/about",
+            "https://boltonhw.com/contact",
+            "https://www.reachuae.com/sharjah/bolton-hardware-co-llc-l9526",
+            "https://exa.ai/library/place/jy4nvpmpcym"
+          ]
+        },
+        "business_type": {
+          "value": "五金贸易（批发为主，也有线上零售）：官网称为承包商、建筑商和工业客户供货，接受单品或整单批量询价；询价页页脚有 Shop on Amazon 链接，说明也在亚马逊零售。未见制造。",
+          "sources": [
+            "https://boltonhw.com/",
+            "https://boltonhw.com/about",
+            "https://boltonhw.com/inquiry"
+          ]
+        },
+        "buyer_role": {
+          "value": "第三方目录 ReachUAE 显示其以自有品牌 BHC 销售内六角螺栓、六角螺栓、锁紧螺母、牙条、螺钉等，自有品牌说明它向工厂采购后贴牌；官网称与供应商长期合作。官网未直接写 importer。",
+          "sources": [
+            "https://www.reachuae.com/sharjah/bolton-hardware-co-llc-l9526",
+            "https://boltonhw.com/about"
+          ]
+        },
+        "products": [
+          {"their_product": "Hex Bolt", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Socket Head Allen Bolt", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "CSK Head Allen Bolt", "our_product": "Hex socket countersunk bolt / 内六角沉头螺栓", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Flange Bolt", "our_product": "Flange bolt / 法兰螺栓", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Fix Bolt", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Foundation L Bolt / Foundation J Bolt", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "U Bolt", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Lifting Eye Bolt", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Welding Stud", "our_product": "Weld stud (type to confirm) / 焊接螺柱（类型待确认）", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Hex Nut", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Rivet Nut", "our_product": "Rivet nut / 拉铆螺母", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Long Nut", "our_product": "Coupling nut / 连接螺母", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Cap Nut", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Flat Washer", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Taper Washer", "our_product": "Taper washer / 斜垫圈", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Pan Head Self Drilling Screw", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "CSK Self Drilling Screw", "our_product": "Countersunk self-drilling screws / 沉头自钻螺钉", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Wafer Head Self Drilling Screw", "our_product": "Truss head self-drilling screws / 大扁头自钻螺钉", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Gypsum Screw", "our_product": "Drywall screws / 干壁钉", "match_level": "family", "source": "https://boltonhw.com/products"},
+          {"their_product": "Blind Rivet", "our_product": "Open-end blind rivets / 开口型抽芯铆钉", "match_level": "family", "source": "https://boltonhw.com/products"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "sales@boltonhw.com", "label": "官网联系页的销售邮箱", "source": "https://boltonhw.com/contact"},
+          {"kind": "phone", "value": "+971 6 5333140", "label": "官网联系页座机", "source": "https://boltonhw.com/contact"},
+          {"kind": "phone", "value": "+971 55 8782052", "label": "官网联系页手机", "source": "https://boltonhw.com/contact"},
+          {"kind": "whatsapp", "value": "+971 55 2302786", "label": "官网联系页公开的 WhatsApp", "source": "https://boltonhw.com/contact"},
+          {"kind": "form", "value": "https://boltonhw.com/inquiry", "label": "官网询价清单页（加产品后经 WhatsApp 发送）", "source": "https://boltonhw.com/inquiry"},
+          {"kind": "address", "value": "Industrial Area 1 – Sharjah, U.A.E", "label": "官网联系页地址（无街道门牌）", "source": "https://boltonhw.com/contact"}
+        ],
+        "signals": [
+          {"text": "第三方目录 ReachUAE 显示其以自有品牌 BHC 销售螺栓、螺母、牙条、螺钉，说明有贴牌采购", "date": "未找到", "source": "https://www.reachuae.com/sharjah/bolton-hardware-co-llc-l9526"},
+          {"text": "官网首页接受单品或整单批量询价（single items or bulk lists），面向承包商和采购团队", "date": "未找到", "source": "https://boltonhw.com/"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "官网没有街道门牌地址，只写 Industrial Area 1",
+          "官网未写进口；自有品牌 BHC 来自第三方目录，需对方确认",
+          "采购负责人和采购专用邮箱未找到",
+          "现有供应来源和采购量未找到",
+          "首页客户评价疑似模板文字，真实口碑需另行了解"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 20, "max_score": 25, "reason": "官网可访问，名称一致，第三方目录 ReachUAE 和地图目录登记的名称、区域、电话与官网一致；但没有街道地址和工商登记信息，首页评价疑似模板"},
+          {"dimension": "product_fit", "score": 33, "max_score": 35, "reason": "产品页列出螺栓（六角、内六角、法兰、地脚、U 形、吊环、焊钉）、螺母（含拉铆螺母、连接螺母）、垫圈、自钻螺钉（盘头、沉头、大扁头）、干壁钉、抽芯铆钉、膨胀螺栓，与我方 6 个品类重合"},
+          {"dimension": "purchase_signal", "score": 8, "max_score": 15, "reason": "官网未写进口或招募供应商；第三方目录显示自有品牌 BHC，推测向工厂贴牌采购，高于只有在售"},
+          {"dimension": "reachability", "score": 14, "max_score": 15, "reason": "联系页有销售邮箱、两个电话、WhatsApp 和询价清单"},
+          {"dimension": "risk", "score": 7, "max_score": 10, "reason": "1 条黄色风险（制裁筛查），扣 3 分"}
+        ],
+        "total_score": 82,
+        "queue": "first_touch",
+        "queue_reason": "无红线；产品族与我方 6 个品类重合，有邮箱和 WhatsApp；没有直接采购证据，只能是可首触",
+        "contact_route": "1. 首封邮件发官网销售邮箱 sales@boltonhw.com：一对一，提自钻螺钉、拉铆螺母或地脚螺栓中的一两项，可提可按其品牌贴牌，文末附一句退订说明；2. 3-5 个工作日无回复，人工打官网座机 +971 6 5333140（营业时间见官网，中午休息，周日不营业）；3. 对方回复后转官网公开的 WhatsApp +971 55 2302786。",
+        "summary_zh": "沙迦 Industrial Area 1 的五金紧固件贸易商，自称 1990 年成立，产品页覆盖螺栓、螺母、垫圈、自钻螺钉、铆钉、锚栓，第三方目录显示有自有品牌 BHC。联系方式齐全（邮箱、WhatsApp），适合首触；是否自己进口需对方确认。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Daruwala Brothers L.L.C.",
+        "website": "https://www.daruwalabros.com/",
+        "country": "AE",
+        "city": "Sharjah",
+        "company_type": "工业五金分销商（紧固件为主营之一，有展厅）",
+        "criteria_met": [
+          "首页和产品数据列出镀锌/不锈钢六角螺栓螺母垫圈、内六角螺栓、自钻螺钉、石膏板螺钉、抽芯铆钉和拉铆螺母",
+          "About 页写明 Distributors of globally recognized manufacturers，1976 年成立的工业五金供应商",
+          "联系页地址在沙迦 Industrial Area No. 2 展厅"
+        ],
+        "sources": [
+          "https://www.daruwalabros.com/",
+          "https://www.daruwalabros.com/about",
+          "https://www.daruwalabros.com/contact"
+        ],
+        "why": "沙迦 1976 年成立的工业五金分销商，紧固件品类与我方 5 个品类重合"
+      },
+      "dossier": {
+        "company_name": "Daruwala Brothers L.L.C.",
+        "website": "https://www.daruwalabros.com/",
+        "country": "AE",
+        "city": {
+          "value": "沙迦（Industrial Area No. 2）",
+          "sources": ["https://www.daruwalabros.com/contact"]
+        },
+        "identity": {
+          "value": "官网写法 Daruwala Brothers L.L.C.，1976 年由 Hakimuddin Daruwala 在沙迦创办，唯一展厅在 Sharjah – Industrial Area No. 2。第三方地图目录登记地址 Shop # 14/15 Abdulla Al Khayal Bldg Near ADCB - King Faisal St，电话 +97165431044 与官网一致。注意：2GIS 上另有一家 Daruwala Brothers LLC（Al Ghuwair，域名 daruwalabrothers.com，电话 +97165617758），与本档案的域名、地址、电话都不同，不要混淆。",
+          "sources": [
+            "https://www.daruwalabros.com/about",
+            "https://www.daruwalabros.com/contact",
+            "https://exa.ai/library/place/glw4fr9x3j0",
+            "https://2gis.ae/sharjah/firm/70000001019433177"
+          ]
+        },
+        "business_type": {
+          "value": "工业五金分销 + 展厅门市：About 页称分销全球知名制造商的品牌，客户包括政府部门、跨国公司、工程车间、船舶和玻璃行业、建筑公司，也服务终端用户；除紧固件外还卖弹簧、气弹簧、磁铁、手工具、量具等。未见紧固件制造（第三方点评提到其可定做弹簧）。",
+          "sources": [
+            "https://www.daruwalabros.com/about",
+            "https://www.daruwalabros.com/products.json",
+            "https://exa.ai/library/place/glw4fr9x3j0"
+          ]
+        },
+        "buyer_role": {
+          "value": "紧固件是主营品类之一，展厅备有大量库存（产品数据写 Technical Items Stockist），需要持续补货；官网称由全球制造商供货、分销其品牌，未直接写进口。",
+          "sources": [
+            "https://www.daruwalabros.com/about",
+            "https://www.daruwalabros.com/products.json"
+          ]
+        },
+        "products": [
+          {"their_product": "Galvanized Hex Bolts, Nuts, Washers & Spring Washers", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://www.daruwalabros.com/"},
+          {"their_product": "Galvanized Hex Bolts, Nuts, Washers & Spring Washers", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://www.daruwalabros.com/"},
+          {"their_product": "Galvanized Hex Bolts, Nuts, Washers & Spring Washers", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://www.daruwalabros.com/"},
+          {"their_product": "Galvanized Hex Bolts, Nuts, Washers & Spring Washers", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://www.daruwalabros.com/"},
+          {"their_product": "Stainless Steel Hex Bolts, Nuts, Washers & Spring Washers", "our_product": "Stainless steel hex bolt / 不锈钢六角头螺栓", "match_level": "family", "source": "https://www.daruwalabros.com/"},
+          {"their_product": "Stainless Steel & GI Nylock Nuts, Dome Nuts, Long Nuts", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Stainless Steel & GI Nylock Nuts, Dome Nuts, Long Nuts", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Stainless Steel & GI Nylock Nuts, Dome Nuts, Long Nuts", "our_product": "Coupling nut / 连接螺母", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Allen Bolts and Allen CSK", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Allen Bolts and Allen CSK", "our_product": "Hex socket countersunk bolt / 内六角沉头螺栓", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "GI Machine Screws - All Types", "our_product": "Machine screws / 机螺钉", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Self-Drilling Screws (Tek screws), Galvanized and Stainless Steel", "our_product": "Stainless steel self-drilling screws / 不锈钢自钻螺钉", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Gypsum Screws (Black)", "our_product": "Drywall screws / 干壁钉", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Thread Bars - Stainless Steel & GI", "our_product": "Stainless steel stud or threaded rod / 不锈钢螺柱或牙条", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Stainless Steel Chains, Eyebolts & Hooks", "our_product": "Stainless steel eye bolts / 不锈钢吊环螺栓", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Blind Rivets, Rivet Nuts & Multigrip Rivets", "our_product": "Open-end blind rivets / 开口型抽芯铆钉", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"},
+          {"their_product": "Blind Rivets, Rivet Nuts & Multigrip Rivets", "our_product": "Rivet nut / 拉铆螺母", "match_level": "family", "source": "https://www.daruwalabros.com/products.json"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "daruwalabros@hotmail.com", "label": "官网页眉公开的邮箱（hotmail 免费邮箱）", "source": "https://www.daruwalabros.com/"},
+          {"kind": "phone", "value": "+971 6 543 1044", "label": "官网联系页座机", "source": "https://www.daruwalabros.com/contact"},
+          {"kind": "whatsapp", "value": "055-3365002", "label": "官网联系页标注的手机/WhatsApp", "source": "https://www.daruwalabros.com/contact"},
+          {"kind": "whatsapp", "value": "052-5311351", "label": "官网联系页标注的手机/WhatsApp", "source": "https://www.daruwalabros.com/contact"},
+          {"kind": "address", "value": "Sharjah – Industrial Area No. 2", "label": "官网联系页的展厅地址", "source": "https://www.daruwalabros.com/contact"},
+          {"kind": "address", "value": "Shop # 14/15 Abdulla Al Khayal Bldg Near ADCB - King Faisal St, Industrial Area 2 - Industrial Area", "label": "第三方地图目录地址，可能过时", "source": "https://exa.ai/library/place/glw4fr9x3j0"}
+        ],
+        "signals": [
+          {"text": "官网称分销全球知名制造商的品牌，并作为技术类产品库存商", "date": "未找到", "source": "https://www.daruwalabros.com/about"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"},
+          {"text": "沙迦另有一家同名公司 Daruwala Brothers LLC（Al Ghuwair，域名 daruwalabrothers.com），联系和核验时以 daruwalabros.com、电话 +971 6 543 1044 为准", "severity": "yellow", "source": "https://2gis.ae/sharjah/firm/70000001019433177"},
+          {"text": "第三方地图点评（2026-02）有客户称 2025-11 买到的 S+P 品牌螺栓螺母经检测是假货、实为廉价中国产品；属单方说法、未核实，但提示对方可能换牌销售，合作时只用我方品牌或中性包装", "severity": "yellow", "source": "https://exa.ai/library/place/glw4fr9x3j0"}
+        ],
+        "missing": [
+          "官网产品页由脚本加载，直接打开时是空白，产品清单取自同站数据文件 products.json",
+          "官网未写进口或采购渠道，供应来源未找到",
+          "公开邮箱是 hotmail 免费邮箱，没有企业域名邮箱",
+          "采购负责人未找到",
+          "规模（员工、库存量）未找到"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 19, "max_score": 25, "reason": "官网可访问，名称、展厅区域、电话与第三方地图目录一致，自述 1976 年成立；但沙迦有同名公司需区分，邮箱为免费邮箱，未查到工商登记"},
+          {"dimension": "product_fit", "score": 28, "max_score": 35, "reason": "在售六角螺栓、内六角螺栓、各类螺母、垫圈、自钻螺钉、石膏板螺钉、机螺钉、不锈钢牙条、抽芯铆钉和拉铆螺母，与我方螺栓、螺母、螺钉、垫圈、铆钉 5 个品类重合；但紧固件只是其五金品类之一"},
+          {"dimension": "purchase_signal", "score": 7, "max_score": 15, "reason": "官网称分销全球品牌、是库存商，但没有写进口、没有招募供应商；略高于只有在售"},
+          {"dimension": "reachability", "score": 12, "max_score": 15, "reason": "官网有公开邮箱（hotmail）、座机和两个 WhatsApp 号；没有询价表单"},
+          {"dimension": "risk", "score": 1, "max_score": 10, "reason": "3 条黄色风险（制裁筛查、同名公司、第三方点评投诉假冒品牌），各扣 3 分"}
+        ],
+        "total_score": 67,
+        "queue": "first_touch",
+        "queue_reason": "无红线（假货投诉为单方说法，不构成红线）；产品族与我方 5 个品类重合，有公开邮箱和 WhatsApp；没有直接采购证据，只能是可首触，优先级低于专营紧固件的进口商",
+        "contact_route": "1. 首封邮件发官网邮箱 daruwalabros@hotmail.com：一对一，提不锈钢螺栓、自钻螺钉或抽芯铆钉中的一两项，文末附一句退订说明；2. 3-5 个工作日无回复，人工打官网座机 +971 6 543 1044；3. 对方回复后转联系页标注的 WhatsApp 055-3365002。报价和打样只用我方品牌或中性包装，不接受贴其他品牌。",
+        "summary_zh": "沙迦 1976 年成立的工业五金分销商，有展厅，紧固件（螺栓、螺母、垫圈、自钻螺钉、铆钉）是主营之一，也卖弹簧、工具等。可以首触，但沙迦有同名公司要区分，且有客户投诉其换牌销售，合作时注意品牌和包装。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Roxon General Trading LLC (Roxon Fasteners)",
+        "website": "https://www.roxon.ae/",
+        "country": "AE",
+        "city": "Abu Dhabi",
+        "company_type": "紧固件批发商",
+        "criteria_met": [
+          "螺栓、螺钉、膨胀锚栓、螺母产品页列出 DIN 933 六角螺栓、DIN 912 内六角螺栓、六角头自钻螺钉、楔形锚栓、DIN 985 锁紧螺母",
+          "首页写明 Wholesale Supply – Bulk orders are our specialty，并依托 global sourcing",
+          "联系页地址在阿布扎比 Musaffah 工业区 M09"
+        ],
+        "sources": [
+          "https://www.roxon.ae/",
+          "https://www.roxon.ae/bolts",
+          "https://www.roxon.ae/expansion-anchors",
+          "https://www.roxon.ae/contactus"
+        ],
+        "why": "阿布扎比 Musaffah 的紧固件批发商，自述全球采购、向五金店供货，锚栓和螺栓品类与我方重合"
+      },
+      "dossier": {
+        "company_name": "Roxon General Trading LLC (Roxon Fasteners)",
+        "website": "https://www.roxon.ae/",
+        "country": "AE",
+        "city": {
+          "value": "阿布扎比（Musaffah 工业区 M09）",
+          "sources": ["https://www.roxon.ae/contactus"]
+        },
+        "identity": {
+          "value": "法定名称 Roxon General Trading LLC，品牌 Roxon Fasteners；官网地址 Building 1, Shop 11 Ar Rikhaymah 2 St, M09 Musaffah Industrial Area, Abu Dhabi。第三方地图目录同名登记的地址是 3 Store - 98 Al Subah Street, Musaffah - MW5，电话 +971568404410 与官网联系页的一般咨询电话一致，可能是搬迁或另一处仓库。成立年份未找到。",
+          "sources": [
+            "https://www.roxon.ae/contactus",
+            "https://www.roxon.ae/about-us",
+            "https://exa.ai/library/place/njrwwbsvdn4"
+          ]
+        },
+        "business_type": {
+          "value": "批发 + 库存：首页称大批量订单是专长、有大量库存，并向五金店和建材供应商供货；About 页称每件产品来源可追溯（sourced with full material traceability）。预埋地脚螺栓页提到可做定制加工，可能有简单加工能力。",
+          "sources": [
+            "https://www.roxon.ae/",
+            "https://www.roxon.ae/about-us",
+            "https://www.roxon.ae/cast-in-anchor-bolts"
+          ]
+        },
+        "buyer_role": {
+          "value": "向工厂采购后批发：首页称依托 global sourcing 提供有竞争力的价格，并为五金零售店和建材商供货（Building Material Retail 板块）。",
+          "sources": ["https://www.roxon.ae/"]
+        },
+        "products": [
+          {"their_product": "GI Hex Bolt - DIN 933 / GI 8.8 Hex Bolt - DIN 933", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "SS Cap Allen Bolt – DIN 912", "our_product": "Stainless steel socket head bolt / 不锈钢内六角螺栓", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "SS CSK Allen Bolt – DIN 7991", "our_product": "Stainless steel countersunk socket bolt / 不锈钢内六角沉头螺栓", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "SS 316 Hex Bolt - DIN 933", "our_product": "Stainless steel hex bolt / 不锈钢六角头螺栓", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "GI Eye Bolt - DIN 580", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "GI L Bolt", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://www.roxon.ae/bolts"},
+          {"their_product": "precision-formed L bolt, U bolt, and J bolt", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://www.roxon.ae/cast-in-anchor-bolts"},
+          {"their_product": "YZP Wedge Anchor / YZP Drop-In Anchor - Unifix / YZP Fix Bolt", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://www.roxon.ae/expansion-anchors"},
+          {"their_product": "SDS Hex Head YZP（self drilling screw for metal and roofing）", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://www.roxon.ae/screws"},
+          {"their_product": "machine screw for mechanical assemblies", "our_product": "Machine screws / 机螺钉", "match_level": "family", "source": "https://www.roxon.ae/screws"},
+          {"their_product": "wood screw for timber joints", "our_product": "Wood screws / 木螺钉", "match_level": "family", "source": "https://www.roxon.ae/screws"},
+          {"their_product": "GI Hex Nut - DIN 934", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://www.roxon.ae/en_GB/nuts"},
+          {"their_product": "GI Lock Nut - DIN 985", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://www.roxon.ae/en_GB/nuts"},
+          {"their_product": "GI Long Nut - DIN 6334", "our_product": "Coupling nut / 连接螺母", "match_level": "family", "source": "https://www.roxon.ae/en_GB/nuts"},
+          {"their_product": "GI Cap Nut - DIN 1587", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://www.roxon.ae/en_GB/nuts"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "sales@roxon.ae", "label": "官网联系页的销售邮箱", "source": "https://www.roxon.ae/contactus"},
+          {"kind": "phone", "value": "+971-568404410", "label": "官网联系页的一般咨询电话", "source": "https://www.roxon.ae/contactus"},
+          {"kind": "phone", "value": "+971-569603670", "label": "官网页脚电话", "source": "https://www.roxon.ae/contactus"},
+          {"kind": "form", "value": "https://www.roxon.ae/contactus", "label": "官网联系页的询价（RFQ）表单，可附询价文件", "source": "https://www.roxon.ae/contactus"},
+          {"kind": "address", "value": "Building 1, Shop 11 Ar Rikhaymah 2 St, M09 Musaffah Industrial Area - Abu Dhabi, United Arab Emirates", "label": "官网联系页地址", "source": "https://www.roxon.ae/contactus"},
+          {"kind": "address", "value": "3 Store - 98 Al Subah Street, Musaffah - MW5, United Arab Emirates", "label": "第三方地图目录地址，与官网不同，可能过时", "source": "https://exa.ai/library/place/njrwwbsvdn4"}
+        ],
+        "signals": [
+          {"text": "首页称依托全球采购（global sourcing），大批量订单是专长，并向五金店和建材供应商供货", "date": "未找到", "source": "https://www.roxon.ae/"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"},
+          {"text": "预埋地脚螺栓页称 each anchor bolt is manufactured 并提供定制加工（custom fabrication），可能有本地折弯、套丝能力，需确认是否兼营制造", "severity": "yellow", "source": "https://www.roxon.ae/cast-in-anchor-bolts"}
+        ],
+        "missing": [
+          "成立年份和规模未找到",
+          "官网地址与第三方地图目录地址不一致（M09 与 MW5），需确认现址",
+          "采购负责人未找到",
+          "我方产品卡没有六角头自钻螺钉，对方列出的 SDS Hex Head 需工厂确认能否供货",
+          "定制加工的范围（是否自己生产地脚螺栓）未确认"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 19, "max_score": 25, "reason": "官网可访问，法定名称和电话在各页一致，第三方地图目录同名登记且电话一致；但地址与第三方目录不一致，成立年份未找到"},
+          {"dimension": "product_fit", "score": 30, "max_score": 35, "reason": "在售六角螺栓、不锈钢内六角螺栓、吊环螺栓、L/U/J 地脚螺栓、楔形和内迫式锚栓、六角头自钻螺钉、机螺钉、木螺钉、六角/锁紧/连接/盖形螺母，与我方螺栓、螺母、螺钉、锚固件 4 个品类重合"},
+          {"dimension": "purchase_signal", "score": 10, "max_score": 15, "reason": "首页自述全球采购、大批量批发、向五金店和建材商供货；没有公开招募供应商"},
+          {"dimension": "reachability", "score": 14, "max_score": 15, "reason": "联系页有销售邮箱、RFQ 询价表单和两个电话"},
+          {"dimension": "risk", "score": 4, "max_score": 10, "reason": "2 条黄色风险（制裁筛查、可能兼营地脚螺栓加工），各扣 3 分"}
+        ],
+        "total_score": 77,
+        "queue": "first_touch",
+        "queue_reason": "无红线（定制加工只是可能的兼营，没有自有工厂证据）；产品族与我方 4 个品类重合，有邮箱和 RFQ 表单；没有直接采购证据，只能是可首触",
+        "contact_route": "1. 首封邮件发官网销售邮箱 sales@roxon.ae（或用联系页 RFQ 表单）：一对一，提膨胀锚栓、自钻螺钉中的一两项，文末附一句退订说明；2. 3-5 个工作日无回复，人工打联系页电话 +971-568404410；3. 对方回复后请对方提供 WhatsApp，转 WhatsApp 跟进（官网未公开 WhatsApp）。",
+        "summary_zh": "阿布扎比 Musaffah 的紧固件批发商（Roxon Fasteners），自述全球采购、大批量供货并向五金店分销，螺栓、螺母、锚栓、自钻螺钉与我方重合，有邮箱和 RFQ 表单，适合首触。现址和是否有地脚螺栓加工能力待确认。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Fastener World FZCO",
+        "website": "https://fastenerworld.ae/",
+        "country": "AE",
+        "city": "Dubai",
+        "company_type": "紧固件库存供应商（杰贝阿里自贸区）",
+        "criteria_met": [
+          "首页产品分类列出锚栓、六角螺栓、螺母、垫圈、螺钉、铆钉、U 形螺栓、双头螺柱",
+          "About 页写明 leading supplier of fasteners，产品 sourced from the world’s leading fastener manufacturers",
+          "联系页地址在迪拜杰贝阿里自贸区 Jafza South"
+        ],
+        "sources": [
+          "https://fastenerworld.ae/",
+          "https://fastenerworld.ae/about-company/",
+          "https://fastenerworld.ae/contact-us/"
+        ],
+        "why": "杰贝阿里自贸区的大型紧固件库存商，自述从全球制造商采购"
+      },
+      "dossier": {
+        "company_name": "Fastener World FZCO",
+        "website": "https://fastenerworld.ae/",
+        "country": "AE",
+        "city": {
+          "value": "迪拜（杰贝阿里自贸区 Jafza South）",
+          "sources": ["https://fastenerworld.ae/contact-us/"]
+        },
+        "identity": {
+          "value": "官网名称 Fastener World FZCO，地址 Jebal Ali (South) Jafza, Dubai，电话 +971 04 8808676；首页称设施面积 21,870 平方米。Our Associates 页列出的关联公司有 Asia Bolts Industries LLC、Fastener World International LLC（两家同为 P.O.BOX 60495, Dubai Investment Park）、沙特 Metal Fastener Mfr Co.Ltd 及其达曼分支。",
+          "sources": [
+            "https://fastenerworld.ae/contact-us/",
+            "https://fastenerworld.ae/",
+            "https://fastenerworld.ae/our-associates/"
+          ]
+        },
+        "business_type": {
+          "value": "库存供应商，但属于紧固件制造商集团：自身官网称从全球制造商采购、持有数百万件库存；关联公司 Asia Bolts Industries LLC 官网自称 Largest Fastener Manufacturer in Dubai，生产双头螺柱、地脚螺栓、U 形螺栓、六角螺栓、螺母、垫圈。",
+          "sources": [
+            "https://fastenerworld.ae/about-company/",
+            "https://fastenerworld.ae/our-associates/",
+            "https://asia-bolt.com/"
+          ]
+        },
+        "buyer_role": {
+          "value": "不是我方买家：它是同行制造商集团的销售平台，主要卖集团自产的螺栓、螺柱、地脚螺栓和螺母，与我方是竞争关系；最多外购集团不生产的小件。",
+          "sources": [
+            "https://fastenerworld.ae/our-associates/",
+            "https://asia-bolt.com/"
+          ]
+        },
+        "products": [
+          {"their_product": "hex bolts, heavy hex bolts", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://fastenerworld.ae/about-company/"},
+          {"their_product": "hex nuts, heavy hex nuts", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://fastenerworld.ae/about-company/"},
+          {"their_product": "Stud Bolts", "our_product": "Stud bolt / 双头螺柱", "match_level": "family", "source": "https://fastenerworld.ae/"},
+          {"their_product": "U Bolt", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://fastenerworld.ae/"},
+          {"their_product": "Anchor Bolts", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://fastenerworld.ae/"},
+          {"their_product": "Fixing Anchor Bolts", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://fastenerworld.ae/"},
+          {"their_product": "Washers", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://fastenerworld.ae/"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "info@fastenerworld.ae", "label": "官网联系页的通用邮箱", "source": "https://fastenerworld.ae/contact-us/"},
+          {"kind": "phone", "value": "+971 4 8808676", "label": "官网联系页座机", "source": "https://fastenerworld.ae/contact-us/"},
+          {"kind": "address", "value": "Jafza South, Jebel Ali, Dubai, UAE", "label": "官网联系页地址", "source": "https://fastenerworld.ae/contact-us/"}
+        ],
+        "signals": [
+          {"text": "About 页称产品从全球领先的紧固件制造商采购", "date": "未找到", "source": "https://fastenerworld.ae/about-company/"}
+        ],
+        "risks": [
+          {"text": "Our Associates 页列出 Asia Bolts Industries LLC 和沙特 Metal Fastener Mfr Co.Ltd 为关联公司，本公司属于同行制造商集团的贸易平台", "severity": "red", "source": "https://fastenerworld.ae/our-associates/"},
+          {"text": "关联公司 Asia Bolts Industries 官网自称中东最大紧固件制造商，工厂在 Dubai Investment Park-2，产品与我方螺栓、螺柱、地脚螺栓、螺母直接重合", "severity": "red", "source": "https://asia-bolt.com/"},
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "Fastener World FZCO 与 Asia Bolts 的股权关系未查到，只有官网关联公司页的说法",
+          "集团不生产的品类（如自钻螺钉、铆钉）是否对外采购未知"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 20, "max_score": 25, "reason": "官网可访问，名称、地址、电话一致；关联公司页公开了集团关系"},
+          {"dimension": "product_fit", "score": 30, "max_score": 35, "reason": "在售六角螺栓、螺母、双头螺柱、U 形螺栓、地脚螺栓、膨胀锚栓、垫圈等，与我方螺栓、螺母、垫圈、锚固件品类重合（重合正说明是竞争对手）"},
+          {"dimension": "purchase_signal", "score": 10, "max_score": 15, "reason": "About 页称从全球制造商采购；但集团有自己的工厂，采购需求主要在集团内部"},
+          {"dimension": "reachability", "score": 12, "max_score": 15, "reason": "联系页有通用邮箱和座机，没有表单"},
+          {"dimension": "risk", "score": 0, "max_score": 10, "reason": "有红线：关联公司 Asia Bolts Industries 是紧固件制造商同行"}
+        ],
+        "total_score": 72,
+        "queue": "unfit",
+        "queue_reason": "红线：官网关联公司页显示它与迪拜紧固件制造商 Asia Bolts Industries 同属一个集团，是同行制造商的贸易平台。总分虽有 72，但按口径有红线即判不合适。寻客阶段只看了首页和 About，调研时在 Our Associates 页发现了这层关系",
+        "contact_route": "不进入联系流程。若业务员日后想试其集团不生产的自钻螺钉、铆钉等品类，需人工决定后再按阿联酋路线：官网邮箱 info@fastenerworld.ae 首封 → 3-5 个工作日无回复打 +971 4 8808676 → 回复后转 WhatsApp。",
+        "summary_zh": "杰贝阿里自贸区的大型紧固件库存商，表面看是供应商，但官网关联公司页显示它属于迪拜紧固件制造商 Asia Bolts 集团，是同行。按红线判为不合适，不建议联系。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Alpha Solutions LLC F.Z.C",
+        "website": "https://alphasolutionsuae.com/",
+        "country": "AE",
+        "city": "Ajman",
+        "company_type": "工业品采购贸易商（紧固件为首要品类）",
+        "criteria_met": [
+          "工业紧固件页列出螺栓螺母垫圈、螺柱和牙条、锚固件、螺钉、吊环螺栓、铆钉和嵌件、U 形螺栓、剪力钉",
+          "首页写明为承包商、钢构加工厂提供紧固件采购支持（specification-led sourcing），清单外产品也可代为寻源",
+          "首页地址在阿治曼自贸区 Warehouse D1-21"
+        ],
+        "sources": [
+          "https://alphasolutionsuae.com/",
+          "https://alphasolutionsuae.com/industrial-fasteners-uae/"
+        ],
+        "why": "阿治曼自贸区的工业品采购贸易商，紧固件是第一品类，按项目清单寻源"
+      },
+      "dossier": {
+        "company_name": "Alpha Solutions LLC F.Z.C",
+        "website": "https://alphasolutionsuae.com/",
+        "country": "AE",
+        "city": {
+          "value": "阿治曼（阿治曼自贸区）",
+          "sources": ["https://alphasolutionsuae.com/"]
+        },
+        "identity": {
+          "value": "官网名称 Alpha Solutions LLC F.Z.C，地址 Warehouse D1-21, Ajman Free Zone, P.O. Box 932。第三方目录 ATN Info 登记了同名公司，地址 D1-21 - Free Zone - 1、P.O Box 932 与官网一致，但登记电话（+971-50-5541099）与官网不同。官网未写成立年份和规模。",
+          "sources": [
+            "https://alphasolutionsuae.com/",
+            "https://www.atninfo.com/uae/ajman/fasteners-industrial-568"
+          ]
+        },
+        "business_type": {
+          "value": "贸易 / 采购服务：首页称为阿联酋承包商、钢构加工和制造企业提供紧固件、钢材、脚手架、阀门工具的采购支持，按规格寻源后报价；可做非标和特殊材质紧固件。未见制造。",
+          "sources": [
+            "https://alphasolutionsuae.com/",
+            "https://alphasolutionsuae.com/industrial-fasteners-uae/"
+          ]
+        },
+        "buyer_role": {
+          "value": "按项目清单向工厂寻源采购：首页称 We source it、specification-led sourcing，紧固件页接受图纸、材料审批文件或 BOQ 询价，需要能按图定制的供应商。是否自己进口未写明。",
+          "sources": [
+            "https://alphasolutionsuae.com/",
+            "https://alphasolutionsuae.com/industrial-fasteners-uae/"
+          ]
+        },
+        "products": [
+          {"their_product": "Fasteners — bolts, nuts & washers", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Fasteners — bolts, nuts & washers", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Fasteners — bolts, nuts & washers", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Studs & threaded rods", "our_product": "Stud bolt / 双头螺柱", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Anchor fasteners", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Eye bolts", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "U-bolts & clamps", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Rivets & inserts", "our_product": "Open-end blind rivets / 开口型抽芯铆钉", "match_level": "family", "source": "https://alphasolutionsuae.com/"},
+          {"their_product": "Shear studs", "our_product": "Weld stud (type to confirm) / 焊接螺柱（类型待确认）", "match_level": "family", "source": "https://alphasolutionsuae.com/industrial-fasteners-uae/"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "alphasolutionsllc.uae@gmail.com", "label": "官网公开的邮箱（Gmail 免费邮箱）", "source": "https://alphasolutionsuae.com/"},
+          {"kind": "phone", "value": "+971 50 359 1233", "label": "官网首页电话", "source": "https://alphasolutionsuae.com/"},
+          {"kind": "whatsapp", "value": "+971 54 541 9479", "label": "官网首页公开的 WhatsApp", "source": "https://alphasolutionsuae.com/"},
+          {"kind": "form", "value": "https://alphasolutionsuae.com/", "label": "官网首页底部的询价表单", "source": "https://alphasolutionsuae.com/"},
+          {"kind": "address", "value": "Warehouse D1-21, Ajman Free Zone, U.A.E — P.O. Box 932", "label": "官网首页地址", "source": "https://alphasolutionsuae.com/"},
+          {"kind": "phone", "value": "+971-50-5541099", "label": "第三方目录，可能过时", "source": "https://www.atninfo.com/uae/ajman/fasteners-industrial-568"}
+        ],
+        "signals": [
+          {"text": "首页称按规格寻源采购（specification-led sourcing），清单外的产品也可代为寻源，并做非标和特殊材质紧固件", "date": "未找到", "source": "https://alphasolutionsuae.com/"},
+          {"text": "紧固件页接受图纸、材料审批文件或 BOQ 询价，处理非标需求", "date": "未找到", "source": "https://alphasolutionsuae.com/industrial-fasteners-uae/"}
+        ],
+        "risks": [
+          {"text": "首次报价前做制裁筛查（系统已做名称比对，仅供参考）", "severity": "yellow", "source": "知识包"},
+          {"text": "公开邮箱是 Gmail 免费邮箱，官网没有成立年份、规模和客户案例，可核实的经营历史少", "severity": "yellow", "source": "https://alphasolutionsuae.com/"}
+        ],
+        "missing": [
+          "成立年份未找到（官网未写；域名 whois 显示 2023-03 注册，仅供参考）",
+          "规模、库存、客户案例未找到",
+          "是否自己进口、主要供应国未找到",
+          "采购负责人未找到",
+          "产品只列到品类名，没有具体规格和标准"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 17, "max_score": 25, "reason": "官网可访问，名称和自贸区地址与第三方目录 ATN Info 一致；但只有 Gmail 邮箱，未写成立年份和规模，第三方目录电话与官网不同"},
+          {"dimension": "product_fit", "score": 26, "max_score": 35, "reason": "列出螺栓、螺母、垫圈、螺柱、锚固件、螺钉、吊环螺栓、铆钉、U 形螺栓、剪力钉，品类层面与我方 6 个品类重合；但只到品类名，没有具体规格"},
+          {"dimension": "purchase_signal", "score": 8, "max_score": 15, "reason": "首页自述按规格寻源采购、清单外也可代采，属于采购型贸易商；未写进口，也没有招募供应商"},
+          {"dimension": "reachability", "score": 12, "max_score": 15, "reason": "有公开邮箱（Gmail）、电话、WhatsApp 和询价表单；没有企业域名邮箱"},
+          {"dimension": "risk", "score": 4, "max_score": 10, "reason": "2 条黄色风险（制裁筛查、免费邮箱且经营历史难核实），各扣 3 分"}
+        ],
+        "total_score": 67,
+        "queue": "first_touch",
+        "queue_reason": "无红线；产品族与我方多个品类重合，有邮箱、WhatsApp 和表单；没有直接采购证据，只能是可首触。身份信息偏薄，适合用按图定制、小批量试单来试探",
+        "contact_route": "1. 首封邮件发官网邮箱 alphasolutionsllc.uae@gmail.com：一对一，突出可按图纸定制、可小批量试单，请对方发当前项目的紧固件清单，文末附一句退订说明；2. 3-5 个工作日无回复，人工打官网电话 +971 50 359 1233；3. 对方回复后转官网公开的 WhatsApp +971 54 541 9479。",
+        "summary_zh": "阿治曼自贸区的工业品采购贸易商，紧固件是第一品类，按项目清单和图纸寻源，正好对应我方可定制、可小批量的卖点。身份信息偏薄（Gmail 邮箱、无成立年份），可以首触，但要先摸清它是否有稳定订单。"
+      },
+      "review": null
+    }
+  ]
+}

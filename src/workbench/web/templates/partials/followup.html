@@ -1,0 +1,47 @@
+{# 跟进：先看来往记录，再记一笔；有询价时记 RFQ。 #}
+<div class="stack">
+<section class="panel panel-pad">
+  <div class="section-title"><h3>来往记录</h3><span class="muted">邮件开门，WhatsApp 成交</span></div>
+  <ul class="timeline">
+    {% for i in c.interactions %}
+    <li><time>{{ i.happened_at | localtime }}</time>
+      <span><span class="badge {{ 'badge-pass' if i.direction == Direction.IN else '' }}">{{ "对方" if i.direction == Direction.IN else "我方" }}，{{ view.CHANNEL_LABELS[i.channel] }}</span> {{ i.summary }}<span class="muted small" style="display: block">{{ i.created_by }}</span></span></li>
+    {% else %}<li><span></span><span class="muted">还没有来往记录</span></li>{% endfor %}
+  </ul>
+  <hr class="divider">
+  <form method="post" action="/companies/{{ c.id }}/interactions" class="composer" autocomplete="off">
+    <div class="form-row">
+      <label class="field" style="flex: 0 0 auto"><span>谁联系谁</span>
+        <select class="select" name="direction"><option value="in">对方来信</option><option value="out">我方联系</option></select></label>
+      <label class="field" style="flex: 0 0 auto"><span>渠道</span>
+        <select class="select" name="channel">{% for ch, label in view.CHANNEL_LABELS.items() %}<option value="{{ ch.value }}">{{ label }}</option>{% endfor %}</select></label>
+    </div>
+    <label class="field"><span>发生了什么</span><textarea class="textarea" name="summary" required placeholder="例如：对方回复要 M5 拉铆螺母报价，已加 WhatsApp…"></textarea></label>
+    <div><button class="btn btn-primary" type="submit">记一笔</button></div>
+  </form>
+</section>
+
+<section class="panel panel-pad">
+  <div class="section-title"><h3>询价（RFQ）</h3><span class="muted">{{ c.rfqs | length }} 条</span></div>
+  {% if c.rfqs %}
+  <table class="table" style="margin-bottom: 16px">
+    <thead><tr><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th></tr></thead>
+    <tbody>{% for r in c.rfqs %}
+      <tr><td>{{ r.products }}<span class="muted small" style="display: block">{{ r.created_at | localtime }} {{ r.notes }}</span></td><td>{{ r.quantity }}</td><td>{{ r.incoterm }}</td>
+        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td></tr>
+    {% endfor %}</tbody>
+  </table>
+  {% endif %}
+  <form method="post" action="/rfqs" class="composer" autocomplete="off">
+    <input type="hidden" name="company_id" value="{{ c.id }}">
+    <label class="field"><span>产品与规格</span><input class="input" name="products" required placeholder="例如：DIN 7504N ST4.8×19 自钻螺钉…"></label>
+    <div class="form-row">
+      <label class="field"><span>数量</span><input class="input" name="quantity"></label>
+      <label class="field"><span>目标价</span><input class="input" name="target_price"></label>
+      <label class="field"><span>贸易术语</span><input class="input" name="incoterm" placeholder="例如：FOB 天津…"></label>
+    </div>
+    <label class="field"><span>备注</span><input class="input" name="notes"></label>
+    <div><button class="btn" type="submit">记录 RFQ</button></div>
+  </form>
+</section>
+</div>

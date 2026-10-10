@@ -1,0 +1,432 @@
+{
+  "country": "SA",
+  "researched_at": "2026-10-10",
+  "method": "按 prompts/researcher.md 契约人工驱动的研究子代理，联网核实",
+  "items": [
+    {
+      "candidate": {
+        "name": "Branch Al-Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C)",
+        "website": "https://khamisainhardware.com/",
+        "country": "SA",
+        "city": "Dammam",
+        "company_type": "紧固件库存批发商（紧固件制造集团的沙特分支）",
+        "criteria_met": [
+          "产品页列出六角螺栓、J/L 型地脚螺栓、U 形螺栓、膨胀螺栓、尼龙锁紧螺母、弹簧垫圈、齿形锁紧垫圈等",
+          "首页自述 'Stockist, Supplier & Fabricator of Fasteners'，产品页写明可批发和零售",
+          "联系页总部地址在达曼 King Saud Street，另有利雅得、吉达办事处和朱拜勒门店"
+        ],
+        "sources": [
+          "https://khamisainhardware.com/Products/Default.aspx",
+          "https://khamisainhardware.com/",
+          "https://khamisainhardware.com/ContactUs/Default.aspx"
+        ],
+        "why": "种子线索：达曼老牌紧固件库存商，品类与我方螺栓、螺母、垫圈、锚栓大面积重合（复核发现属紧固件制造集团分支，见档案风险）"
+      },
+      "dossier": {
+        "company_name": "Branch Al-Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C)",
+        "website": "https://khamisainhardware.com/",
+        "country": "SA",
+        "city": {
+          "value": "达曼（Dammam，总部）；另有利雅得、吉达办事处，达曼 2 家和朱拜勒 1 家门店",
+          "sources": [
+            "https://khamisainhardware.com/ContactUs/Default.aspx",
+            "https://khamisainhardware.com/AboutUs/Default.aspx"
+          ]
+        },
+        "identity": {
+          "value": "官网抬头名称为 Branch Al-Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C)；官网新闻页 2011-04-02 发布 'AL-Khamisain is now a branch of Fastener World International Co. L.L.C.'（2011 年信息），首页新闻栏仍挂着这条。自述 1981 年起经营，两座仓库约 40,000 个品项、库存 15,000 吨以上。总部地址 King Saud Street, Opposite to Al-Hayat Plaza, Al Jalawiyah, P.O. Box 5541, Dammam 31432。Asia Bolts 集团官网 'Group of Companies' 页把 'Branch Al Khamisain Hardware Trading Co. (Fastener World International Co. L.L.C)' 列为集团公司，地址一致；Metal Fasteners 官网也把它列为关联公司。母公司 Fastener World International Co. L.L.C 很可能就是 Asia Bolts 集团页上地址在迪拜 Dubai Investment Park 2 的 Fastener World International LLC（同名，但未见来源明确说明是同一法人）。商业注册号（CR）未找到。",
+          "sources": [
+            "https://khamisainhardware.com/",
+            "https://khamisainhardware.com/News/Default.aspx",
+            "https://khamisainhardware.com/AboutUs/Default.aspx",
+            "https://khamisainhardware.com/ContactUs/Default.aspx",
+            "https://asia-bolt.com/ourassociation.php",
+            "https://www.metal-fasteners.com/ourassociation.php"
+          ]
+        },
+        "business_type": {
+          "value": "紧固件库存批发 + 零售门店，官网首页自述 'Stockist, Supplier & Fabricator'（有加工能力），Services 页有 'Production and Planning' 段落；所属 Asia Bolts 集团以紧固件制造为主业（Asia Bolts Industries 自称 'Largest Fastener Manufacturer in Middle East'）",
+          "sources": [
+            "https://khamisainhardware.com/",
+            "https://khamisainhardware.com/Products/Default.aspx",
+            "https://khamisainhardware.com/Services/Default.aspx",
+            "https://asia-bolt.com/index.php"
+          ]
+        },
+        "buyer_role": {
+          "value": "About 页自述 1981 年起贸易各类紧固件，并通过采购和质量管理体系采购（sourcing）同行难找的特殊紧固件，Services 页写有来料检验（核对供应商质保书），说明有对外采购。但它是紧固件制造集团的销售分支：集团在达曼另有制造厂 Metal Fastener Mfr Co.（与本公司同为 P.O. Box 5541 King Saud Street），迪拜 Asia Bolts 工厂生产螺柱、地脚螺栓、U 形螺栓、牙条、六角螺栓螺母。这些核心品类大概率由集团内部供货，向集团外工厂采购的空间不确定，最多是尼龙锁紧螺母、垫圈、螺钉等补充品类（推测）。",
+          "sources": [
+            "https://khamisainhardware.com/AboutUs/Default.aspx",
+            "https://khamisainhardware.com/Services/Default.aspx",
+            "https://asia-bolt.com/ourassociation.php",
+            "https://asia-bolt.com/index.php"
+          ]
+        },
+        "products": [
+          {"their_product": "Hex & Heavy Hex", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "T- Head Bolts", "our_product": "T-bolt / T形螺栓", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "J Anchor Bolts / L Anchor Bolts", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Expansion Bolts", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "U Bolts", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Eye Bolts", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Hex Nuts", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Nylon Lock Nuts", "our_product": "Nylon insert lock nut / 尼龙锁紧螺母", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Cap / Doom Nuts", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Coupling Nuts", "our_product": "Coupling nut / 连接螺母", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Square Nuts", "our_product": "Square nut / 方螺母", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Flat Washer", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Spring Washer", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Tooth Lock Washer", "our_product": "Tooth lock washer / 齿形锁紧垫圈", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"},
+          {"their_product": "Threaded Rods - Stainless Steel", "our_product": "Stainless steel stud or threaded rod / 不锈钢螺柱或牙条", "match_level": "family", "source": "https://khamisainhardware.com/Products/Default.aspx"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "info@khamisainhardware.com", "label": "官网联系页达曼总部通用邮箱", "source": "https://khamisainhardware.com/ContactUs/Default.aspx"},
+          {"kind": "phone", "value": "+966 13 817 5868 / 5750", "label": "官网联系页达曼总部电话", "source": "https://khamisainhardware.com/ContactUs/Default.aspx"},
+          {"kind": "phone", "value": "+966 11 4383 557", "label": "官网联系页利雅得办事处电话", "source": "https://khamisainhardware.com/ContactUs/Default.aspx"},
+          {"kind": "phone", "value": "+966 12 673 8379", "label": "官网联系页吉达办事处电话", "source": "https://khamisainhardware.com/ContactUs/Default.aspx"},
+          {"kind": "form", "value": "https://khamisainhardware.com/Register/Enquiry.aspx", "label": "官网询价表单（面向客户询价，不是供应商注册入口）", "source": "https://khamisainhardware.com/Register/Enquiry.aspx"},
+          {"kind": "address", "value": "King Saud Street, Opposite to Al-Hayat Plaza, Al Jalawiyah, P.O. Box 5541, Dammam 31432, K.S.A.", "label": "官网联系页达曼总部地址", "source": "https://khamisainhardware.com/ContactUs/Default.aspx"}
+        ],
+        "signals": [
+          {"text": "About 页自述通过采购和质量管理体系采购（sourcing）同行认为难以获得的特殊紧固件", "date": "未找到", "source": "https://khamisainhardware.com/AboutUs/Default.aspx"},
+          {"text": "About 页自述正在沙特扩张门店，目前达曼 2 家、朱拜勒 1 家", "date": "未找到", "source": "https://khamisainhardware.com/AboutUs/Default.aspx"},
+          {"text": "首页版权年份为 2026，About 页写 'since 1981 已有 45 年以上'，说明网站内容近年仍在维护", "date": "2026", "source": "https://khamisainhardware.com/"}
+        ],
+        "risks": [
+          {"text": "同行：本公司是 Fastener World International Co. L.L.C 的分支，被 Asia Bolts 集团官网列为集团公司；Asia Bolts Industries LLC 自称 'Largest Fastener Manufacturer in Middle East'，集团在达曼另有 Metal Fastener Mfr Co.（与本公司同为 P.O. Box 5541 King Saud Street）。本公司属紧固件制造集团的沙特销售渠道，按知识包红线视为同行", "severity": "red", "source": "https://asia-bolt.com/ourassociation.php"},
+          {"text": "官网首页自述 'Stockist, Supplier & Fabricator of Fasteners'，自身也有加工能力", "severity": "yellow", "source": "https://khamisainhardware.com/"},
+          {"text": "SABER 认证要求待确认", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "商业注册号（CR）未找到",
+          "母公司 Fastener World International Co. L.L.C 与迪拜 Fastener World International LLC 是否为同一法人，未见来源明确说明；fastenerworld.net 打开失败（502）",
+          "是否向集团外工厂采购、采购部门联系人均未找到",
+          "官网没有供应商注册入口；Careers 页显示 'No Job found'",
+          "LinkedIn 公司主页未找到"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 23, "max_score": 25, "reason": "官网可访问，名称、达曼总部地址在官网和 Asia Bolts、Metal Fasteners 两个集团网站上一致，分支关系有官网新闻页明确说明；CR 未找到"},
+          {"dimension": "product_fit", "score": 25, "max_score": 35, "reason": "螺栓、螺母、垫圈、锚固件 4 个品类、15 个产品族与我方重合；但螺柱、地脚螺栓、U 形螺栓、六角螺栓螺母是集团自产品类，实际可外采的只是一部分，取区间下限"},
+          {"dimension": "purchase_signal", "score": 6, "max_score": 15, "reason": "只有在售和 About 页 sourcing 特殊紧固件的泛泛自述；无供应商注册入口、无进口自述、无招标"},
+          {"dimension": "reachability", "score": 12, "max_score": 15, "reason": "官网有通用邮箱、询价表单和多地电话；没有供应商入口"},
+          {"dimension": "risk", "score": 0, "max_score": 10, "reason": "命中红线：属紧固件制造集团的销售分支（同行）"}
+        ],
+        "total_score": 66,
+        "queue": "unfit",
+        "queue_reason": "命中红线'紧固件制造商同行'：本公司是 Fastener World International Co. L.L.C 的沙特分支，被 Asia Bolts 集团（自称中东最大紧固件制造商）列为集团公司，集团在达曼另有制造厂且与本公司同一邮箱号。产品重合和联系入口都具备，但按口径有红线即为 unfit",
+        "contact_route": "按 unfit 处理，暂不进入首触。若老板判断可以尝试向该集团供应其自产以外的补充品类（如尼龙锁紧螺母、齿形锁紧垫圈、螺钉），由人工先致电达曼总部 +966 13 817 5868 说明来意，询问是否接受外部工厂报价并征求同意；对方同意后再发邮件到 info@khamisainhardware.com。官网没有供应商注册入口，Enquiry 表单是客户询价用的，不要用来发推销内容。",
+        "summary_zh": "达曼老牌紧固件库存商（1981 年起），品类与我方螺栓、螺母、垫圈、锚栓大面积重合，联系方式齐全。但它是 Asia Bolts 紧固件制造集团旗下的沙特分支，属于同行渠道，按口径判为不合适，暂不联系。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Masdar Building Materials CJSC (Masdar Technical Supplies)",
+        "website": "https://masdar.co/",
+        "country": "SA",
+        "city": "Riyadh",
+        "company_type": "五金建材连锁批发商（旗下紧固件分销板块 Masdar Technical Supplies）",
+        "criteria_met": [
+          "产品页 Fasteners 段写明分销、库存 27,000 多个紧固件 SKU，另列 U 形螺栓、地脚螺栓、牙条等管道支架配件",
+          "About 页写明在全国 105 家门店分销各类建材（含紧固件），公司战略写'开发新供应商'",
+          "About 页和联系页的总部地址在利雅得 Thumama Road"
+        ],
+        "sources": [
+          "https://masdar.co/products-2/",
+          "https://masdar.co/about/",
+          "https://masdar.co/contact/"
+        ],
+        "why": "沙特最大的建材分销商之一，紧固件板块库存 27,000 多个 SKU，品类覆盖我方螺栓、锚固件、螺钉等"
+      },
+      "dossier": {
+        "company_name": "Masdar Building Materials CJSC (Masdar Technical Supplies)",
+        "website": "https://masdar.co/",
+        "country": "SA",
+        "city": {
+          "value": "利雅得（总部 Thumama Road）；紧固件中央仓库在利雅得，另在达曼、吉达有仓库",
+          "sources": [
+            "https://masdar.co/about/",
+            "https://masdar.co/products-2/"
+          ]
+        },
+        "identity": {
+          "value": "Al-Muhaidib 家族 1971 年创立；2003 年收购 2 个加工单元和 2 家贸易公司组建 Al Muhaidib Technical Supplies（紧固件板块，现称 Masdar Technical Supplies）；2014 年三家公司合组为 'Masdar' Building Materials CJSC，实缴资本 4 亿里亚尔；2024 年沙特公共投资基金 PIF 认购新股取得 30% 股权；2025 年全资收购 Hatcon。全国 29 个城市 105 家门店。总部 Riyadh, Thumama Road 537 East Al Munsiyah District Building No. 3461, P.O. Box 40444, Riyadh 11499。LinkedIn 公司页显示 1,001-5,000 名员工，总部 Thumama Road East，与官网一致。CR 号码未找到。",
+          "sources": [
+            "https://masdar.co/about/",
+            "https://www.linkedin.com/company/masdar-",
+            "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"
+          ]
+        },
+        "business_type": {
+          "value": "建材连锁批发分销（五金、钢材、木材、紧固件等），紧固件板块兼营加工：自行加工地脚螺栓、U 形螺栓、弯头螺栓和卡箍，并提供热镀锌、镀铬处理（'制造+贸易'兼营）",
+          "sources": [
+            "https://masdar.co/products-2/",
+            "https://masdar.co/about/",
+            "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"
+          ]
+        },
+        "buyer_role": {
+          "value": "紧固件板块库存 27,000 多个 SKU（螺栓、螺母、垫圈、螺钉、铆钉、锚固件等），利雅得中央仓库 30,000 平方米，向全国门店配货，主体靠外购；About 页和 2025 年紧固件公司简介的公司战略都写明'在维护现有供应商的同时开发新供应商'；集团本身以进口起家（1970 年从达曼港进口金属和水泥），木材等品类从中国等地进口。自行加工的地脚螺栓、U 形螺栓外采空间较小。",
+          "sources": [
+            "https://masdar.co/products-2/",
+            "https://masdar.co/about/",
+            "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"
+          ]
+        },
+        "products": [
+          {"their_product": "ALLEN BOLTS", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"their_product": "STUDS", "our_product": "Stud bolt / 双头螺柱", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"their_product": "EYE BOLTS", "our_product": "Eye bolt / 吊环及环眼螺栓组合", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"their_product": "ANCHOR BOLTS L & J", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"their_product": "ANCHORING SYSTEMS", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"their_product": "U-bolt", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://masdar.co/products-2/"},
+          {"their_product": "SCREWS", "our_product": "Other screws / 其他螺钉组合", "match_level": "family", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "info@mbm.com.sa", "label": "官网通用邮箱", "source": "https://masdar.co/about/"},
+          {"kind": "phone", "value": "800 124 0272", "label": "官网总机（沙特境内免费电话）", "source": "https://masdar.co/about/"},
+          {"kind": "form", "value": "https://masdar.co/contact/", "label": "官网联系页表单", "source": "https://masdar.co/contact/"},
+          {"kind": "email", "value": "105@mts.com.sa", "label": "紧固件板块利雅得项目销售办公室邮箱（2025 年公司简介；mts.com.sa 网站当前打不开，邮箱是否仍在用待确认）", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"kind": "email", "value": "204@mts.com.sa", "label": "紧固件板块吉达项目销售办公室邮箱（2025 年公司简介，是否仍在用待确认）", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"kind": "email", "value": "320@mts.com.sa", "label": "紧固件板块达曼项目销售办公室邮箱（2025 年公司简介，是否仍在用待确认）", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"kind": "linkedin", "value": "https://www.linkedin.com/company/masdar-", "label": "LinkedIn 公司主页（人工找采购或供应链岗位征求同意用）", "source": "https://www.linkedin.com/company/masdar-"},
+          {"kind": "address", "value": "Riyadh, Thumama Road 537 East Al Munsiyah District Building No. 3461 P.O. Box 40444 RIYADH 11499", "label": "官网总部地址", "source": "https://masdar.co/about/"}
+        ],
+        "signals": [
+          {"text": "公司战略写明'在维护现有供应商关系的同时开发新供应商'（泛泛表述，未针对具体品类）", "date": "2025", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"text": "2024 年 PIF 认购新股取得 30% 股权，2025 年全资收购 Hatcon，处于扩张期", "date": "2025", "source": "https://masdar.co/about/"},
+          {"text": "紧固件板块 2025 年公司简介列出红海项目、利雅得地铁、阿美 Khurais 气田等大型项目供货业绩", "date": "2025", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"}
+        ],
+        "risks": [
+          {"text": "'制造+贸易'兼营：紧固件板块自行加工地脚螺栓、U 形螺栓、弯头螺栓和卡箍，并提供热镀锌，这些品类外采空间小", "severity": "yellow", "source": "https://masdar.co/wp-content/uploads/2024/12/MTSI-COMPANY-PROFILE-2025.pdf"},
+          {"text": "LinkedIn 公司页帖子（约 2026 年 9 月）：CEO 表示要推进供应链本地化，2030 年本地制造产品占比提高到 80%，进口份额可能收缩", "severity": "yellow", "source": "https://www.linkedin.com/company/masdar-"},
+          {"text": "SABER 认证要求待确认", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "采购部门或紧固件品类采购负责人的联系方式未找到",
+          "官网未找到供应商注册入口（Join Us 页只是招聘）",
+          "MTS 产品目录是在线阅读器，未逐页核对；螺母、垫圈、螺钉、铆钉的具体类型和规格未找到",
+          "紧固件子站 mts.com.sa 打不开（超时），无法核对",
+          "CR 号码未找到"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 24, "max_score": 25, "reason": "官网可访问，法人名称 'Masdar' Building Materials CJSC、成立年份、资本、PIF 入股、总部地址齐全，LinkedIn 公司页一致；CR 号码未找到"},
+          {"dimension": "product_fit", "score": 27, "max_score": 35, "reason": "紧固件清单覆盖螺栓、螺母、垫圈、螺钉、铆钉、锚固件，产品族对上内六角螺钉、双头螺柱、吊环螺栓、地脚螺栓、U 形螺栓等；但地脚螺栓、U 形螺栓可自行加工，且多数条目只写到大类"},
+          {"dimension": "purchase_signal", "score": 10, "max_score": 15, "reason": "公司战略明确写'开发新供应商'，集团有进口传统；但没有针对紧固件品类的招募或供应商注册入口"},
+          {"dimension": "reachability", "score": 12, "max_score": 15, "reason": "官网有通用邮箱、免费总机、联系表单，简介里有紧固件区域销售邮箱，LinkedIn 公司页活跃；没有供应商入口和采购联系人"},
+          {"dimension": "risk", "score": 1, "max_score": 10, "reason": "3 条黄色风险（兼营加工、本地化 80% 目标、SABER 待确认），各扣 3 分"}
+        ],
+        "total_score": 74,
+        "queue": "first_touch",
+        "queue_reason": "无红线；产品族对上内六角螺钉、双头螺柱、吊环螺栓、地脚螺栓、U 形螺栓、锚栓等多个品类；有通用邮箱、总机和联系表单。总分 74，但'开发新供应商'只是公司战略的泛泛表述，没有针对我方品类的招募、询价或招标，属于没有直接采购证据，所以是 first_touch 而不是 qualified",
+        "contact_route": "1）官网未找到供应商注册入口，跳过这一步；2）由人工在 LinkedIn 公司页（Masdar - مصدر）找采购或供应链岗位的员工，说明是中国紧固件工厂、询问是否愿意接收资料；或致电 800 124 0272 请总机转采购部门，征求同意；3）对方同意后，把简短介绍和目录发到对方指定的采购邮箱，未指定时发 info@mbm.com.sa；如必须先发邮件，首封只征求同意，不放报价和推销内容；4）沟通时优先谈其不自行加工的品类（螺钉、螺母、垫圈、锚栓等），避开自加工的地脚螺栓和 U 形螺栓；105@/204@/320@mts.com.sa 是项目销售邮箱，不用于首触。",
+        "summary_zh": "沙特最大的建材分销商之一，旗下紧固件板块库存 27,000 多个 SKU、全国 105 家门店，2024 年 PIF 入股 30%，采购量大，值得争取。注意它自行加工地脚螺栓、U 形螺栓，并在推进 80% 本地化，进口空间要先谈清；首触按沙特规则先征求同意。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "Salaba Fasteners",
+        "website": "https://salaba.com.sa/",
+        "country": "SA",
+        "city": "Jeddah",
+        "company_type": "紧固件与建筑五金供应商（兼营制造）",
+        "criteria_met": [
+          "官网产品页提供下载的公司简介（2023 年）列出六角螺栓、六角法兰螺母、拉铆螺母、平垫圈、斜垫圈、弹簧垫圈、内六角螺钉、地脚螺栓",
+          "About 页写明与业内供应商和制造商合作，在吉达第二工业城有厂房和仓库，向四个大区的项目供货",
+          "联系页总部在吉达 Alaziziyah，另有利雅得、达曼、吉赞分支"
+        ],
+        "sources": [
+          "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf",
+          "https://salaba.com.sa/about-us-english/",
+          "https://salaba.com.sa/contact-us-english/"
+        ],
+        "why": "吉达的紧固件专业供应商，全国四个大区有分支，品类与我方螺栓、螺母、垫圈、锚栓重合"
+      },
+      "dossier": {
+        "company_name": "Salaba Fasteners (Salaba Energy)",
+        "website": "https://salaba.com.sa/",
+        "country": "SA",
+        "city": {
+          "value": "吉达（总部，Alaziziyah 60th street 与 Al Baladeah street 交叉口）；另有利雅得、达曼、吉赞分支",
+          "sources": [
+            "https://salaba.com.sa/contact-us-english/"
+          ]
+        },
+        "identity": {
+          "value": "官网名称 Salaba Fasteners；LinkedIn 公司页名称为 Salaba Energy，网站链接指向 salaba.com.sa，2012 年成立，总部吉达，员工 51-200 人。About 页写经营 12 年以上，列出董事长 Mohammed Al-Nasser、CEO Abdulwasa Alhumidi。2023 年公司简介写总部在吉达 Sixty Road 与 Baladiya 街交叉口的 Salaba 大楼（2023 年信息）。About 页写在吉达第二工业城有 40,000 平方英尺厂房和仓库。CR 未找到。",
+          "sources": [
+            "https://salaba.com.sa/about-us-english/",
+            "https://salaba.com.sa/contact-us-english/",
+            "https://sa.linkedin.com/company/salabaksaa",
+            "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"
+          ]
+        },
+        "business_type": {
+          "value": "紧固件、螺钉和工业工具的批发供应为主，面向项目客户；兼有制造：2023 年简介列有 'Manufacturing Department' 并写'在本厂本地制造部分产品'，LinkedIn 公司页称有本地制造、热镀锌厂和一体化生产能力（'制造+贸易'兼营）",
+          "sources": [
+            "https://salaba.com.sa/about-us-english/",
+            "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf",
+            "https://sa.linkedin.com/company/salabaksaa"
+          ]
+        },
+        "buyer_role": {
+          "value": "About 页写明 'Partnering with the best suppliers and manufacturers in the industry'，库存大量标准件，并备有非标、难找的品类；通过四个大区分支向机电、水务、能源、建筑项目供货，品类宽（螺栓、螺母、垫圈、螺钉、锚栓、管卡、电缆桥架），需要外购补充。",
+          "sources": [
+            "https://salaba.com.sa/about-us-english/",
+            "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"
+          ]
+        },
+        "products": [
+          {"their_product": "HEAVY HEX BOLTS / High Strength Grip Bolts A325", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "HEXAGONAL SOCKET HEAD CAP SCREW", "our_product": "Socket head cap screw / 内六角圆柱头螺钉", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "ANCHOR BOLTS / SPECIAL ANCHOR BOLTS", "our_product": "Foundation bolt / 地脚螺栓", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "HEXAGON FLANGE NUTS WITH TEETH", "our_product": "Hex flange nut / 六角法兰螺母", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "BLIND RIVET NUTS with CYLINDRICAL HEAD and KNURLE", "our_product": "Rivet nut / 拉铆螺母", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "CAP NUTS", "our_product": "Dome cap nut / 盖形螺母", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "FLAT WASHER WITHOUT CHAMFER", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "SQUARER TAPER WASHER", "our_product": "Taper washer / 斜垫圈", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"their_product": "SPRING WASHER", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"}
+        ],
+        "contacts": [
+          {"kind": "phone", "value": "+966920006873", "label": "官网联系页统一电话", "source": "https://salaba.com.sa/contact-us-english/"},
+          {"kind": "form", "value": "https://salaba.com.sa/contact-us-english/", "label": "官网联系页表单", "source": "https://salaba.com.sa/contact-us-english/"},
+          {"kind": "email", "value": "Info@salaba.com.sa", "label": "2023 年公司简介封底的邮箱（官网联系页未列邮箱，使用前先确认仍有效）", "source": "https://salaba.com.sa/wp-content/uploads/2023/02/Profile.pdf"},
+          {"kind": "linkedin", "value": "https://sa.linkedin.com/company/salabaksaa", "label": "LinkedIn 公司主页（Salaba Energy，人工找采购或供应链岗位征求同意用）", "source": "https://sa.linkedin.com/company/salabaksaa"},
+          {"kind": "address", "value": "Al Baladeah ,8582,Alaziziyah,3458,JCZA3458,Jeddah23334", "label": "官网联系页吉达总部地址", "source": "https://salaba.com.sa/contact-us-english/"}
+        ],
+        "signals": [
+          {"text": "About 页自述与业内供应商和制造商合作采购，并备有非标和难找的品类", "date": "未找到", "source": "https://salaba.com.sa/about-us-english/"},
+          {"text": "LinkedIn 公司页：参展 Big 5 Construct Saudi 2026（利雅得，2026-08-30 至 09-02），展示紧固件与建筑五金、热镀锌、电缆桥架（参展是卖方行为，说明经营活跃，不是采购证据）", "date": "2026-09", "source": "https://sa.linkedin.com/company/salabaksaa"},
+          {"text": "LinkedIn 公司页：参展 2026 沙特工业论坛 SIF（吉达，2026-09-14 至 16）", "date": "2026-09", "source": "https://sa.linkedin.com/company/salabaksaa"}
+        ],
+        "risks": [
+          {"text": "'制造+贸易'兼营：LinkedIn 公司页称有本地制造、热镀锌厂和一体化生产能力，2023 年简介列有制造部门，部分品类可能自产", "severity": "yellow", "source": "https://sa.linkedin.com/company/salabaksaa"},
+          {"text": "SABER 认证要求待确认", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "官网产品页只有目录下载，产品清单来自 2023 年 2 月的公司简介（2023 年信息），可能已变化",
+          "官网联系页没有邮箱，邮箱只见于 2023 年简介",
+          "哪些品类自产、哪些外购未找到；采购负责人未找到",
+          "官网未找到供应商注册入口；Partners 页内容为空",
+          "CR 未找到"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 21, "max_score": 25, "reason": "官网可访问，吉达总部和分支地址清楚，管理层公开，LinkedIn 公司页链接回官网、成立年份与 About 页一致；品牌已改称 Salaba Energy，CR 未找到"},
+          {"dimension": "product_fit", "score": 27, "max_score": 35, "reason": "螺栓、螺母、垫圈、锚固件 4 个品类、9 个产品族与我方重合；清单是 2023 年信息，且有自产能力，未取高分"},
+          {"dimension": "purchase_signal", "score": 7, "max_score": 15, "reason": "About 页写明与供应商和制造商合作、备非标难找品类，有外购迹象；没有进口自述、供应商注册入口或招标"},
+          {"dimension": "reachability", "score": 11, "max_score": 15, "reason": "官网有统一电话和联系表单，LinkedIn 公司页活跃；邮箱只在 2023 年简介里出现"},
+          {"dimension": "risk", "score": 4, "max_score": 10, "reason": "2 条黄色风险（兼营制造、SABER 待确认），各扣 3 分"}
+        ],
+        "total_score": 70,
+        "queue": "first_touch",
+        "queue_reason": "无红线（制造为兼营，主业是紧固件供应）；产品族对上六角螺栓、内六角螺钉、地脚螺栓、法兰螺母、拉铆螺母、垫圈等；有电话、联系表单和 LinkedIn 公司页。没有对方询价、招标或招募供应商等直接采购证据，所以是 first_touch",
+        "contact_route": "1）官网未找到供应商注册入口；2）由人工致电 +966920006873 说明来意，请转采购或供应链负责人并征求同意，或在 LinkedIn 公司页（Salaba Energy）找采购岗位员工征求同意；3）对方同意后再发邮件，优先用对方给的邮箱；简介里的 Info@salaba.com.sa 是 2023 年信息，使用前先电话确认；4）它有自产和热镀锌，沟通时先问清哪些品类外购（推测拉铆螺母、法兰螺母、内六角螺钉、垫圈更可能外购）。官网表单只用于简短的征求同意，不发报价。",
+        "summary_zh": "吉达的紧固件与建筑五金供应商，全国四个大区有分支，品类覆盖螺栓、螺母、垫圈、锚栓、螺钉，自述与供应商和制造商合作。近年以 Salaba Energy 名义宣传本地制造和热镀锌，属制造加贸易兼营；可首触，先电话或 LinkedIn 征求同意。"
+      },
+      "review": null
+    },
+    {
+      "candidate": {
+        "name": "ABAR AL SUDAA AL ARABIA TRADING EST. (Black Well)",
+        "website": "https://www.blackwellarabia.com/",
+        "country": "SA",
+        "city": "Dammam",
+        "company_type": "工业品与安全用品贸易商（MRO 供应商）",
+        "criteria_met": [
+          "紧固件页列出六角螺栓、六角螺母、平垫圈、弹簧垫圈、锚栓、U 形螺栓和盘头、沉头、大扁头、不锈钢等多种自钻螺钉",
+          "About 页自述为安全用品和工业材料供应商，公司名为 Trading Est.；官网 Brochure 写明产品来自全球主要制造商",
+          "About 页和联系页地址在达曼 King Abdullah Street"
+        ],
+        "sources": [
+          "https://www.blackwellarabia.com/Fasteners",
+          "https://www.blackwellarabia.com/about",
+          "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf"
+        ],
+        "why": "达曼的工业品贸易商，紧固件页正对沙特首推的自钻螺钉和六角螺栓螺母垫圈"
+      },
+      "dossier": {
+        "company_name": "ABAR AL SUDAA AL ARABIA TRADING EST. (Black Well)",
+        "website": "https://www.blackwellarabia.com/",
+        "country": "SA",
+        "city": {
+          "value": "达曼（King Abdullah Street, Dammam 32275）",
+          "sources": [
+            "https://www.blackwellarabia.com/about",
+            "https://www.blackwellarabia.com/contact"
+          ]
+        },
+        "identity": {
+          "value": "官网 About 写公司为 ABAR AL SUDAA AL ARABIA TRADING EST.（Est. 为个人商号形式），品牌 Black Well；官网可下载的 Brochure PDF 封面写 BLACKWELL ARABIA TRADING EST.，两种名称不完全一致（'Abar Al Sudaa' 在阿拉伯语中意为'黑井'，可能是同一名称的阿拉伯语和英语写法，属推断，需核实）。地址 King Abdullah Street, Dammam 32275，电话 +966 13 83 20 929。成立年份、CR 未找到，未找到可交叉确认的第三方记录。",
+          "sources": [
+            "https://www.blackwellarabia.com/about",
+            "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf"
+          ]
+        },
+        "business_type": {
+          "value": "工业品（MRO）和安全用品贸易：安全防护、紧固件、磨料、钢材等，客户为油气、制造、建筑企业；官网和 Brochure 未见制造自述",
+          "sources": [
+            "https://www.blackwellarabia.com/",
+            "https://www.blackwellarabia.com/about",
+            "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf"
+          ]
+        },
+        "buyer_role": {
+          "value": "Brochure 写明经营 'products and services from world's leading manufacturers'，自身不生产，紧固件需外购；Brochure 紧固件页列出六角螺栓、螺母、垫圈 6-36mm，镀锌、发黑、不锈钢，U 形螺栓 6-24mm。紧固件只是五大品类之一，单次采购量可能有限。",
+          "sources": [
+            "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf",
+            "https://www.blackwellarabia.com/Fasteners"
+          ]
+        },
+        "products": [
+          {"their_product": "Pan Head Self Drilling Screw", "our_product": "Pan head self-drilling screws / 盘头自钻螺钉", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Stainless Steel Round Cross Truss Head Self Drilling Screw", "our_product": "Truss head self-drilling screws / 大扁头自钻螺钉", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Stainless Steel Flat Countersunk Head Self Drilling Screw", "our_product": "Countersunk self-drilling screws / 沉头自钻螺钉", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Stainless Steel Flat Countersunk Head Self Drilling Screw", "our_product": "Stainless steel self-drilling screws / 不锈钢自钻螺钉", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Hexagon Head Bolt Machine Screw With Nut And Washer", "our_product": "Machine screws / 机螺钉", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Hex Bolt", "our_product": "Hex bolt / 六角头螺栓", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "U BOLTS", "our_product": "U-bolt / U形螺栓", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Anchors Bolts", "our_product": "Expansion anchor assortment / 膨胀锚栓组合", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "Hex NUT", "our_product": "Hex nut / 六角螺母", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "COUPLING NUT", "our_product": "Coupling nut / 连接螺母", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "FLAT WASHER", "our_product": "Flat washer / 平垫圈", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"their_product": "LOCK/SPRING WASHER", "our_product": "Spring washer / 弹簧垫圈", "match_level": "family", "source": "https://www.blackwellarabia.com/Fasteners"}
+        ],
+        "contacts": [
+          {"kind": "email", "value": "sales@blackwellarabia.com", "label": "官网通用销售邮箱", "source": "https://www.blackwellarabia.com/about"},
+          {"kind": "phone", "value": "+966 13 83 20 929", "label": "官网电话", "source": "https://www.blackwellarabia.com/about"},
+          {"kind": "whatsapp", "value": "https://wa.me/+966138320929", "label": "官网页面上的 WhatsApp 链接（与座机同号）", "source": "https://www.blackwellarabia.com/Fasteners"},
+          {"kind": "form", "value": "https://www.blackwellarabia.com/contact", "label": "官网联系页表单（首页表单的提交地址指向模板演示站，可能收不到）", "source": "https://www.blackwellarabia.com/contact"},
+          {"kind": "address", "value": "King Abdullah Street | Dammam - 32275 | Saudi Arabia", "label": "官网地址", "source": "https://www.blackwellarabia.com/about"}
+        ],
+        "signals": [
+          {"text": "Brochure 自述经营来自全球主要制造商的产品，是需要外购的贸易商", "date": "未找到", "source": "https://www.blackwellarabia.com/public/fe/img/Blackwell.pdf"}
+        ],
+        "risks": [
+          {"text": "身份信息薄：官网写 ABAR AL SUDAA AL ARABIA TRADING EST.，Brochure 写 BLACKWELL ARABIA TRADING EST.，无成立年份和 CR，未找到第三方记录；首页表单提交到模板演示站，Mission/Vision 写的是消防产品，网站像套用模板", "severity": "yellow", "source": "https://www.blackwellarabia.com/about"},
+          {"text": "SABER 认证要求待确认", "severity": "yellow", "source": "知识包"}
+        ],
+        "missing": [
+          "法人正式名称和 CR 需核实（两种名称写法）",
+          "成立年份、规模未找到",
+          "采购联系人、年采购量未找到",
+          "官网未找到供应商注册入口",
+          "'Anchors Bolts' 具体是膨胀锚栓还是地脚螺栓未确认"
+        ],
+        "scores": [
+          {"dimension": "identity", "score": 16, "max_score": 25, "reason": "官网可访问，名称、达曼地址、电话在各页一致；但 Brochure 名称写法不同，无成立年份、CR 和第三方交叉记录"},
+          {"dimension": "product_fit", "score": 30, "max_score": 35, "reason": "螺栓、螺母、垫圈、螺钉、锚固件 5 个品类、12 个产品族与我方重合，含沙特首推的自钻螺钉（盘头、沉头、大扁头、不锈钢）和六角螺栓"},
+          {"dimension": "purchase_signal", "score": 6, "max_score": 15, "reason": "Brochure 写明产品来自全球制造商，属外购型贸易商；无进口自述、供应商注册入口或招标"},
+          {"dimension": "reachability", "score": 13, "max_score": 15, "reason": "官网有通用销售邮箱、电话、WhatsApp 链接和联系页表单；没有供应商入口"},
+          {"dimension": "risk", "score": 4, "max_score": 10, "reason": "2 条黄色风险（身份信息薄、SABER 待确认），各扣 3 分"}
+        ],
+        "total_score": 69,
+        "queue": "first_touch",
+        "queue_reason": "无红线（名称有两种写法但地址、电话一致，身份未到无法确认的程度）；产品族对上自钻螺钉、六角螺栓、螺母、垫圈、U 形螺栓等；有邮箱、电话、WhatsApp 和表单。没有直接采购证据，所以是 first_touch",
+        "contact_route": "1）官网没有供应商注册入口；2）由人工致电 +966 13 83 20 929 说明来意并征求同意，同时核实法人名称（ABAR AL SUDAA AL ARABIA TRADING EST. 还是 BLACKWELL ARABIA TRADING EST.）和 CR；3）对方同意后发邮件到 sales@blackwellarabia.com，或按对方意愿加 WhatsApp；如必须先发邮件，首封只征求同意；4）要用表单只用联系页表单，首页表单提交地址指向模板演示站。沟通时首推自钻螺钉和六角螺栓、螺母、垫圈。",
+        "summary_zh": "达曼的工业品和安全用品贸易商，紧固件页列出六角螺栓、螺母、垫圈、U 形螺栓和多种自钻螺钉，正对沙特首推品类，有销售邮箱、电话和 WhatsApp。公司身份资料较薄（名称两种写法、无 CR），首次通话时顺便核实。"
+      },
+      "review": null
+    }
+  ]
+}

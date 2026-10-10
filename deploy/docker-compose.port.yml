@@ -1,0 +1,33 @@
+# 没有域名时的部署：直接用 http://服务器IP:端口 访问，不经过 Caddy（没有 HTTPS，只适合测试）。
+# 用法：docker compose -f docker-compose.port.yml up -d
+#      能访问 OpenAI 后再启动 worker：docker compose -f docker-compose.port.yml --profile agents up -d
+services:
+  web:
+    image: guanwei-workbench:latest
+    env_file: .env
+    volumes:
+      - ./data:/data
+    ports:
+      - "${WB_PORT:-8090}:8000"
+    command: ["workbench", "serve", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # worker 用主机网络：经 SSH 反向隧道访问网关时，隧道端口只开在服务器的 127.0.0.1 上（见 aihub-tunnel.sh）
+  worker:
+    image: guanwei-workbench:latest
+    env_file: .env
+    volumes:
+      - ./data:/data
+    command: ["workbench", "worker"]
+    network_mode: host
+    restart: unless-stopped
+    profiles: ["agents"]
+    depends_on:
+      web:
+        condition: service_healthy
