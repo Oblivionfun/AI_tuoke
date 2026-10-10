@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon %}
+{% block title %}TikTok 询盘 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>TikTok 询盘 <span class="badge badge-caution">未接入</span></h1>
+    <p>读取冠维企业号视频下的评论和 @ 冠维的评论，找出有采购意向的留言交给业务员跟进。只走 TikTok 官方接口，不抓评论者主页。</p>
+  </div>
+</div>
+
+<div class="profile">
+  <div class="stack" style="min-width: 0">
+    <section class="panel" aria-labelledby="inbox-title">
+      <div class="toolbar">
+        <h2 id="inbox-title" style="font-size: var(--text-md)">评论收件箱</h2>
+        <nav class="chips" aria-label="筛选">
+          <span class="chip" aria-current="true">全部 <span class="n">0</span></span>
+          <span class="chip">有采购意向 <span class="n">0</span></span>
+          <span class="chip">像公司 <span class="n">0</span></span>
+          <span class="chip">已处理 <span class="n">0</span></span>
+        </nav>
+      </div>
+      <table class="table">
+        <thead><tr><th>评论者</th><th>留言</th><th>来自视频</th><th>判断</th><th>下一步</th></tr></thead>
+        <tbody><tr><td colspan="5"><div class="empty"><h2>还没有接入 TikTok 企业号</h2><p>接入后，冠维视频下的新评论会在 5 分钟内出现在这里。</p></div></td></tr></tbody>
+      </table>
+    </section>
+
+    <section class="panel panel-pad" aria-labelledby="flow-title">
+      <div class="section-title"><h2 id="flow-title">接入后怎么处理一条评论</h2></div>
+      <ol class="route">
+        <li>系统拉取评论内容和评论者的用户名、昵称，判断有没有采购意向（问价格、起订量、规格、要联系方式）。</li>
+        <li>昵称像公司名的，自动交给调研流程查官网、建档，进今日审核。</li>
+        <li>像个人的，这里显示"打开主页"链接，业务员自己点开看；系统给一条回复建议，业务员确认后公开回复，请对方私信。</li>
+        <li>对方私信后收进工作台，业务员在 48 小时内跟进，要公司名和邮箱，再走跟进和报价。</li>
+      </ol>
+    </section>
+  </div>
+
+  <aside class="aside">
+    <section class="panel panel-pad" aria-labelledby="setup-title">
+      <div class="section-title"><h2 id="setup-title">接入前要准备</h2><span class="muted">0 / {{ prerequisites | length }}</span></div>
+      <ul class="checklist">
+        {% for title, detail in prerequisites %}
+        <li><span class="queue-mark" aria-hidden="true"></span><span><strong>{{ title }}</strong><span class="muted small">{{ detail }}</span></span></li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="panel panel-pad" aria-labelledby="never-title">
+      <div class="section-title"><h2 id="never-title">不会做的事</h2></div>
+      <ul class="checklist">
+        <li>{{ icon("x") }}<span>不自动打开评论者主页抓联系方式（违反平台条款，会封冠维的号）</span></li>
+        <li>{{ icon("x") }}<span>不抓别人视频的评论区，包括竞品</span></li>
+        <li>{{ icon("x") }}<span>不反查个人身份，昵称是个人名字的不去搜他是谁</span></li>
+        <li>{{ icon("x") }}<span>不主动私信，只回复对方先发来的私信</span></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+{% endblock %}

@@ -74,7 +74,7 @@ def test_requires_login(client):
 def test_pages_render(client, db):
     login(client)
     cid = alpha_id(db)
-    for path in ["/today", "/companies", "/runs", "/products", "/followups", f"/companies/{cid}"]:
+    for path in ["/today", "/companies", "/runs", "/products", "/followups", "/tiktok", f"/companies/{cid}"]:
         r = client.get(path)
         assert r.status_code == 200, path
     assert "Alpha Fasteners" in client.get("/today").text

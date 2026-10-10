@@ -403,6 +403,12 @@ svg.icon { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: no
 .versions a .muted { grid-column: 1 / -1; font-weight: 400; }
 .versions-foot { padding: 8px 12px 12px; border-top: 1px solid var(--line-soft); }
 
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: var(--text-sm); }
+.checklist li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; }
+.checklist li > svg.icon { margin-top: 3px; width: 14px; height: 14px; color: var(--steel-light); }
+.checklist .queue-mark { margin-top: 2px; }
+.checklist strong { display: block; font-weight: 500; }
+
 /* 打印页：屏幕上是一张 A4 纸，打印时只留纸本身 */
 .print-page { background: var(--zinc-deep); }
 .print-bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 24px; background: var(--plate); border-bottom: 1px solid var(--line); }
