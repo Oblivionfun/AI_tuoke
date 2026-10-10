@@ -1,0 +1,17 @@
+# 临时公网网址：Cloudflare 快速隧道（不用开入站端口、不用账号，自带 HTTPS）。演示用。
+# 安装：cloudflared 放到 /usr/local/bin，本文件放到 /etc/systemd/system/，然后
+#   systemctl daemon-reload && systemctl enable --now guanwei-tunnel
+# 查看网址：journalctl -u guanwei-tunnel | grep trycloudflare.com | tail -1
+# 注意：服务重启后网址会变；要固定网址需要 Cloudflare 账号和自己的域名（命名隧道）。
+[Unit]
+Description=Guanwei workbench public demo URL (Cloudflare quick tunnel)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate --protocol http2 --url http://127.0.0.1:8090
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
