@@ -76,23 +76,22 @@
 <span class="status status-{{ view.QUOTE_TONE[status] }}">{{ view.QUOTE_LABELS[status] }}</span>
 {%- endmacro %}
 
-{# 询价表格里的"报价单"一栏：有报价就显示最新一版，没有就给出写报价单的按钮 #}
-{% macro rfq_quote(rfq) -%}
-{% set latest = rfq.quotes | first %}
-{% if latest %}<a href="/quotes/{{ latest.id }}" translate="no">{{ latest.number }}</a>
-<span class="muted small" style="display: block">{{ view.QUOTE_LABELS[latest.status] }}，{{ latest.currency }} {{ view.money(view.quote_sheet(latest, settings.timezone, now).total) }}</span>
-{% else %}<form method="post" action="/rfqs/{{ rfq.id }}/quote"><button class="btn btn-sm" type="submit">写报价单</button></form>{% endif %}
-{%- endmacro %}
-
-{# 报价单编辑页的一行；line 为空时是"添加一行"用的空白行 #}
-{% macro quote_line(line) -%}
+{# 报价单的一行：产品名和规格在一格里，尺寸、数量、单价各一格；成本从产品库带来，藏起来只用于算毛利。
+   line 为空时是"自定义一行"用的空白行；last 是上次报给这个客户的价。 #}
+{% macro quote_line(line, last=none) -%}
+{% set unit = line.unit if line else "pcs" %}
 <tr data-line>
-  <td><input class="input" name="description" value="{{ line.description if line }}" aria-label="产品" placeholder="Self-drilling screw"></td>
-  <td><input class="input" name="spec" value="{{ line.spec if line }}" aria-label="规格" placeholder="DIN 7504N ST4.8×19, zinc plated"></td>
-  <td><input class="input num" name="quantity" inputmode="decimal" value="{{ view.plain(line.quantity) if line }}" aria-label="数量"></td>
-  <td><input class="input" name="unit" list="quote-units" value="{{ line.unit if line else 'pcs' }}" aria-label="单位"></td>
-  <td><input class="input num" name="unit_price" inputmode="decimal" value="{{ view.plain(line.unit_price) if line }}" aria-label="单价"></td>
-  <td><input class="input num" name="unit_cost" inputmode="decimal" value="{{ view.plain(line.unit_cost) if line }}" aria-label="成本（内部，不打印）"></td>
+  <td class="line-product">
+    <input type="hidden" name="product_id" value="{{ (line.product_id or '') if line }}">
+    <input type="hidden" name="unit_cost" value="{{ view.plain(line.unit_cost) if line }}">
+    <input class="input input-bare line-name" name="description" value="{{ line.description if line }}" placeholder="产品名称（英文）" aria-label="产品名称">
+    <input class="input input-bare line-spec" name="spec" value="{{ line.spec if line }}" placeholder="标准、材质、表面处理（选填）" aria-label="规格要求">
+  </td>
+  <td><input class="input" name="size" value="{{ line.size if line }}" placeholder="M12 x 60" aria-label="尺寸"></td>
+  <td><input class="input num" name="quantity" inputmode="decimal" pattern="[0-9., ]*" value="{{ view.plain(line.quantity) if line }}" aria-label="数量"></td>
+  <td><select class="select" name="unit" aria-label="单位">{% for u in view.QUOTE_UNITS %}<option {% if u == unit %}selected{% endif %}>{{ u }}</option>{% endfor %}{% if unit not in view.QUOTE_UNITS %}<option selected>{{ unit }}</option>{% endif %}</select></td>
+  <td><input class="input num" name="unit_price" inputmode="decimal" pattern="[0-9., ]*" value="{{ view.plain(line.unit_price) if line }}" aria-label="单价">
+    <span class="last-price" data-last>{% if last %}上次报 {{ view.price_text(last.price) }} / {{ last.unit }}{% endif %}</span></td>
   <td class="num amount" data-amount>{{ view.money(line.amount) if line and line.amount is not none else "—" }}</td>
   <td><button class="btn btn-quiet btn-sm" type="button" data-remove-line aria-label="删除这一行">{{ icon("x") }}</button></td>
 </tr>

@@ -1,4 +1,4 @@
-"""产品库：84 张产品卡按品类浏览，工厂在侧边抽屉里确认首推 SKU 的规格。"""
+"""产品库：样册的 84 张产品卡和工厂新增的产品。侧边抽屉里填报价信息（英文规格、参考价、成本），确认首推 SKU 的规格。"""
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
@@ -43,9 +43,67 @@ def products(
     )
 
 
+@router.get("/products/new/form", response_class=HTMLResponse)
+def new_product_form(request: Request, user: str = Depends(current_user)) -> HTMLResponse:
+    """新增产品抽屉的内容（htmx 加载）。"""
+    return render(request, "partials/product_new.html", categories=CATEGORY_ORDER)
+
+
+@router.post("/products")
+def add_product(
+    request: Request,
+    category: str = Form(""),
+    name_zh: str = Form(""),
+    name_en: str = Form(""),
+    spec_en: str = Form(""),
+    price_unit: str = Form("1000 pcs"),
+    ref_price: str = Form(""),
+    cost: str = Form(""),
+    user: str = Depends(current_user),
+) -> Response:
+    try:
+        product_id = get_wb(request).quotes.add_product(
+            category=category,
+            name_zh=name_zh,
+            name_en=name_en,
+            spec_en=spec_en,
+            price_unit=price_unit,
+            ref_price=ref_price,
+            cost=cost,
+        )
+    except ValueError as exc:
+        flash(request, str(exc), error=True)
+        return redirect("/products")
+    flash(request, f"已新增 {product_id}，报价时可以搜到")
+    return redirect("/products")
+
+
+@router.post("/products/{product_id}/pricing")
+def save_pricing(
+    request: Request,
+    product_id: str,
+    spec_en: str = Form(""),
+    price_unit: str = Form("1000 pcs"),
+    ref_price: str = Form(""),
+    cost: str = Form(""),
+    user: str = Depends(current_user),
+) -> Response:
+    try:
+        get_wb(request).quotes.set_pricing(
+            product_id, spec_en=spec_en, price_unit=price_unit, ref_price=ref_price, cost=cost
+        )
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        flash(request, str(exc), error=True)
+        return redirect("/products")
+    flash(request, f"{product_id} 的报价信息已保存")
+    return redirect("/products")
+
+
 @router.get("/products/{product_id}/form", response_class=HTMLResponse)
 def product_form(request: Request, product_id: str, user: str = Depends(current_user)) -> HTMLResponse:
-    """确认规格抽屉的内容（htmx 加载）。"""
+    """规格与价格抽屉的内容（htmx 加载）。"""
     with get_wb(request).db.session() as s:
         product = s.execute(
             select(Product).options(selectinload(Product.variants)).where(Product.id == product_id)

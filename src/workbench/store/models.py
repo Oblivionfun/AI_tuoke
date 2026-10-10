@@ -1,4 +1,4 @@
-"""工作台数据表（最小集）：产品/SKU、公司、运行与步骤、草稿、联系记录、RFQ、报价单、拒绝联系名单、用户。"""
+"""工作台数据表（最小集）：产品/SKU、公司、运行与步骤、草稿、联系记录、报价单与版本、拒绝联系名单、用户。"""
 
 from datetime import UTC, date, datetime
 from enum import StrEnum
@@ -76,6 +76,7 @@ class RunKind(StrEnum):
     PROSPECT = "prospect"
     RESEARCH = "research"
     WRITE = "write"
+    PARSE = "parse"
 
 
 class RunStatus(StrEnum):
@@ -105,23 +106,16 @@ class Direction(StrEnum):
     IN = "in"
 
 
-class RfqStatus(StrEnum):
-    OPEN = "open"
+class QuoteStatus(StrEnum):
+    PENDING = "pending"
     QUOTED = "quoted"
-    SAMPLE = "sample"
     WON = "won"
     LOST = "lost"
 
 
-class QuoteStatus(StrEnum):
-    DRAFT = "draft"
-    SENT = "sent"
-    ACCEPTED = "accepted"
-    REJECTED = "rejected"
-    SUPERSEDED = "superseded"
-
-
 class Product(Base):
+    """产品库：样册导入的产品卡（id 形如 GW-P04-04），和工厂自己新增的产品（GW-M001）。"""
+
     __tablename__ = "products"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
@@ -133,6 +127,11 @@ class Product(Base):
     source_issue: Mapped[str] = mapped_column(Text, default="")
     duplicate_group: Mapped[str] = mapped_column(String(64), default="")
     sales_ready: Mapped[bool] = mapped_column(Boolean, default=False)
+    # 报价用：spec_en 是报价单上的英文规格；参考价和成本按 price_unit 计，数字存成字符串，空表示未填
+    spec_en: Mapped[str] = mapped_column(String(300), default="")
+    price_unit: Mapped[str] = mapped_column(String(32), default="1000 pcs")
+    ref_price: Mapped[str] = mapped_column(String(32), default="")
+    cost: Mapped[str] = mapped_column(String(32), default="")
     created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
 
     variants: Mapped[list["SkuVariant"]] = relationship(back_populates="product", cascade="all, delete-orphan")
@@ -186,7 +185,7 @@ class Company(Base):
     interactions: Mapped[list["Interaction"]] = relationship(
         back_populates="company", order_by="Interaction.happened_at.desc()"
     )
-    rfqs: Mapped[list["Rfq"]] = relationship(back_populates="company", order_by="Rfq.id.desc()")
+    quotes: Mapped[list["Quote"]] = relationship(back_populates="company", order_by="Quote.id.desc()")
 
 
 class Run(Base):
@@ -259,38 +258,22 @@ class Interaction(Base):
     company: Mapped[Company] = relationship(back_populates="interactions")
 
 
-class Rfq(Base):
-    __tablename__ = "rfqs"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), index=True)
-    products: Mapped[str] = mapped_column(Text)
-    quantity: Mapped[str] = mapped_column(String(200), default="")
-    target_price: Mapped[str] = mapped_column(String(200), default="")
-    incoterm: Mapped[str] = mapped_column(String(64), default="")
-    status: Mapped[RfqStatus] = mapped_column(enum_col(RfqStatus), default=RfqStatus.OPEN)
-    notes: Mapped[str] = mapped_column(Text, default="")
-    created_by: Mapped[str] = mapped_column(String(64), default="")
-    created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
-
-    company: Mapped[Company] = relationship(back_populates="rfqs")
-    quotes: Mapped[list["Quote"]] = relationship(back_populates="rfq", order_by="Quote.version.desc()")
-
-
 class Quote(Base):
-    """报价单。价格只由人填写；发出后这一版不再修改，改价出新版本。
+    """报价单：一次询价从待报价走到成交或未成交。价格只由人填写。
 
-    items 每行：description、spec、quantity、unit、unit_price、unit_cost（内部成本，不打印），数字存成字符串。
+    客户直接记名字，不要求先在客户库里；从 AI 获客的客户档案新建时 company_id 指向那家公司。
+    items 是正在编辑的明细，每行：product_id、description、size、spec、quantity、unit、unit_price、unit_cost，
+    数字存成字符串。每次生成报价单 PDF 存一份 QuoteVersion 快照。
     """
 
     __tablename__ = "quotes"
-    __table_args__ = (UniqueConstraint("rfq_id", "version"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    rfq_id: Mapped[int] = mapped_column(ForeignKey("rfqs.id"), index=True)
-    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), index=True)
-    version: Mapped[int] = mapped_column(Integer, default=1)
-    status: Mapped[QuoteStatus] = mapped_column(enum_col(QuoteStatus), default=QuoteStatus.DRAFT, index=True)
+    company_id: Mapped[int | None] = mapped_column(ForeignKey("companies.id"), index=True)
+    customer_name: Mapped[str] = mapped_column(String(300), default="", index=True)
+    customer_country: Mapped[str] = mapped_column(String(100), default="")
+    customer_contact: Mapped[str] = mapped_column(String(300), default="")
+    status: Mapped[QuoteStatus] = mapped_column(enum_col(QuoteStatus), default=QuoteStatus.PENDING, index=True)
     currency: Mapped[str] = mapped_column(String(3), default="USD")
     incoterm: Mapped[str] = mapped_column(String(64), default="")
     validity_days: Mapped[int] = mapped_column(Integer, default=30)
@@ -299,20 +282,37 @@ class Quote(Base):
     packing: Mapped[str] = mapped_column(String(300), default="")
     remarks: Mapped[str] = mapped_column(Text, default="")
     items: Mapped[list[Any]] = mapped_column(default=list)
-    outcome_note: Mapped[str] = mapped_column(Text, default="")
+    inquiry: Mapped[str] = mapped_column(Text, default="")
+    lost_reason: Mapped[str] = mapped_column(Text, default="")
     created_by: Mapped[str] = mapped_column(String(64), default="")
     created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow, onupdate=utcnow)
-    sent_by: Mapped[str] = mapped_column(String(64), default="")
-    sent_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
 
-    rfq: Mapped[Rfq] = relationship(back_populates="quotes")
-    company: Mapped[Company] = relationship()
+    company: Mapped[Company | None] = relationship(back_populates="quotes")
+    versions: Mapped[list["QuoteVersion"]] = relationship(
+        back_populates="quote", order_by="QuoteVersion.version.desc()", cascade="all, delete-orphan"
+    )
 
     @property
     def number(self) -> str:
-        """报价单号：同一询价共用一个号，改价的版本加 -R2、-R3。"""
-        return f"GW-Q{self.rfq_id:04d}" + (f"-R{self.version}" if self.version > 1 else "")
+        return f"GW-Q{self.id:04d}"
+
+
+class QuoteVersion(Base):
+    """生成报价单时的快照：客户、条款、明细、合计。PDF 按快照生成，之后改明细不影响已发出的版本。"""
+
+    __tablename__ = "quote_versions"
+    __table_args__ = (UniqueConstraint("quote_id", "version"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    quote_id: Mapped[int] = mapped_column(ForeignKey("quotes.id"), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    snapshot: Mapped[dict[str, Any]] = mapped_column(default=dict)
+    total: Mapped[str] = mapped_column(String(32), default="0")
+    created_by: Mapped[str] = mapped_column(String(64), default="")
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
+
+    quote: Mapped[Quote] = relationship(back_populates="versions")
 
 
 class Suppression(Base):

@@ -99,10 +99,16 @@ class Context:
 
     # ---------- agent 调用 ----------
 
-    async def call_agent(self, run_id: int, role: AgentRole, payload: dict[str, Any], *, country: str | None) -> Any:
-        """拼好分层提示词，调用一次 agent，把步骤写进运行记录，把用量和 trace 记到运行上。"""
-        with self.db.session() as session:
-            products = products_summary(session)
+    async def call_agent(
+        self, run_id: int, role: AgentRole, payload: dict[str, Any], *, country: str | None, products: str | None = None
+    ) -> Any:
+        """拼好分层提示词，调用一次 agent，把步骤写进运行记录，把用量和 trace 记到运行上。
+
+        products 默认是获客用的产品清单；拆询价传入带 id 的报价产品清单。
+        """
+        if products is None:
+            with self.db.session() as session:
+                products = products_summary(session)
         bundle = self.prompts.build(role, country=country, products=products)
         spec = AgentSpec(
             role=role,
@@ -111,7 +117,7 @@ class Context:
             model=self.settings.model_for(role),
             max_turns=self.settings.max_turns_for(role),
             web_search=role in WEB_SEARCH_ROLES,
-            reasoning_effort=self.settings.reasoning_effort or None,
+            reasoning_effort=self.settings.reasoning_effort_for(role) or None,
             search_context_size=self.settings.search_context_size,
             country=country,
             prompt_version=bundle.version,

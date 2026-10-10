@@ -1,4 +1,4 @@
-"""文案与跟进：接受后写首封（南非、沙特写征求同意信）；业务员手动发送后登记；联系记录、RFQ、拒绝联系。
+"""文案与跟进：接受后写首封（南非、沙特写征求同意信）；业务员手动发送后登记；联系记录、拒绝联系。
 
 系统不发邮件：这里只有生成草稿和"登记已发送"，没有任何发信代码。
 """
@@ -16,7 +16,6 @@ from workbench.store.models import (
     Draft,
     DraftStatus,
     Interaction,
-    Rfq,
     Run,
     RunStatus,
     Suppression,
@@ -159,32 +158,6 @@ class Outreach:
             )
             if direction is Direction.IN and company.status is not CompanyStatus.ARCHIVED:
                 company.status = CompanyStatus.REPLIED
-
-    def add_rfq(
-        self,
-        company_id: int,
-        *,
-        products: str,
-        quantity: str = "",
-        target_price: str = "",
-        incoterm: str = "",
-        notes: str = "",
-        user: str = "",
-    ) -> int:
-        with self.ctx.db.session() as session:
-            rfq = Rfq(
-                company_id=company_id,
-                products=products,
-                quantity=quantity,
-                target_price=target_price,
-                incoterm=incoterm,
-                notes=notes,
-                created_by=user,
-                created_at=self.ctx.clock(),
-            )
-            session.add(rfq)
-            session.flush()
-            return rfq.id
 
     def suppress(self, company_id: int, *, reason: str, user: str = "") -> None:
         """拒绝联系：加入排除清单并归档，作废未发的草稿；以后的寻客和去重都会跳过这个域名。"""

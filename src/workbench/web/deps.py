@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy import func, select
 
 from workbench.pipeline import Workbench
-from workbench.store.models import Company, CompanyStatus, Draft, DraftStatus, Run, RunStatus
+from workbench.store.models import Company, CompanyStatus, Draft, DraftStatus, Quote, QuoteStatus, Run, RunStatus
 from workbench.store.queries import usage_since
 
 
@@ -69,11 +69,13 @@ def sidebar(wb: Workbench) -> dict[str, Any]:
             )
         )
         drafts = s.scalar(select(func.count(Draft.id)).where(Draft.status == DraftStatus.DRAFT)) or 0
+        pending_quotes = s.scalar(select(func.count(Quote.id)).where(Quote.status == QuoteStatus.PENDING)) or 0
         usage = usage_since(s, wb.ctx.clock() - timedelta(days=7))
     return {
         "review": review,
         "running": bool(running),
         "drafts": drafts,
+        "pending_quotes": pending_quotes,
         "usage": usage,
     }
 

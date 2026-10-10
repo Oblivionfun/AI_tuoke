@@ -1,5 +1,5 @@
-{# 跟进：先看来往记录，再记一笔；有询价时记 RFQ，再写报价单。 #}
-{% from "components.html" import rfq_quote with context %}
+{# 跟进：先看来往记录，再记一笔；客户问价时新建报价单。 #}
+{% from "components.html" import quote_status %}
 <div class="stack">
 <section class="panel panel-pad">
   <div class="section-title"><h3>来往记录</h3><span class="muted">邮件开门，WhatsApp 成交</span></div>
@@ -23,27 +23,17 @@
 </section>
 
 <section class="panel panel-pad">
-  <div class="section-title"><h3>询价与报价</h3><span class="muted">{{ c.rfqs | length }} 条询价</span></div>
-  {% if c.rfqs %}
-  <table class="table" style="margin-bottom: 16px">
-    <thead><tr><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th><th>报价单</th></tr></thead>
-    <tbody>{% for r in c.rfqs %}
-      <tr><td>{{ r.products }}<span class="muted small" style="display: block">{{ r.created_at | localtime }} {{ r.notes }}</span></td><td>{{ r.quantity }}</td><td>{{ r.incoterm }}</td>
-        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td>
-        <td>{{ rfq_quote(r) }}</td></tr>
+  <div class="section-title"><h3>报价单</h3><a class="btn btn-sm" href="/quotes/new?company_id={{ c.id }}">新建报价</a></div>
+  {% if c.quotes %}
+  <table class="table">
+    <thead><tr><th>单号</th><th>产品</th><th class="num">金额</th><th>状态</th><th>更新</th></tr></thead>
+    <tbody>{% for r in c.quotes %}
+      {% set total, issued = view.quote_total(r, settings.timezone, now) %}
+      <tr data-href="/quotes/{{ r.id }}"><td><a href="/quotes/{{ r.id }}" translate="no">{{ r.number }}</a></td><td class="small">{{ view.quote_products(r) or "—" }}</td>
+        <td class="num nowrap">{{ r.currency }} {{ view.money(total) }}{% if not issued %}<span class="muted small" style="display: block">未生成</span>{% endif %}</td>
+        <td>{{ quote_status(r.status) }}</td><td class="small muted nowrap">{{ r.updated_at | localtime }}</td></tr>
     {% endfor %}</tbody>
   </table>
-  {% endif %}
-  <form method="post" action="/rfqs" class="composer" autocomplete="off">
-    <input type="hidden" name="company_id" value="{{ c.id }}">
-    <label class="field"><span>产品与规格</span><input class="input" name="products" required placeholder="例如：DIN 7504N ST4.8×19 自钻螺钉…"></label>
-    <div class="form-row">
-      <label class="field"><span>数量</span><input class="input" name="quantity"></label>
-      <label class="field"><span>目标价</span><input class="input" name="target_price"></label>
-      <label class="field"><span>贸易术语</span><input class="input" name="incoterm" placeholder="例如：FOB 天津…"></label>
-    </div>
-    <label class="field"><span>备注</span><input class="input" name="notes"></label>
-    <div><button class="btn" type="submit">记录 RFQ</button></div>
-  </form>
+  {% else %}<p class="muted small">客户问价时点“新建报价”：客户已经填好，可以把对方的询价原文贴进去让 AI 拆分。</p>{% endif %}
 </section>
 </div>

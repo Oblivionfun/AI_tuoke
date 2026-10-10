@@ -1,4 +1,4 @@
-"""客户：列表（按处理阶段分组）、档案（结论优先，详情分标签页）、草稿、联系记录、RFQ、拒绝联系。"""
+"""客户：列表（按处理阶段分组）、档案（结论优先，详情分标签页）、草稿、联系记录、拒绝联系。"""
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
@@ -6,7 +6,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from workbench.pipeline import DraftAction
-from workbench.store.models import Channel, Company, CompanyStatus, Direction, Rfq, RfqStatus, Run, RunKind, RunStatus
+from workbench.store.models import Channel, Company, CompanyStatus, Direction, Quote, Run, RunKind, RunStatus
 from workbench.web.deps import current_user, flash, get_wb, redirect, render
 
 router = APIRouter()
@@ -125,44 +125,6 @@ def update_draft(
     return redirect(f"/companies/{draft.company_id}?tab=drafts")
 
 
-@router.post("/rfqs")
-def add_rfq(
-    request: Request,
-    company_id: int = Form(...),
-    products: str = Form(...),
-    quantity: str = Form(""),
-    target_price: str = Form(""),
-    incoterm: str = Form(""),
-    notes: str = Form(""),
-    user: str = Depends(current_user),
-) -> Response:
-    get_wb(request).outreach.add_rfq(
-        company_id,
-        products=products.strip(),
-        quantity=quantity.strip(),
-        target_price=target_price.strip(),
-        incoterm=incoterm.strip(),
-        notes=notes.strip(),
-        user=user,
-    )
-    flash(request, "已记录 RFQ")
-    return redirect(f"/companies/{company_id}?tab=followup")
-
-
-@router.post("/rfqs/{rfq_id}/status")
-def rfq_status(
-    request: Request, rfq_id: int, status: RfqStatus = Form(...), user: str = Depends(current_user)
-) -> Response:
-    with get_wb(request).db.session() as s:
-        rfq = s.get(Rfq, rfq_id)
-        if rfq is None:
-            raise HTTPException(404, "RFQ 不存在")
-        rfq.status = status
-        company_id = rfq.company_id
-    flash(request, "RFQ 状态已更新")
-    return redirect(request.headers.get("referer") or f"/companies/{company_id}?tab=followup")
-
-
 def _load(request: Request, company_id: int) -> tuple[Company, list[Run]]:
     with get_wb(request).db.session() as s:
         company = s.execute(
@@ -170,7 +132,7 @@ def _load(request: Request, company_id: int) -> tuple[Company, list[Run]]:
             .options(
                 selectinload(Company.drafts),
                 selectinload(Company.interactions),
-                selectinload(Company.rfqs).selectinload(Rfq.quotes),
+                selectinload(Company.quotes).selectinload(Quote.versions),
             )
             .where(Company.id == company_id)
         ).scalar_one_or_none()

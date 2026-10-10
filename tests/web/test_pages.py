@@ -18,7 +18,6 @@ from workbench.store.models import (
     Queue,
     Quote,
     QuoteStatus,
-    Rfq,
     Run,
     RunKind,
     RunStatus,
@@ -74,7 +73,17 @@ def test_requires_login(client):
 def test_pages_render(client, db):
     login(client)
     cid = alpha_id(db)
-    for path in ["/today", "/companies", "/runs", "/products", "/followups", "/tiktok", f"/companies/{cid}"]:
+    for path in [
+        "/today",
+        "/companies",
+        "/runs",
+        "/products",
+        "/followups",
+        "/tiktok",
+        "/quotes",
+        "/quotes/new",
+        f"/companies/{cid}",
+    ]:
         r = client.get(path)
         assert r.status_code == 200, path
     assert "Alpha Fasteners" in client.get("/today").text
@@ -126,7 +135,7 @@ def test_start_prospect_and_sse_stream(client, db):
     assert "event: step" in body and "self drilling screws Dubai" in body and "event: done" in body
 
 
-def test_confirm_sku_and_rfq_and_interaction(client, db):
+def test_confirm_sku_and_interaction(client, db):
     if not CATALOG.exists():
         pytest.skip("样册数据库不在仓库里")
     login(client)
@@ -138,49 +147,89 @@ def test_confirm_sku_and_rfq_and_interaction(client, db):
     with db.session() as s:
         assert s.get(Product, "GW-P04-04").sales_ready
     client.post(f"/companies/{cid}/interactions", data={"channel": "email", "direction": "in", "summary": "要报价"})
-    client.post("/rfqs", data={"company_id": str(cid), "products": "Tek screws ST4.8x19", "quantity": "200k"})
-    follow = client.get("/followups").text
-    assert "要报价" in follow and "Tek screws ST4.8x19" in follow
+    assert "要报价" in client.get("/followups").text
+    assert "新建报价" in client.get(f"/companies/{cid}?tab=followup").text
 
 
-def test_quote_from_rfq_edit_print_and_send(client, db):
+QUOTE_FORM = {
+    "company_id": "",
+    "customer_name": "Gulf Build Materials",
+    "customer_country": "United Arab Emirates",
+    "customer_contact": "",
+    "currency": "USD",
+    "incoterm": "FOB Tianjin",
+    "validity_days": "30",
+    "lead_time": "25 days",
+    "payment_terms": "30% T/T deposit",
+    "packing": "",
+    "remarks": "",
+    "product_id": ["GW-M001"],
+    "description": ["Hex bolt"],
+    "size": ["M12 x 60"],
+    "spec": ["DIN 933, 8.8"],
+    "quantity": ["200"],
+    "unit": ["1000 pcs"],
+    "unit_price": ["18.5"],
+    "unit_cost": ["15"],
+}
+
+
+def test_quote_from_product_to_pdf(client, db):
+    login(client)
+    r = client.post(
+        "/products",
+        data={
+            "category": "螺栓",
+            "name_zh": "六角螺栓",
+            "name_en": "Hex bolt",
+            "price_unit": "1000 pcs",
+            "ref_price": "18.5",
+            "cost": "15",
+        },
+        follow_redirects=False,
+    )
+    assert r.status_code == 303
+    options = client.get("/quote-products", params={"q": "六角螺栓"}).text
+    assert "Hex bolt" in options and "参考价 18.5 / 1000 pcs" in options and "data-add-line" in options
+    page = client.get("/quotes/new", params={"product_id": "GW-M001"}).text
+    assert "新报价单" in page and 'value="Hex bolt"' in page and 'value="18.5"' in page
+    r = client.post("/quotes", data={**QUOTE_FORM, "action": "generate"}, follow_redirects=False)
+    assert r.headers["location"] == "/quotes/1?download=1"
+    page = client.get("/quotes/1?download=1").text
+    assert "已生成第 1 版" in page and "/quotes/1/versions/1.pdf" in page and "已报价" in page
+    pdf = client.get("/quotes/1/versions/1.pdf")
+    assert pdf.headers["content-type"] == "application/pdf" and pdf.content.startswith(b"%PDF")
+    assert "GW-Q0001-1.pdf" in pdf.headers["content-disposition"]
+    listing = client.get("/quotes").text
+    assert "GW-Q0001" in listing and "Gulf Build Materials" in listing and "USD 3,700.00" in listing
+    assert "Gulf Build Materials" in client.get("/quote-customers", params={"customer_name": "gulf"}).text
+    bad = client.post("/quotes/1", data={**QUOTE_FORM, "unit_price": ["abc"], "action": "save"}, follow_redirects=False)
+    assert bad.headers["location"] == "/quotes/1" and "第 1 行单价" in client.get("/quotes/1").text
+    client.post("/quotes/1", data={"action": "lost", "reason": "价格高"})
+    with db.session() as s:
+        quote = s.get(Quote, 1)
+        assert quote.status is QuoteStatus.LOST and quote.lost_reason == "价格高"
+
+
+def test_quote_from_company_and_parse(client, db):
     login(client)
     cid = alpha_id(db)
-    client.post("/rfqs", data={"company_id": str(cid), "products": "Tek screws ST4.8x19", "quantity": "200k"})
-    with db.session() as s:
-        rfq_id = s.execute(select(Rfq.id)).scalar_one()
-    assert "写报价单" in client.get(f"/companies/{cid}?tab=followup").text
-    r = client.post(f"/rfqs/{rfq_id}/quote", follow_redirects=False)
-    quote_url = r.headers["location"]
-    page = client.get(quote_url).text
-    assert "GW-Q0001" in page and "Tek screws ST4.8x19" in page and "200000" in page
+    page = client.get("/quotes/new", params={"company_id": cid}).text
+    assert 'value="Alpha Fasteners"' in page and "AI 获客档案" in page
     form = {
-        "currency": "USD",
-        "incoterm": "FOB Tianjin",
-        "validity_days": "30",
-        "lead_time": "25 days",
-        "payment_terms": "30% T/T deposit",
-        "packing": "",
-        "remarks": "",
-        "description": ["Self-drilling screw", ""],
-        "spec": ["DIN 7504N ST4.8x19", ""],
-        "quantity": ["200", ""],
-        "unit": ["1000 pcs", "pcs"],
-        "unit_price": ["18.5", ""],
-        "unit_cost": ["15", ""],
+        **QUOTE_FORM,
+        "company_id": str(cid),
+        "customer_name": "Alpha Fasteners",
+        "inquiry": "pls quote M12 bolts 20k",
     }
-    r = client.post(f"{quote_url}?next=print", data={**form, "action": "save"}, follow_redirects=False)
-    assert r.headers["location"] == f"{quote_url}/print"
-    sheet = client.get(f"{quote_url}/print").text
-    assert "Quotation" in sheet and "USD 3,700.00" in sheet and "United Arab Emirates" in sheet
-    assert "15" not in sheet.split("<tbody>")[1].split("</tbody>")[0]
-    bad = client.post(quote_url, data={**form, "unit_price": ["abc", ""], "action": "save"}, follow_redirects=False)
-    assert bad.headers["location"] == quote_url and "第 1 行单价" in client.get(quote_url).text
-    client.post(quote_url, data={**form, "action": "mark_sent", "channel": "email"})
+    r = client.post("/quotes", data={**form, "action": "parse"}, follow_redirects=False)
+    assert r.headers["location"] == "/quotes/1"
+    assert "AI 正在拆分" in client.get("/quotes/1").text
+    assert client.get("/quotes/1/parse").status_code == 200
     with db.session() as s:
-        assert s.execute(select(Quote.status)).scalar_one() is QuoteStatus.SENT
-    follow = client.get("/followups").text
-    assert "GW-Q0001" in follow and "已发出，USD 3,700.00" in follow
+        assert s.get(Quote, 1).inquiry == "pls quote M12 bolts 20k"
+        assert s.execute(select(Run).where(Run.kind == RunKind.PARSE)).scalar_one().params == {"quote_id": 1}
+    assert "GW-Q0001" in client.get(f"/companies/{cid}?tab=followup").text
 
 
 def test_empty_count_and_double_accept(client, db):

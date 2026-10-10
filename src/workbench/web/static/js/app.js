@@ -1,4 +1,4 @@
-// 冠维获客工作台的前端交互。服务端渲染为主，这里只做：提示消息、快捷键、复制、抽屉、报价单增删行、运行页实时步骤。
+// 冠维获客工作台的前端交互。服务端渲染为主，这里只做：提示消息、快捷键、复制、抽屉、报价单（加行、联想、合计）、运行页实时步骤。
 (() => {
   "use strict";
 
@@ -149,7 +149,7 @@
 
   document.body.addEventListener("htmx:responseError", () => toast({ text: "操作失败，请刷新页面后重试", error: true }));
 
-  // ---------- 报价单：增删行、实时合计和毛利（只是预览，保存后以服务端计算为准） ----------
+  // ---------- 报价单：搜产品加一行、选客户、删行、实时合计和毛利（只是预览，保存后以服务端为准） ----------
 
   const money = (n) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -161,8 +161,9 @@
   }
 
   function quoteTotals(form) {
-    let total = 0, cost = 0, priced = 0, costComplete = true;
-    $$("[data-line]", form).forEach((row) => {
+    const rows = $$("[data-line]", form);
+    let total = 0, revenue = 0, cost = 0, uncosted = 0;
+    rows.forEach((row) => {
       const qty = readNumber(row.querySelector('[name="quantity"]'));
       const price = readNumber(row.querySelector('[name="unit_price"]'));
       const unitCost = readNumber(row.querySelector('[name="unit_cost"]'));
@@ -174,50 +175,106 @@
       const amount = Math.round(qty * price * 100) / 100;
       cell.textContent = money(amount);
       total += amount;
-      priced += 1;
-      if (unitCost === null || Number.isNaN(unitCost)) costComplete = false;
-      else cost += qty * unitCost;
+      if (unitCost === null || Number.isNaN(unitCost)) uncosted += 1;
+      else { revenue += amount; cost += qty * unitCost; }
     });
     const currency = form.querySelector('[name="currency"]')?.value || "";
     $$("[data-quote-total]").forEach((el) => { el.textContent = `${currency} ${money(total)}`; });
+    const empty = $("[data-lines-empty]", form);
+    if (empty) empty.hidden = rows.length > 0;
     const marginEl = $("[data-quote-margin]");
     if (!marginEl) return;
     marginEl.replaceChildren();
     const out = document.createElement("span");
-    if (priced && costComplete && total > 0) {
-      const margin = (total - cost) / total;
+    if (revenue > 0) {
+      const margin = (revenue - cost) / revenue;
       out.className = "badge " + (margin >= Number(marginEl.dataset.target) ? "badge-pass" : "badge-caution");
       out.textContent = (margin * 100).toFixed(1) + "%";
+      marginEl.appendChild(out);
+      if (uncosted) {
+        const note = document.createElement("span");
+        note.className = "muted small";
+        note.textContent = `，${uncosted} 行没有成本未计入`;
+        marginEl.appendChild(note);
+      }
     } else {
       out.className = "muted";
-      out.textContent = "每行都填了成本才算";
+      out.textContent = "产品库里填了成本才会算";
+      marginEl.appendChild(out);
     }
-    marginEl.appendChild(out);
+  }
+
+  function addLine(form, data, last) {
+    const body = $("[data-lines]", form);
+    body.appendChild($("#quote-line-template").content.cloneNode(true));
+    const row = body.lastElementChild;
+    Object.entries(data || {}).forEach(([name, value]) => {
+      const input = row.querySelector(`[name="${name}"]`);
+      if (!input || value === null || value === undefined) return;
+      if (input.tagName === "SELECT" && !Array.from(input.options).some((o) => o.value === String(value))) {
+        input.add(new Option(String(value), String(value)));
+      }
+      input.value = String(value);
+    });
+    const hint = row.querySelector("[data-last]");
+    if (hint) hint.textContent = last || "";
+    row.querySelector(data ? '[name="size"]' : '[name="description"]')?.focus();
+    dirty.add(form);
+    quoteTotals(form);
+  }
+
+  function closeLists(except) {
+    $$(".combo-list").forEach((list) => { if (list !== except) list.replaceChildren(); });
   }
 
   document.addEventListener("input", (event) => {
     const form = event.target.closest("form[data-quote]");
-    if (form) quoteTotals(form);
+    if (!form) return;
+    if (event.target.matches("[data-customer-input]")) form.querySelector('[name="company_id"]').value = "";
+    quoteTotals(form);
   });
 
   document.addEventListener("click", (event) => {
-    if (event.target.closest("[data-print]")) { window.print(); return; }
+    const form = event.target.closest("form[data-quote]");
+    if (!event.target.closest(".combo")) closeLists();
+    if (!form) return;
     const add = event.target.closest("[data-add-line]");
     const remove = event.target.closest("[data-remove-line]");
-    const form = (add || remove)?.closest("form[data-quote]");
-    if (!form) return;
-    const body = $("[data-lines]", form);
+    const customer = event.target.closest("[data-pick-customer]");
     if (add) {
-      body.appendChild($("#quote-line-template").content.cloneNode(true));
-      body.lastElementChild.querySelector("input")?.focus();
-    } else if (body.children.length > 1) {
+      addLine(form, add.dataset.addLine ? JSON.parse(add.dataset.addLine) : null, add.dataset.last);
+      const search = $("[data-product-search]", form);
+      if (search && add.dataset.addLine) search.value = "";
+      closeLists();
+    } else if (remove) {
       remove.closest("[data-line]").remove();
-    } else {
-      $$("input", remove.closest("[data-line]")).forEach((input) => { input.value = input.name === "unit" ? "pcs" : ""; });
+      dirty.add(form);
+      quoteTotals(form);
+    } else if (customer) {
+      const data = JSON.parse(customer.dataset.pickCustomer);
+      form.querySelector('[name="customer_name"]').value = data.name;
+      form.querySelector('[name="customer_country"]').value = data.country || "";
+      if (data.contact) form.querySelector('[name="customer_contact"]').value = data.contact;
+      form.querySelector('[name="company_id"]').value = data.company_id || "";
+      dirty.add(form);
+      closeLists();
     }
-    dirty.add(form);
-    quoteTotals(form);
   });
+
+  // 搜产品框里按回车：加第一个结果，不提交整张报价单
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLists();
+    if (event.key !== "Enter" || !event.target.matches("[data-product-search], [data-customer-input]")) return;
+    event.preventDefault();
+    event.target.closest(".combo")?.querySelector(".option")?.click();
+  });
+
+  function autoDownload() {
+    const link = $("[data-autodownload]");
+    if (!link) return;
+    history.replaceState(null, "", window.location.pathname);
+    link.click();
+  }
 
   // ---------- 运行页：SSE 实时步骤 ----------
 
@@ -273,4 +330,5 @@
   // 脚本以 defer 加载，执行时页面已解析完
   showFlashes();
   followRun();
+  autoDownload();
 })();

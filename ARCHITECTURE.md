@@ -23,7 +23,13 @@ flowchart LR
 ```
 寻客 agent → 按域名去重（代码）→ 调研 agent（每家一个干净上下文，并行）→ 审查 agent（不通过最多返工一次）
 → 今日审核（每天最多 10 张）→ 人工决定 → 文案 agent → 业务员从企业邮箱手动发送
-→ 对方回复、询价（RFQ）→ 人填报价单 → 打印成 PDF，业务员手动发送 → 登记结果
+```
+
+报价独立于获客，任何客户都能报：
+
+```
+选客户（或直接输入新客户名）→ 从产品库加行（可选：拆询价 agent 把客户原文拆成明细）→ 人填单价
+→ 生成报价单：存一份版本快照，下载 PDF → 成交 / 未成交
 ```
 
 ## 代码地图
@@ -33,7 +39,7 @@ prompts/                 提示词契约。运营可以改，第一行是版本�
 knowledge/               知识包。core/ 常驻，markets/ 按国家加载，writing.md 只给文案
 src/workbench/
   agents/                和模型打交道的一切
-    schemas.py           4 个 agent 的交卷格式（Pydantic，严格 JSON Schema）
+    schemas.py           agent 的交卷格式（Pydantic，严格 JSON Schema）：获客 4 个、拆询价、评委
     prompts.py           把契约和知识包按固定顺序拼成系统提示，算版本号
     runner.py            Agents SDK 薄封装 SdkRunner；测试用 ScriptedRunner
   pipeline/              业务流程，入口是 Workbench（__init__.py）
@@ -41,12 +47,13 @@ src/workbench/
     prospect.py          寻客、去重、每日上限
     research.py          调研 + 审查 + 最多一次返工
     review.py            今日审核队列、人工决定
-    outreach.py          文案、草稿、联系记录、RFQ、拒绝联系
-    quotes.py            报价单：版本、合计与毛利、登记发出、对方结果（没有 agent）
+    outreach.py          文案、草稿、联系记录、拒绝联系
+    quotes.py            报价单：保存、生成版本快照、合计与毛利、上次报价、产品库报价信息、拆询价任务
     worker.py            抢占和执行排队任务、重启恢复
   store/                 数据库：models.py 表结构，db.py 连接与备份，queries.py 共用查询，migrations/
   web/                   页面：app.py 组装，routes/ 按页面拆分，view.py 展示逻辑，templates/，static/
   catalog.py             导入冠维样册、确认首推 SKU
+  quote_pdf.py           按版本快照画英文报价单 PDF（reportlab）
   evals.py               评测集、LLM 评委、基线名单对比
   demo.py                载入演示数据
   normalize.py           域名、公司名、国家标准化
@@ -70,7 +77,7 @@ eval/                    评测集、反例、基线名单、报告
 5. **agent 之间不传网页原文。** 每家公司的调研是干净上下文，审查 agent 只看档案。
 6. **代码不校验 agent 的结论。** 质量靠提示词契约和审查 agent；代码只负责去重、排队、记账和以上底线。评测（`evals.py`）是测量，不是生产流程里的拦截。
 7. **一张卡只能决定一次。** 重复点"接受"不会排两个文案任务。（`test_decide_twice_is_rejected`）
-8. **价格只由人填，发出的报价不再改。** 报价流程里没有 agent；登记发出后这一版锁定，改价只能出新版本，旧版本标为已替代，每一版都可追溯。拒绝联系的公司不能报价。（`tests/pipeline/test_quotes.py`）
+8. **价格只由人填，生成过的报价单不会变。** 拆询价 agent 只交产品、尺寸、数量，单价只来自人填、产品库参考价或上次报给该客户的价。每次生成报价单存一份快照，PDF 按快照出，之后改明细不影响已发出的版本。拒绝联系的公司不能报价。（`tests/pipeline/test_quotes.py`）
 
 ## 横切关注点
 

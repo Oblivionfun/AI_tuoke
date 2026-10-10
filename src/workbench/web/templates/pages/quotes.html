@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, quote_status %}
+{% block title %}报价 · 冠维获客工作台{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>报价</h1>
+    <p>老客户、WhatsApp、展会，或者 AI 获客找到的客户，都在这里报价。一张报价单从询价走到成交，每次生成的 PDF 都留底。</p>
+  </div>
+  <div class="actions"><a class="btn btn-primary" href="/quotes/new">新建报价</a></div>
+</div>
+
+<section class="panel">
+  <div class="toolbar">
+    <nav class="chips" aria-label="状态">
+      {% for key, label, n in tabs %}<a class="chip" href="?status={{ key }}{{ '&q=' ~ q | urlencode if q }}" {% if key == status %}aria-current="true"{% endif %}>{{ label }}<span class="n">{{ n }}</span></a>{% endfor %}
+    </nav>
+    <form method="get" class="search" role="search">
+      {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+      <label class="visually-hidden" for="quote-q">搜客户或产品</label>
+      <input class="input" id="quote-q" type="search" name="q" value="{{ q }}" placeholder="搜客户或产品">
+    </form>
+  </div>
+  {% if rows %}
+  <table class="table">
+    <thead><tr><th>单号</th><th>客户</th><th>产品</th><th class="num">金额</th><th>状态</th><th>报价单</th><th>更新</th></tr></thead>
+    <tbody>{% for r in rows %}
+      {% set total, issued = view.quote_total(r, settings.timezone, now) %}
+      <tr data-href="/quotes/{{ r.id }}">
+        <td class="nowrap"><a href="/quotes/{{ r.id }}" translate="no">{{ r.number }}</a></td>
+        <td><strong style="font-weight: 500">{{ r.customer_name or "未填客户" }}</strong><span class="muted small" style="display: block">{{ r.customer_country }}</span></td>
+        <td class="small">{{ view.quote_products(r) or "—" }}</td>
+        <td class="num nowrap">{{ r.currency }} {{ view.money(total) }}{% if not issued %}<span class="muted small" style="display: block">未生成</span>{% endif %}</td>
+        <td>{{ quote_status(r.status) }}</td>
+        <td class="small">{% if r.versions %}<a href="/quotes/{{ r.id }}/versions/{{ r.versions[0].version }}.pdf">第 {{ r.versions[0].version }} 版 PDF</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td class="small muted nowrap">{{ r.updated_at | localtime }}</td>
+      </tr>
+    {% endfor %}</tbody>
+  </table>
+  {% else %}
+  <div class="empty"><h2>{{ "没有符合条件的报价单" if q or status else "还没有报价单" }}</h2><p>客户问价了，就新建一张：选客户、加产品、填单价，生成后直接下载 PDF。</p><a class="btn btn-primary" href="/quotes/new">新建报价</a></div>
+  {% endif %}
+</section>
+{% endblock %}

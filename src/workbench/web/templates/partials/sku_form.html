@@ -1,14 +1,31 @@
-{# 确认首推 SKU 的抽屉内容。只写工厂确认过的信息：确认后会进入知识包，文案会照写。 #}
+{# 规格与价格抽屉：上面是报价信息（报价单带出的默认值），下面是首推 SKU 规格（进知识包，文案会照写）。 #}
 {% from "components.html" import icon %}
-<form method="post" action="/skus/{{ p.id }}/confirm" autocomplete="off">
-  <div class="drawer-head">
-    <div>
-      <h2 style="font-size: var(--text-lg)">{{ p.name_zh }}</h2>
-      <p class="muted small">{{ p.name_en }}，样册第 {{ p.source_page }} 页，{{ p.id }}</p>
-    </div>
-    <button class="btn btn-quiet btn-sm" type="button" data-dialog-close aria-label="关闭">{{ icon("x") }}</button>
+<div class="drawer-head">
+  <div>
+    <h2 style="font-size: var(--text-lg)">{{ p.name_zh or p.name_en }}</h2>
+    <p class="muted small">{{ p.name_en }}，{% if p.source_page %}样册第 {{ p.source_page }} 页，{% endif %}{{ p.id }}</p>
   </div>
+  <button class="btn btn-quiet btn-sm" type="button" data-dialog-close aria-label="关闭">{{ icon("x") }}</button>
+</div>
+
+<form method="post" action="/products/{{ p.id }}/pricing" autocomplete="off">
   <div class="drawer-body">
+    <div class="section-title" style="margin-bottom: 0"><h3>报价信息</h3><span class="muted">报价时自动带出，单张报价里还能改</span></div>
+    <label class="field"><span>报价单上的英文规格</span><input class="input" name="spec_en" value="{{ p.spec_en }}" placeholder="{{ [v.standard, v.material, v.finish] | select | join(', ') if v else 'DIN 7504N, carbon steel, zinc plated' }}"></label>
+    <div class="form-row">
+      <label class="field"><span>计价单位</span>
+        <select class="select" name="price_unit">{% for u in view.QUOTE_UNITS %}<option {% if u == p.price_unit %}selected{% endif %}>{{ u }}</option>{% endfor %}</select></label>
+      <label class="field"><span>参考价（USD）</span><input class="input num" name="ref_price" value="{{ p.ref_price }}" inputmode="decimal" pattern="[0-9., ]*"></label>
+      <label class="field"><span>成本（USD）</span><input class="input num" name="cost" value="{{ p.cost }}" inputmode="decimal" pattern="[0-9., ]*"></label>
+    </div>
+    <span class="field-hint">参考价和成本都按计价单位算，例如单位是 1000 pcs 就填每千件的价格。成本只用来算毛利，不会印在报价单上。</span>
+  </div>
+  <div class="drawer-foot"><button class="btn btn-primary" type="submit">保存报价信息</button></div>
+</form>
+
+<form method="post" action="/skus/{{ p.id }}/confirm" autocomplete="off">
+  <div class="drawer-body">
+    <div class="section-title" style="margin-bottom: 0"><h3>首推 SKU 规格</h3>{% if p.sales_ready %}<span class="badge badge-pass">{{ icon("check") }}已确认</span>{% endif %}</div>
     {% if p.id in suggested %}<p class="callout">建议优先确认：{{ suggested[p.id] }}</p>{% endif %}
     {% if p.source_issue %}<p class="callout callout-caution">{{ icon("alert") }}<span>样册待核对：{{ p.source_issue }}</span></p>{% endif %}
     <label class="field"><span>执行标准</span><input class="input" name="standard" value="{{ v.standard if v else '' }}" placeholder="例如：DIN 7504N…"></label>

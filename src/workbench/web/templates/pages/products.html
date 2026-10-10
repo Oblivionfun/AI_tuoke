@@ -6,9 +6,12 @@
 <div class="page-head">
   <div>
     <h1>产品库</h1>
-    <p>共 {{ total }} 张产品卡，来自样册。工厂确认规格后，调研和文案才会引用具体规格，否则只写产品名。</p>
+    <p>共 {{ total }} 个产品。报价时从这里选产品，英文规格、参考价和成本填一次就会自动带出；确认首推 SKU 后，调研和文案才会引用具体规格。</p>
   </div>
-  <div class="actions"><span class="small muted">首推 SKU 已确认 {{ confirmed }} / 10</span>{{ ticks(confirmed, 10) }}</div>
+  <div class="actions">
+    <span class="small muted">首推 SKU 已确认 {{ confirmed }} / 10</span>{{ ticks(confirmed, 10) }}
+    <button class="btn" type="button" hx-get="/products/new/form" hx-target="#drawer-body" data-dialog-open="sku-drawer">新增产品</button>
+  </div>
 </div>
 
 <section class="panel">
@@ -20,20 +23,21 @@
     <a class="chip" href="?{{ 'category=' ~ category | urlencode ~ '&' if category }}suggested={{ 'false' if suggested_only else 'true' }}" aria-pressed="{{ 'true' if suggested_only else 'false' }}">只看建议优先确认的 10 个</a>
   </div>
   <table class="table">
-    <thead><tr><th>产品</th><th>品类</th><th>样册材质</th><th>首推</th><th></th></tr></thead>
+    <thead><tr><th>产品</th><th>品类</th><th class="num">参考价</th><th>首推</th><th></th></tr></thead>
     <tbody>
     {% for p in rows %}
       {% set v = p.variants[0] if p.variants else none %}
       <tr>
-        <td><strong style="font-weight: 500">{{ p.name_zh }}</strong><span class="muted small" style="display: block">{{ p.name_en }}，{{ p.id }}</span></td>
+        <td><strong style="font-weight: 500">{{ p.name_zh or p.name_en }}</strong><span class="muted small" style="display: block">{{ p.name_en }}，{{ p.id }}</span></td>
         <td class="nowrap">{{ p.category }}</td>
-        <td class="small">{{ p.material_declared or "—" }}</td>
+        <td class="num small nowrap">{% if p.ref_price %}{{ p.ref_price }}<span class="muted"> / {{ p.price_unit }}</span>{% else %}<span class="muted">未定价</span>{% endif %}</td>
         <td class="small">
           {% if p.sales_ready and v %}<span class="badge badge-pass">{{ icon("check") }}已确认</span><span class="muted" style="display: block; margin-top: 4px">{{ [v.standard, v.sizes, v.finish] | select | join("，") }}</span>
           {% elif p.id in suggested %}<span class="badge badge-blue">建议优先确认</span><span class="muted" style="display: block; margin-top: 4px">{{ suggested[p.id] }}</span>
           {% else %}<span class="muted">未确认</span>{% endif %}
         </td>
-        <td class="num"><button class="btn btn-sm" type="button" hx-get="/products/{{ p.id }}/form" hx-target="#drawer-body" data-dialog-open="sku-drawer">{{ "修改规格" if p.sales_ready else "确认规格" }}</button></td>
+        <td class="num nowrap"><a class="btn btn-sm" href="/quotes/new?product_id={{ p.id }}">报价</a>
+          <button class="btn btn-sm" type="button" hx-get="/products/{{ p.id }}/form" hx-target="#drawer-body" data-dialog-open="sku-drawer">规格与价格</button></td>
       </tr>
     {% else %}
       <tr><td colspan="5"><div class="empty"><h2>没有产品</h2><p>在服务器上执行 <code>workbench catalog import</code> 导入样册。</p></div></td></tr>
@@ -44,5 +48,5 @@
 {% endblock %}
 
 {% block dialogs %}
-<dialog class="drawer" id="sku-drawer" aria-label="确认首推 SKU"><div id="drawer-body"></div></dialog>
+<dialog class="drawer" id="sku-drawer" aria-label="产品规格与价格"><div id="drawer-body"></div></dialog>
 {% endblock %}

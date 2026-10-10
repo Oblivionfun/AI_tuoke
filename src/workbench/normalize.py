@@ -148,6 +148,12 @@ _COUNTRY_ALIASES: dict[str, str] = {
 }
 
 
+def country_name_en(code: str) -> str:
+    """'AE' → 'United Arab Emirates'；认不出就原样返回。"""
+    country = pycountry.countries.get(alpha_2=code.upper()) if len(code) == 2 else None
+    return country.name if country is not None else code
+
+
 @lru_cache(maxsize=1024)
 def normalize_country(value: str | None) -> str | None:
     """'阿联酋' / 'UAE' / 'ARE' / 'United Arab Emirates' → 'AE'。"""

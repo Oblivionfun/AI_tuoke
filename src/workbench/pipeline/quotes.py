@@ -1,7 +1,7 @@
-"""报价单：从询价开一张报价，人填价格，业务员自己发给客户后回来登记；改价出新版本。
+"""报价：一张报价单从询价走到成交。人填价格，生成报价单时存一份版本快照，PDF 按快照出。
 
-价格、成本和交期都由人填写，这里没有 agent 调用。系统也不发报价：打印页存成 PDF，由业务员从 WhatsApp 或邮箱发出。
-发出过的版本不再修改，每一版都留着，可以追溯当时报了什么价。
+价格和成本只由人填写：报价单里手填，或者用产品库里的参考价。AI 只做一件事——把客户的询价原文
+拆成产品、尺寸和数量（拆询价 agent，在 worker 里跑），不碰价格。
 """
 
 import re
@@ -9,39 +9,61 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 from enum import StrEnum
+from typing import Any
 from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from sqlalchemy import func, or_, select
+from sqlalchemy.orm import Session, selectinload
 
+from workbench.agents.prompts import quote_catalog
+from workbench.agents.schemas import AgentRole, InquiryItem, InquiryParse
+from workbench.normalize import country_name_en
 from workbench.pipeline.context import Context
-from workbench.store.models import Channel, Company, Direction, Interaction, Quote, QuoteStatus, Rfq, RfqStatus
+from workbench.store.models import (
+    Company,
+    Product,
+    Quote,
+    QuoteStatus,
+    QuoteVersion,
+    Run,
+    RunKind,
+    RunStatus,
+    SkuVariant,
+    Suppression,
+)
 from workbench.store.queries import is_suppressed
 
 CENT = Decimal("0.01")
+TERM_FIELDS = ("currency", "incoterm", "validity_days", "lead_time", "payment_terms", "packing", "remarks")
+UNIT_FACTORS = {"pcs": Decimal(1), "1000 pcs": Decimal(1000)}
 _SEPARATORS = re.compile(r"[,，\s]")
-_QUANTITY = re.compile(r"(\d[\d,，.]*)\s*(k|千|万|w)?", re.IGNORECASE)
-_MULTIPLIERS = {"k": 1000, "千": 1000, "万": 10000, "w": 10000}
 
 
 class QuoteAction(StrEnum):
     SAVE = "save"
-    MARK_SENT = "mark_sent"
-    ACCEPT = "accept"
-    REJECT = "reject"
-    REVISE = "revise"
-    DISCARD = "discard"
+    GENERATE = "generate"
+    PARSE = "parse"
+    WON = "won"
+    LOST = "lost"
+    DELETE = "delete"
 
 
 class QuoteLine(BaseModel):
-    """报价单的一行。单价按 unit 计，例如 unit 是 "1000 pcs" 时填每千件的价格。"""
+    """一行。单价按 unit 计，例如 unit 是 "1000 pcs" 时是每千件的价格；unit_cost 只用来算毛利，不打印。"""
 
+    product_id: str | None = None
     description: str
+    size: str = ""
     spec: str = ""
     quantity: Decimal | None = None
     unit: str = "pcs"
     unit_price: Decimal | None = None
     unit_cost: Decimal | None = None
+
+    @property
+    def specification(self) -> str:
+        return ", ".join(part for part in (self.size, self.spec) if part)
 
     @property
     def amount(self) -> Decimal | None:
@@ -57,6 +79,14 @@ class QuoteLine(BaseModel):
 
 
 @dataclass(frozen=True)
+class Customer:
+    name: str
+    country: str = ""
+    contact: str = ""
+    company_id: int | None = None
+
+
+@dataclass(frozen=True)
 class QuoteTerms:
     currency: str
     incoterm: str
@@ -68,49 +98,92 @@ class QuoteTerms:
 
 
 @dataclass(frozen=True)
+class LastPrice:
+    price: Decimal
+    unit: str
+    at: datetime
+
+
+@dataclass(frozen=True)
 class QuoteSheet:
-    """报价单算出来的数：合计、毛利、报价日期和有效期。编辑页和打印页共用。"""
+    """算出来的数：合计、毛利、报价日期和有效期。编辑页、列表和 PDF 共用。
+
+    毛利只按填了成本的行算；uncosted 是有金额但没成本的行数。
+    """
 
     lines: list[QuoteLine]
     total: Decimal
     margin: float | None
+    uncosted: int
     issued: date
     valid_until: date
-    expired: bool
+
+    @classmethod
+    def build(cls, items: list[Any], validity_days: int, issued: date) -> "QuoteSheet":
+        lines = [QuoteLine.model_validate(item) for item in items]
+        priced = [(line, amount) for line in lines if (amount := line.amount) is not None]
+        costed = [(amount, cost) for line, amount in priced if (cost := line.cost) is not None]
+        revenue = sum((amount for amount, _ in costed), Decimal(0))
+        margin = float((revenue - sum((c for _, c in costed), Decimal(0))) / revenue) if revenue > 0 else None
+        total = sum((amount for _, amount in priced), Decimal(0))
+        return cls(lines, total, margin, len(priced) - len(costed), issued, issued + timedelta(days=validity_days))
 
     @classmethod
     def of(cls, quote: Quote, tz: str, now: datetime) -> "QuoteSheet":
-        """毛利只在每一行都填了成本时才算；草稿按今天发出计算有效期。"""
-        zone = ZoneInfo(tz)
-        lines = [QuoteLine.model_validate(item) for item in quote.items]
-        amounts = [a for line in lines if (a := line.amount) is not None]
-        total = sum(amounts, Decimal(0))
-        costs = [line.cost for line in lines if line.amount is not None]
-        margin = None
-        if amounts and total > 0 and all(c is not None for c in costs):
-            margin = float((total - sum(c for c in costs if c is not None)) / total)
-        issued = (quote.sent_at or now).astimezone(zone).date()
-        valid_until = issued + timedelta(days=quote.validity_days)
-        expired = quote.status is QuoteStatus.SENT and now.astimezone(zone).date() > valid_until
-        return cls(lines, total, margin, issued, valid_until, expired)
+        """正在编辑的明细，按今天生成计算有效期。"""
+        return cls.build(quote.items, quote.validity_days, now.astimezone(ZoneInfo(tz)).date())
+
+    @classmethod
+    def of_version(cls, version: QuoteVersion, tz: str) -> "QuoteSheet":
+        terms = version.snapshot["terms"]
+        return cls.build(
+            version.snapshot["items"], terms["validity_days"], version.created_at.astimezone(ZoneInfo(tz)).date()
+        )
+
+
+def money(value: Decimal) -> str:
+    return f"{value:,.2f}"
+
+
+def price_text(value: Decimal | None) -> str:
+    """单价保留实际填写的位数，至少两位小数：0.0185、1.20。"""
+    if value is None:
+        return ""
+    whole, _, frac = format(value.normalize(), "f").partition(".")
+    return f"{int(whole):,}.{frac.ljust(2, '0')}"
+
+
+def quantity_text(value: Decimal | None) -> str:
+    return format(value.normalize(), ",f") if value is not None else ""
+
+
+def plain(value: Decimal | None) -> str:
+    """填回输入框的数字：不带千分位。"""
+    return format(value.normalize(), "f") if value is not None else ""
+
+
+def to_decimal(value: Any) -> Decimal | None:
+    try:
+        number = Decimal(_SEPARATORS.sub("", str(value))) if value not in (None, "") else None
+    except InvalidOperation:
+        return None
+    return number if number is not None and number.is_finite() and number >= 0 else None
 
 
 def parse_number(text: str, label: str) -> Decimal | None:
-    """ "20,000" → 20000；空着返回 None。"""
-    cleaned = _SEPARATORS.sub("", text or "")
-    if not cleaned:
+    """ "20,000" → 20000；空着返回 None；不是数字或是负数时报错，提示是哪一项。"""
+    if not _SEPARATORS.sub("", text or ""):
         return None
-    try:
-        value = Decimal(cleaned)
-    except InvalidOperation:
-        raise ValueError(f"{label}不是数字：{text}") from None
-    if not value.is_finite() or value < 0:
-        raise ValueError(f"{label}不能是负数：{text}")
-    return value
+    number = to_decimal(text)
+    if number is None:
+        raise ValueError(f"{label}要填不小于 0 的数字：{text}")
+    return number
 
 
 def parse_lines(
+    product_id: list[str],
     description: list[str],
+    size: list[str],
     spec: list[str],
     quantity: list[str],
     unit: list[str],
@@ -119,14 +192,16 @@ def parse_lines(
 ) -> list[QuoteLine]:
     """表单里按列提交的多行转成报价行；整行空着的跳过。"""
     lines = []
-    rows = zip(description, spec, quantity, unit, unit_price, unit_cost, strict=True)
+    rows = zip(product_id, description, size, spec, quantity, unit, unit_price, unit_cost, strict=True)
     for n, row in enumerate(rows, 1):
-        desc, sp, qty, un, price, cost = (value.strip() for value in row)
-        if not any((desc, sp, qty, price, cost)):
+        pid, desc, sz, sp, qty, un, price, cost = (value.strip() for value in row)
+        if not any((pid, desc, sz, qty, price)):
             continue
         lines.append(
             QuoteLine(
+                product_id=pid or None,
                 description=desc,
+                size=sz,
                 spec=sp,
                 quantity=parse_number(qty, f"第 {n} 行数量"),
                 unit=un or "pcs",
@@ -137,75 +212,140 @@ def parse_lines(
     return lines
 
 
-def guess_quantity(text: str) -> Decimal | None:
-    """从询价记录的数量里取数字预填第一行："200k" → 200000，"5万" → 50000。有多个数字（多种产品）时不猜。"""
-    matches = _QUANTITY.findall(text or "")
-    if len(matches) != 1:
-        return None
-    number, suffix = matches[0]
-    try:
-        value = Decimal(_SEPARATORS.sub("", number))
-    except InvalidOperation:
-        return None
-    return value * _MULTIPLIERS.get(suffix.lower(), 1)
+def snapshot(quote: Quote) -> dict[str, Any]:
+    customer = {"name": quote.customer_name, "country": quote.customer_country, "contact": quote.customer_contact}
+    return {"customer": customer, "terms": {k: getattr(quote, k) for k in TERM_FIELDS}, "items": list(quote.items)}
 
 
-def missing_for_send(quote: Quote) -> list[str]:
-    """发出前必须填好的项：每行的产品、数量、单价，以及贸易术语和交期。"""
+def missing_for_quote(quote: Quote) -> list[str]:
+    """生成报价单前必须有：客户名，至少一行，每行的产品、数量和单价。"""
     lines = [QuoteLine.model_validate(item) for item in quote.items]
-    problems = [] if lines else ["至少要有一行产品"]
+    problems = [] if quote.customer_name.strip() else ["没写客户"]
+    if not lines:
+        problems.append("还没有产品")
     for n, line in enumerate(lines, 1):
-        if not line.description:
-            problems.append(f"第 {n} 行没写产品")
-        if not line.quantity:
-            problems.append(f"第 {n} 行没写数量")
-        if not line.unit_price:
-            problems.append(f"第 {n} 行没写单价")
-    if not quote.incoterm.strip():
-        problems.append("没写贸易术语")
-    if not quote.lead_time.strip():
-        problems.append("没写交期（请先和工厂确认）")
+        missing = [
+            label
+            for label, ok in (("产品", line.description), ("数量", line.quantity), ("单价", line.unit_price))
+            if not ok
+        ]
+        if missing:
+            problems.append(f"第 {n} 行没填{'、'.join(missing)}")
     return problems
+
+
+def convert_quantity(quantity: Decimal | None, unit: str, to_unit: str) -> Decimal | None:
+    """pcs 和 1000 pcs 之间换算数量；其他单位不换算，返回 None。"""
+    if quantity is None or unit not in UNIT_FACTORS or to_unit not in UNIT_FACTORS:
+        return None
+    return (quantity * UNIT_FACTORS[unit] / UNIT_FACTORS[to_unit]).normalize()
+
+
+def line_from_product(product: Product, last: LastPrice | None) -> QuoteLine:
+    """产品库里的一个产品变成报价行：英文名、英文规格、计价单位、成本；单价用上次报给这个客户的价，没有就用参考价。"""
+    variant = product.variants[0] if product.variants else None
+    spec = product.spec_en or (
+        ", ".join(filter(None, [variant.standard, variant.material, variant.finish])) if variant else ""
+    )
+    line = QuoteLine(
+        product_id=product.id,
+        description=product.name_en,
+        spec=spec,
+        unit=product.price_unit or "pcs",
+        unit_price=to_decimal(product.ref_price),
+        unit_cost=to_decimal(product.cost),
+    )
+    if last is not None:
+        line = line.model_copy(update={"unit": last.unit, "unit_price": last.price})
+    return line
+
+
+def last_prices(
+    session: Session, customer_name: str, company_id: int | None, *, exclude_quote_id: int | None = None
+) -> dict[str, LastPrice]:
+    """这个客户以前生成过的报价单里，每个产品最近一次的单价；exclude_quote_id 排除正在编辑的这张。"""
+    conditions = []
+    if company_id:
+        conditions.append(Quote.company_id == company_id)
+    if customer_name.strip():
+        conditions.append(func.lower(Quote.customer_name) == customer_name.strip().lower())
+    if not conditions:
+        return {}
+    stmt = select(QuoteVersion).join(Quote).where(or_(*conditions))
+    if exclude_quote_id is not None:
+        stmt = stmt.where(QuoteVersion.quote_id != exclude_quote_id)
+    versions = session.execute(stmt.order_by(QuoteVersion.created_at.desc())).scalars()
+    found: dict[str, LastPrice] = {}
+    for version in versions:
+        for item in version.snapshot.get("items", []):
+            pid, price = item.get("product_id"), to_decimal(item.get("unit_price"))
+            if pid and price is not None and pid not in found:
+                found[pid] = LastPrice(price, item.get("unit") or "pcs", version.created_at)
+    return found
 
 
 class Quoting:
     def __init__(self, ctx: Context):
         self.ctx = ctx
 
-    def open_for(self, rfq_id: int, *, user: str = "") -> int:
-        """询价的报价入口：已经有报价就打开最新一版，没有就按询价内容开第一版草稿。"""
-        settings = self.ctx.settings
-        with self.ctx.db.session() as session:
-            rfq = session.get(Rfq, rfq_id)
-            if rfq is None:
-                raise LookupError("询价不存在")
-            if rfq.quotes:
-                return rfq.quotes[0].id
-            self._check_contactable(session, rfq.company)
-            now = self.ctx.clock()
-            first_line = QuoteLine(description=rfq.products, quantity=guess_quantity(rfq.quantity))
-            quote = Quote(
-                rfq_id=rfq.id,
-                company_id=rfq.company_id,
-                version=1,
-                currency=settings.quote_currency,
-                incoterm=rfq.incoterm or settings.quote_incoterm,
-                validity_days=settings.quote_validity_days,
-                payment_terms=settings.quote_payment_terms,
-                items=[first_line.model_dump(mode="json")],
-                created_by=user,
-                created_at=now,
-                updated_at=now,
-            )
-            session.add(quote)
-            session.flush()
-            return quote.id
+    # ---------- 报价单 ----------
 
-    def save(self, quote_id: int, terms: QuoteTerms, lines: list[QuoteLine]) -> None:
+    def new(self, *, company_id: int | None = None, product_id: str | None = None) -> Quote:
+        """新报价单的初始内容（还没存库）：默认条款；从客户档案进来带上客户，从产品库进来带上一行。"""
+        settings = self.ctx.settings
+        quote = Quote(
+            status=QuoteStatus.PENDING,
+            customer_name="",
+            customer_country="",
+            customer_contact="",
+            currency=settings.quote_currency,
+            incoterm=settings.quote_incoterm,
+            validity_days=settings.quote_validity_days,
+            lead_time="",
+            payment_terms=settings.quote_payment_terms,
+            packing="",
+            remarks="",
+            items=[],
+            inquiry="",
+            lost_reason="",
+        )
         with self.ctx.db.session() as session:
-            quote = self._get(session, quote_id)
-            if quote.status is not QuoteStatus.DRAFT:
-                raise ValueError("发出过的报价不能再改，请改价出新版本")
+            company = session.get(Company, company_id) if company_id else None
+            if company is not None:
+                quote.company_id = company.id
+                quote.customer_name = company.name
+                quote.customer_country = country_name_en(company.country)
+            product = self._product(session, product_id) if product_id else None
+            if product is not None:
+                last = last_prices(session, quote.customer_name, quote.company_id).get(product.id)
+                quote.items = [line_from_product(product, last).model_dump(mode="json")]
+        return quote
+
+    def save(
+        self,
+        quote_id: int | None,
+        customer: Customer,
+        terms: QuoteTerms,
+        lines: list[QuoteLine],
+        *,
+        inquiry: str | None = None,
+        user: str = "",
+    ) -> int:
+        """新建或保存，返回报价单 id。任何状态都能改：已生成的版本是快照，不受影响。"""
+        now = self.ctx.clock()
+        with self.ctx.db.session() as session:
+            if quote_id is None:
+                quote = Quote(status=QuoteStatus.PENDING, created_by=user, created_at=now)
+                session.add(quote)
+            else:
+                quote = self._get(session, quote_id)
+            company = session.get(Company, customer.company_id) if customer.company_id else None
+            if company is not None:
+                self._check_contactable(session, company)
+            quote.company_id = company.id if company is not None else None
+            quote.customer_name = customer.name.strip()
+            quote.customer_country = customer.country.strip()
+            quote.customer_contact = customer.contact.strip()
             quote.currency = terms.currency.strip().upper()[:3] or self.ctx.settings.quote_currency
             quote.incoterm = terms.incoterm.strip()
             quote.validity_days = terms.validity_days
@@ -214,92 +354,207 @@ class Quoting:
             quote.packing = terms.packing.strip()
             quote.remarks = terms.remarks.strip()
             quote.items = [line.model_dump(mode="json") for line in lines]
-            quote.updated_at = self.ctx.clock()
+            if inquiry is not None:
+                quote.inquiry = inquiry.strip()
+            quote.updated_at = now
+            session.flush()
+            return quote.id
 
-    def mark_sent(self, quote_id: int, *, channel: Channel, user: str = "") -> None:
-        """业务员把报价发给客户后登记：这一版锁定，之前发出的版本标为已替代，询价改为已报价，记一笔联系。"""
+    def generate(self, quote_id: int, *, user: str = "") -> int:
+        """生成报价单：内容和上一版一样就沿用上一版，否则存一个新版本。返回版本号。"""
         with self.ctx.db.session() as session:
             quote = self._get(session, quote_id)
-            if quote.status is not QuoteStatus.DRAFT:
-                raise ValueError("这一版已经登记过了")
-            self._check_contactable(session, quote.company)
-            problems = missing_for_send(quote)
+            if quote.company is not None:
+                self._check_contactable(session, quote.company)
+            problems = missing_for_quote(quote)
             if problems:
-                raise ValueError("还不能登记发出：" + "；".join(problems))
+                raise ValueError("还不能生成报价单：" + "；".join(problems))
+            content = snapshot(quote)
+            latest = quote.versions[0] if quote.versions else None
+            if latest is not None and latest.snapshot == content:
+                return latest.version
             now = self.ctx.clock()
-            for other in quote.rfq.quotes:
-                if other.id != quote.id and other.status is QuoteStatus.SENT:
-                    other.status = QuoteStatus.SUPERSEDED
-            quote.status = QuoteStatus.SENT
-            quote.sent_at = now
-            quote.sent_by = user
-            if quote.rfq.status in (RfqStatus.OPEN, RfqStatus.LOST):
-                quote.rfq.status = RfqStatus.QUOTED
-            sheet = QuoteSheet.of(quote, self.ctx.settings.timezone, now)
-            session.add(
-                Interaction(
-                    company_id=quote.company_id,
-                    channel=channel,
-                    direction=Direction.OUT,
-                    summary=(
-                        f"已发出报价 {quote.number}：{quote.currency} {sheet.total:,.2f}，{quote.incoterm}，"
-                        f"有效期至 {sheet.valid_until:%Y-%m-%d}"
-                    ),
-                    created_by=user,
-                    happened_at=now,
-                )
-            )
-
-    def record_outcome(self, quote_id: int, *, accepted: bool, note: str = "") -> None:
-        """对方接受，询价记为成交；不接受要写原因，询价记为未成交（之后仍可改价出新版本）。"""
-        with self.ctx.db.session() as session:
-            quote = self._get(session, quote_id)
-            if quote.status is not QuoteStatus.SENT:
-                raise ValueError("只有已发出、还在有效的这一版可以记录结果")
-            if not accepted and not note.strip():
-                raise ValueError("请写一下对方不接受的原因")
-            quote.status = QuoteStatus.ACCEPTED if accepted else QuoteStatus.REJECTED
-            quote.outcome_note = note.strip()
-            quote.rfq.status = RfqStatus.WON if accepted else RfqStatus.LOST
-
-    def revise(self, quote_id: int, *, user: str = "") -> int:
-        """在这一版的基础上出新版本草稿；同一询价已有草稿时直接返回那份草稿。"""
-        with self.ctx.db.session() as session:
-            quote = self._get(session, quote_id)
-            existing = next((q for q in quote.rfq.quotes if q.status is QuoteStatus.DRAFT), None)
-            if existing is not None:
-                return existing.id
-            self._check_contactable(session, quote.company)
-            now = self.ctx.clock()
-            draft = Quote(
-                rfq_id=quote.rfq_id,
-                company_id=quote.company_id,
-                version=max(q.version for q in quote.rfq.quotes) + 1,
-                currency=quote.currency,
-                incoterm=quote.incoterm,
-                validity_days=quote.validity_days,
-                lead_time=quote.lead_time,
-                payment_terms=quote.payment_terms,
-                packing=quote.packing,
-                remarks=quote.remarks,
-                items=list(quote.items),
+            sheet = QuoteSheet.build(content["items"], quote.validity_days, now.date())
+            version = QuoteVersion(
+                quote=quote,
+                version=latest.version + 1 if latest else 1,
+                snapshot=content,
+                total=str(sheet.total),
                 created_by=user,
                 created_at=now,
-                updated_at=now,
             )
-            session.add(draft)
-            session.flush()
-            return draft.id
+            session.add(version)
+            if quote.status in (QuoteStatus.PENDING, QuoteStatus.LOST):
+                quote.status = QuoteStatus.QUOTED
+                quote.lost_reason = ""
+            return version.version
 
-    def discard(self, quote_id: int) -> int:
-        """删除草稿，返回公司 id。发出过的版本不能删。"""
+    def set_outcome(self, quote_id: int, *, won: bool, reason: str = "") -> None:
         with self.ctx.db.session() as session:
             quote = self._get(session, quote_id)
-            if quote.status is not QuoteStatus.DRAFT:
-                raise ValueError("发出过的报价不能删除")
-            company_id = quote.company_id
+            quote.status = QuoteStatus.WON if won else QuoteStatus.LOST
+            quote.lost_reason = "" if won else reason.strip()
+
+    def delete(self, quote_id: int) -> None:
+        with self.ctx.db.session() as session:
+            quote = self._get(session, quote_id)
+            if quote.versions:
+                raise ValueError("已经生成过报价单，不能删除；不做了可以标为未成交")
             session.delete(quote)
-            return company_id
+
+    # ---------- 选产品、选客户 ----------
+
+    def search_products(
+        self, query: str, *, customer_name: str = "", company_id: int | None = None, limit: int = 8
+    ) -> list[tuple[Product, QuoteLine, LastPrice | None]]:
+        """按中英文名、编号、品类、标准号找产品；有参考价的排前面。每个结果附上带好默认值的报价行。"""
+        stmt = select(Product).options(selectinload(Product.variants))
+        if query.strip():
+            like = f"%{query.strip()}%"
+            stmt = stmt.where(
+                or_(
+                    Product.name_zh.ilike(like),
+                    Product.name_en.ilike(like),
+                    Product.id.ilike(like),
+                    Product.category.ilike(like),
+                    Product.spec_en.ilike(like),
+                    Product.variants.any(SkuVariant.standard.ilike(like)),
+                )
+            )
+        stmt = stmt.order_by(Product.ref_price == "", Product.sales_ready.desc(), Product.id).limit(limit)
+        with self.ctx.db.session() as session:
+            products = session.execute(stmt).scalars().all()
+            prices = last_prices(session, customer_name, company_id)
+        return [(p, line_from_product(p, prices.get(p.id)), prices.get(p.id)) for p in products]
+
+    def customers(self, query: str, *, limit: int = 8) -> list[Customer]:
+        """客户联想：AI 获客里的公司（不含拒绝联系的），和以前报过价的客户名。"""
+        like = f"%{query.strip()}%"
+        with self.ctx.db.session() as session:
+            companies = session.execute(
+                select(Company)
+                .where(Company.name.ilike(like), Company.domain.not_in(select(Suppression.domain)))
+                .order_by(Company.updated_at.desc())
+                .limit(limit)
+            ).scalars()
+            found = [Customer(c.name, country_name_en(c.country), "", c.id) for c in companies]
+            quoted = session.execute(
+                select(Quote)
+                .where(Quote.company_id.is_(None), Quote.customer_name.ilike(like), Quote.customer_name != "")
+                .order_by(Quote.updated_at.desc())
+                .limit(limit * 3)
+            ).scalars()
+            for quote in quoted:
+                found.append(Customer(quote.customer_name, quote.customer_country, quote.customer_contact))
+        unique: dict[str, Customer] = {}
+        for customer in found:
+            unique.setdefault(customer.name.casefold(), customer)
+        return list(unique.values())[:limit]
+
+    # ---------- 产品库的报价信息 ----------
+
+    def set_pricing(self, product_id: str, *, spec_en: str, price_unit: str, ref_price: str, cost: str) -> None:
+        with self.ctx.db.session() as session:
+            product = self._product(session, product_id)
+            if product is None:
+                raise LookupError("产品不存在")
+            self._apply_pricing(product, spec_en, price_unit, ref_price, cost)
+
+    def add_product(
+        self,
+        *,
+        category: str,
+        name_zh: str,
+        name_en: str,
+        spec_en: str,
+        price_unit: str,
+        ref_price: str,
+        cost: str,
+    ) -> str:
+        """工厂自己新增的产品（样册里没有的），编号 GW-M001 起。"""
+        if not name_en.strip():
+            raise ValueError("英文品名要填，报价单上印的是英文")
+        now = self.ctx.clock()
+        with self.ctx.db.session() as session:
+            taken = session.execute(select(Product.id).where(Product.id.like("GW-M%"))).scalars().all()
+            number = max((int(pid[4:]) for pid in taken if pid[4:].isdigit()), default=0) + 1
+            product = Product(
+                id=f"GW-M{number:03d}",
+                category=category.strip() or "其他",
+                name_en=name_en.strip(),
+                name_zh=name_zh.strip(),
+                created_at=now,
+            )
+            self._apply_pricing(product, spec_en, price_unit, ref_price, cost)
+            session.add(product)
+            return product.id
+
+    @staticmethod
+    def _apply_pricing(product: Product, spec_en: str, price_unit: str, ref_price: str, cost: str) -> None:
+        ref, unit_cost = parse_number(ref_price, "参考价"), parse_number(cost, "成本")
+        product.spec_en = spec_en.strip()
+        product.price_unit = price_unit.strip() or "pcs"
+        product.ref_price = str(ref) if ref is not None else ""
+        product.cost = str(unit_cost) if unit_cost is not None else ""
+
+    # ---------- AI 拆询价（worker 执行） ----------
+
+    def start_parse(self, quote_id: int, *, user: str = "") -> int:
+        with self.ctx.db.session() as session:
+            quote = self._get(session, quote_id)
+            if not quote.inquiry.strip():
+                raise ValueError("先把客户的询价原文粘贴进来")
+            run = self.ctx.create_run(
+                session, RunKind.PARSE, params={"quote_id": quote_id}, company_id=quote.company_id, created_by=user
+            )
+            return run.id
+
+    def parse_run(self, quote_id: int) -> Run | None:
+        """这张报价单最近一次拆询价的运行。"""
+        with self.ctx.db.session() as session:
+            return session.execute(
+                select(Run)
+                .where(Run.kind == RunKind.PARSE, func.json_extract(Run.params, "$.quote_id") == quote_id)
+                .order_by(Run.id.desc())
+                .limit(1)
+            ).scalar_one_or_none()
+
+    async def execute(self, run_id: int) -> None:
+        await self.ctx.guarded(run_id, self._parse)
+
+    async def _parse(self, run_id: int) -> None:
+        with self.ctx.db.session() as session:
+            run = session.get(Run, run_id)
+            assert run is not None
+            quote_id = int(run.params["quote_id"])
+            quote = self._get(session, quote_id)
+            payload = {"inquiry": quote.inquiry, "customer": quote.customer_name}
+            catalog = quote_catalog(session)
+        result: InquiryParse = await self.ctx.call_agent(
+            run_id, AgentRole.PARSER, payload, country=None, products=catalog
+        )
+        with self.ctx.db.session() as session:
+            quote = self._get(session, quote_id)
+            ids = [item.product_id for item in result.items if item.product_id]
+            products = {
+                p.id: p
+                for p in session.execute(
+                    select(Product).options(selectinload(Product.variants)).where(Product.id.in_(ids))
+                ).scalars()
+            }
+            prices = last_prices(session, quote.customer_name, quote.company_id, exclude_quote_id=quote.id)
+            lines = [_line_from_inquiry(item, products.get(item.product_id), prices) for item in result.items]
+            kept = [item for item in quote.items if QuoteLine.model_validate(item).description.strip()]
+            quote.items = kept + [line.model_dump(mode="json") for line in lines]
+            if result.incoterm and quote.incoterm in ("", self.ctx.settings.quote_incoterm):
+                quote.incoterm = result.incoterm
+            run = session.get(Run, run_id)
+            assert run is not None
+            run.params = {**run.params, "lines": len(lines), "questions": result.questions_zh}
+        questions = f"，{len(result.questions_zh)} 个问题要向客户确认" if result.questions_zh else ""
+        self.ctx.finish(run_id, RunStatus.SUCCEEDED, f"拆出 {len(lines)} 行{questions}")
+
+    # ---------- 内部 ----------
 
     @staticmethod
     def _get(session: Session, quote_id: int) -> Quote:
@@ -309,6 +564,40 @@ class Quoting:
         return quote
 
     @staticmethod
+    def _product(session: Session, product_id: str) -> Product | None:
+        return session.execute(
+            select(Product).options(selectinload(Product.variants)).where(Product.id == product_id)
+        ).scalar_one_or_none()
+
+    @staticmethod
     def _check_contactable(session: Session, company: Company) -> None:
         if is_suppressed(session, company.domain):
-            raise ValueError("这家公司在拒绝联系名单里，不能再报价")
+            raise ValueError("这家公司在拒绝联系名单里，不能报价")
+
+
+def _line_from_inquiry(item: InquiryItem, product: Product | None, prices: dict[str, LastPrice]) -> QuoteLine:
+    """拆出来的一行：对上了产品就带上产品的默认值，数量换算到产品的计价单位；单价只来自上次报价或参考价。"""
+    quantity = to_decimal(item.quantity)
+    if product is None:
+        return QuoteLine(
+            description=item.description, size=item.size, spec=item.spec, quantity=quantity, unit=item.unit
+        )
+    line = line_from_product(product, prices.get(product.id))
+    converted = convert_quantity(quantity, item.unit, line.unit)
+    if converted is None and item.unit != line.unit:
+        return line.model_copy(
+            update={
+                "size": item.size,
+                "spec": item.spec or line.spec,
+                "quantity": quantity,
+                "unit": item.unit,
+                "unit_price": None,
+            }
+        )
+    return line.model_copy(
+        update={
+            "size": item.size,
+            "spec": item.spec or line.spec,
+            "quantity": converted if converted is not None else quantity,
+        }
+    )

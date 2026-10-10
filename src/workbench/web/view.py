@@ -11,21 +11,12 @@ from typing import Any, assert_never
 from urllib.parse import urlsplit
 
 from workbench.pipeline import pick_email
-from workbench.pipeline.quotes import QuoteSheet
-from workbench.store.models import (
-    Channel,
-    Company,
-    CompanyStatus,
-    Queue,
-    Quote,
-    QuoteStatus,
-    RfqStatus,
-    RunKind,
-    RunStatus,
-)
+from workbench.pipeline.quotes import QuoteLine, QuoteSheet, money, plain, price_text, quantity_text
+from workbench.store.models import Channel, Company, CompanyStatus, Queue, Quote, QuoteStatus, RunKind, RunStatus
+
+__all__ = ["money", "plain", "price_text", "quantity_text"]
 
 COUNTRIES = {"AE": "阿联酋", "ZA": "南非", "SA": "沙特"}
-COUNTRIES_EN = {"AE": "United Arab Emirates", "ZA": "South Africa", "SA": "Saudi Arabia"}
 QUEUE_LABELS = {q: q.label for q in Queue}
 STATUS_LABELS = {
     CompanyStatus.NEW: "待调研",
@@ -47,7 +38,7 @@ STATUS_TONE = {
     CompanyStatus.RESEARCHING: "live",
     CompanyStatus.FAILED: "reject",
 }
-RUN_KIND_LABELS = {RunKind.PROSPECT: "寻客", RunKind.RESEARCH: "调研", RunKind.WRITE: "写信"}
+RUN_KIND_LABELS = {RunKind.PROSPECT: "寻客", RunKind.RESEARCH: "调研", RunKind.WRITE: "写信", RunKind.PARSE: "拆询价"}
 RUN_STATUS_LABELS = {
     RunStatus.QUEUED: "排队中",
     RunStatus.RUNNING: "运行中",
@@ -78,29 +69,21 @@ CHANNEL_LABELS = {
     Channel.PORTAL: "供应商入口",
     Channel.OTHER: "其他",
 }
-RFQ_LABELS = {
-    RfqStatus.OPEN: "待报价",
-    RfqStatus.QUOTED: "已报价",
-    RfqStatus.SAMPLE: "打样中",
-    RfqStatus.WON: "成交",
-    RfqStatus.LOST: "未成交",
-}
 QUOTE_LABELS = {
-    QuoteStatus.DRAFT: "草稿",
-    QuoteStatus.SENT: "已发出",
-    QuoteStatus.ACCEPTED: "对方接受",
-    QuoteStatus.REJECTED: "对方未接受",
-    QuoteStatus.SUPERSEDED: "已被新版本替代",
+    QuoteStatus.PENDING: "待报价",
+    QuoteStatus.QUOTED: "已报价",
+    QuoteStatus.WON: "成交",
+    QuoteStatus.LOST: "未成交",
 }
 QUOTE_TONE = {
-    QuoteStatus.DRAFT: "",
-    QuoteStatus.SENT: "blue",
-    QuoteStatus.ACCEPTED: "pass",
-    QuoteStatus.REJECTED: "reject",
-    QuoteStatus.SUPERSEDED: "",
+    QuoteStatus.PENDING: "caution",
+    QuoteStatus.QUOTED: "blue",
+    QuoteStatus.WON: "pass",
+    QuoteStatus.LOST: "",
 }
 CURRENCIES = ["USD", "EUR", "CNY"]
 QUOTE_UNITS = ["pcs", "1000 pcs", "kg", "MT", "sets", "cartons"]
+LOST_REASONS = ["价格高", "交期长", "没有回复", "规格对不上"]
 PRODUCT_GROUPS = ["自钻螺钉", "抽芯铆钉 / 拉铆螺母", "垫圈", "膨胀锚栓", "干壁钉 / 木螺钉", "螺栓螺母"]
 UNFIT_REASONS = ["同行制造商", "产品不对口", "规模太小", "联系不上", "只做零售"]
 
@@ -245,25 +228,18 @@ def quote_sheet(quote: Quote, tz: str, now: datetime) -> QuoteSheet:
     return QuoteSheet.of(quote, tz, now)
 
 
-def money(value: Decimal) -> str:
-    return f"{value:,.2f}"
+def quote_total(quote: Quote, tz: str, now: datetime) -> tuple[Decimal, bool]:
+    """列表里显示的金额：生成过就用最新一版的合计，否则用正在编辑的明细，第二个值表示是否已生成。"""
+    if quote.versions:
+        return Decimal(quote.versions[0].total), True
+    return QuoteSheet.of(quote, tz, now).total, False
 
 
-def unit_price(value: Decimal | None) -> str:
-    """单价保留实际填写的位数，至少两位小数：0.0185、1.20。"""
-    if value is None:
-        return ""
-    whole, _, frac = format(value.normalize(), "f").partition(".")
-    return f"{int(whole):,}.{frac.ljust(2, '0')}"
-
-
-def quantity(value: Decimal | None) -> str:
-    return format(value.normalize(), ",f") if value is not None else ""
-
-
-def plain(value: Decimal | None) -> str:
-    """填回输入框的数字：不带千分位。"""
-    return format(value.normalize(), "f") if value is not None else ""
+def quote_products(quote: Quote, limit: int = 2) -> str:
+    """'Hex bolt、Blind rivet 等 4 项'。"""
+    names = [d for item in quote.items if (d := QuoteLine.model_validate(item).description)]
+    shown = "、".join(names[:limit])
+    return f"{shown} 等 {len(names)} 项" if len(names) > limit else shown
 
 
 def ago(value: datetime | None, now: datetime) -> str:

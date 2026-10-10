@@ -1,0 +1,4 @@
+{# 拆询价进行中：每 2 秒问一次，结束后服务端让页面刷新 #}
+<div class="callout" id="parse-status" hx-get="/quotes/{{ quote_id or q.id }}/parse" hx-trigger="every 2s" hx-swap="outerHTML">
+  <span class="status status-live">AI 正在拆分客户询价，通常十几秒，完成后页面会自动刷新</span>
+</div>

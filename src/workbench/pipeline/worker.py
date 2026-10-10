@@ -8,16 +8,18 @@ from sqlalchemy import select, update
 from workbench.pipeline.context import Context
 from workbench.pipeline.outreach import Outreach
 from workbench.pipeline.prospect import Prospecting
+from workbench.pipeline.quotes import Quoting
 from workbench.pipeline.research import Research
 from workbench.store.models import Company, CompanyStatus, Run, RunKind, RunStatus
 
 
 class Worker:
-    def __init__(self, ctx: Context, prospect: Prospecting, research: Research, outreach: Outreach):
+    def __init__(self, ctx: Context, prospect: Prospecting, research: Research, outreach: Outreach, quotes: Quoting):
         self.ctx = ctx
         self.prospect = prospect
         self.research = research
         self.outreach = outreach
+        self.quotes = quotes
 
     async def execute(self, run_id: int) -> None:
         with self.ctx.db.session() as session:
@@ -31,6 +33,8 @@ class Worker:
                 await self.research.execute(run_id)
             case RunKind.WRITE:
                 await self.outreach.execute(run_id)
+            case RunKind.PARSE:
+                await self.quotes.execute(run_id)
             case _:
                 assert_never(kind)
 

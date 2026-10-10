@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
-{% from "components.html" import rfq_quote with context %}
 {% block title %}跟进 · 冠维获客工作台{% endblock %}
 
 {% block content %}
 <div class="page-head">
   <div>
     <h1>跟进</h1>
-    <p>邮件开门，WhatsApp 成交。对方回复后在客户档案里记一笔；有询价就记 RFQ、写报价单，打印成 PDF 从 WhatsApp 或邮件发出。</p>
+    <p>邮件开门，WhatsApp 成交。对方回复后在客户档案里记一笔；对方问价就在档案里新建报价，报价单都在<a href="/quotes">报价</a>页。</p>
   </div>
 </div>
 
@@ -33,22 +32,8 @@
     {% for c in replied %}
     {% set last_in = c.interactions | selectattr("direction", "eq", Direction.IN) | first %}
     <a class="item" href="/companies/{{ c.id }}?tab=followup"><strong>{{ c.name }}</strong>
-      <p>{{ last_in.summary if last_in else "已回复" }}{% if c.rfqs %}，{{ c.rfqs | length }} 条 RFQ{% endif %}</p></a>
+      <p>{{ last_in.summary if last_in else "已回复" }}{% if c.quotes %}，{{ c.quotes | length }} 张报价单{% endif %}</p></a>
     {% else %}<p class="empty small">对方回复后，在客户档案里记一笔就会出现在这里</p>{% endfor %}
   </section>
 </div>
-
-<section class="panel" style="margin-top: 16px">
-  <div class="toolbar"><h2 style="font-size: var(--text-md)">询价与报价</h2><span class="muted small">{{ rfqs | length }}</span></div>
-  {% if rfqs %}
-  <table class="table">
-    <thead><tr><th>公司</th><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th><th>报价单</th></tr></thead>
-    <tbody>{% for r in rfqs %}
-      <tr><td><a href="/companies/{{ r.company.id }}?tab=followup">{{ r.company.name }}</a></td><td>{{ r.products }}</td><td>{{ r.quantity }}</td><td>{{ r.incoterm }}</td>
-        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td>
-        <td>{{ rfq_quote(r) }}</td></tr>
-    {% endfor %}</tbody>
-  </table>
-  {% else %}<p class="empty small">有询价时在客户档案的跟进页记录</p>{% endif %}
-</section>
 {% endblock %}

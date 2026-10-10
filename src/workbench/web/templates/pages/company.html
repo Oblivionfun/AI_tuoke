@@ -19,7 +19,7 @@
     {% if c.status == CompanyStatus.QUEUED %}<a class="btn btn-primary" href="/today?focus={{ c.id }}">去审核</a>
     {% elif c.status == CompanyStatus.ACCEPTED %}<a class="btn btn-primary" href="?tab=drafts">去发送草稿</a>
     {% elif c.status == CompanyStatus.CONTACTED %}<a class="btn btn-primary" href="?tab=followup">记录对方回复</a>
-    {% elif c.status == CompanyStatus.REPLIED %}<a class="btn btn-primary" href="?tab=followup">记录 RFQ</a>{% endif %}
+    {% elif c.status == CompanyStatus.REPLIED %}<a class="btn btn-primary" href="/quotes/new?company_id={{ c.id }}">新建报价</a>{% endif %}
     {% if c.status != CompanyStatus.ARCHIVED or not c.decision_note.startswith("拒绝联系") %}
     <form method="post" action="/runs/research"><input type="hidden" name="company_id" value="{{ c.id }}">
       <button class="btn" type="submit">{{ "开始调研" if not c.dossier else "重新调研" }}</button></form>
@@ -40,7 +40,7 @@
     <section class="panel empty"><h2>还没有调研档案</h2><p>{{ (c.prospect_evidence or {}).get("why") or "点右上角开始调研。" }}</p></section>
     {% endif %}
 
-    {% set tabs = [("dossier", "档案详情", none), ("drafts", "草稿", c.drafts | selectattr("status", "ne", DraftStatus.DISCARDED) | list | length), ("followup", "跟进", c.interactions | length + c.rfqs | length), ("runs", "运行记录", runs | length)] %}
+    {% set tabs = [("dossier", "档案详情", none), ("drafts", "草稿", c.drafts | selectattr("status", "ne", DraftStatus.DISCARDED) | list | length), ("followup", "跟进", c.interactions | length + c.quotes | length), ("runs", "运行记录", runs | length)] %}
     <nav class="tabs" aria-label="档案分页" style="margin-top: 24px">
       {% for key, label, n in tabs %}<a href="?tab={{ key }}" hx-get="?tab={{ key }}" hx-target="#tab-panel" hx-select="#tab-panel" hx-swap="outerHTML" hx-push-url="true" data-tab="{{ key }}" {% if key == tab %}aria-current="page"{% endif %}>{{ label }}{% if n %}<span class="n">{{ n }}</span>{% endif %}</a>{% endfor %}
     </nav>

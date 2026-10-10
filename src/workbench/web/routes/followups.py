@@ -1,11 +1,11 @@
-"""跟进：待发送的草稿、等对方回复、已回复，三栏看板 + 询价与报价列表。"""
+"""跟进：待发送的草稿、等对方回复、已回复，三栏看板。报价单在报价页。"""
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from workbench.store.models import Company, CompanyStatus, Draft, DraftStatus, Rfq
+from workbench.store.models import Company, CompanyStatus, Draft, DraftStatus
 from workbench.web.deps import current_user, get_wb, render
 
 router = APIRouter()
@@ -37,23 +37,11 @@ def followups(request: Request, user: str = Depends(current_user)) -> HTMLRespon
         replied = (
             s.execute(
                 select(Company)
-                .options(selectinload(Company.interactions), selectinload(Company.rfqs))
+                .options(selectinload(Company.interactions), selectinload(Company.quotes))
                 .where(Company.status == CompanyStatus.REPLIED)
                 .order_by(Company.updated_at.desc())
             )
             .scalars()
             .all()
         )
-        rfqs = (
-            s.execute(
-                select(Rfq)
-                .options(selectinload(Rfq.company), selectinload(Rfq.quotes))
-                .order_by(Rfq.id.desc())
-                .limit(100)
-            )
-            .scalars()
-            .all()
-        )
-    return render(
-        request, "pages/followups.html", nav="followups", drafts=drafts, waiting=waiting, replied=replied, rfqs=rfqs
-    )
+    return render(request, "pages/followups.html", nav="followups", drafts=drafts, waiting=waiting, replied=replied)

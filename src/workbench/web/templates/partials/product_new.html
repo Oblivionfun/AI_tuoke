@@ -1,0 +1,29 @@
+{# 新增产品抽屉：样册里没有的产品，填好就能在报价时搜到。 #}
+{% from "components.html" import icon %}
+<form method="post" action="/products" autocomplete="off">
+  <div class="drawer-head">
+    <div>
+      <h2 style="font-size: var(--text-lg)">新增产品</h2>
+      <p class="muted small">样册里没有的产品，编号自动生成（GW-M001 起）</p>
+    </div>
+    <button class="btn btn-quiet btn-sm" type="button" data-dialog-close aria-label="关闭">{{ icon("x") }}</button>
+  </div>
+  <div class="drawer-body">
+    <label class="field"><span>品类</span>
+      <select class="select" name="category">{% for c in categories %}<option>{{ c }}</option>{% endfor %}<option>其他</option></select></label>
+    <label class="field"><span>中文名</span><input class="input" name="name_zh" placeholder="例如：六角螺栓"></label>
+    <label class="field"><span>英文品名（印在报价单上）</span><input class="input" name="name_en" required placeholder="例如：Hex bolt"></label>
+    <label class="field"><span>英文规格</span><input class="input" name="spec_en" placeholder="例如：DIN 933, grade 8.8, zinc plated"></label>
+    <div class="form-row">
+      <label class="field"><span>计价单位</span>
+        <select class="select" name="price_unit">{% for u in view.QUOTE_UNITS %}<option {% if u == "1000 pcs" %}selected{% endif %}>{{ u }}</option>{% endfor %}</select></label>
+      <label class="field"><span>参考价（USD）</span><input class="input num" name="ref_price" inputmode="decimal" pattern="[0-9., ]*"></label>
+      <label class="field"><span>成本（USD）</span><input class="input num" name="cost" inputmode="decimal" pattern="[0-9., ]*"></label>
+    </div>
+    <span class="field-hint">参考价和成本按计价单位算，都可以先空着。</span>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn" type="button" data-dialog-close>取消</button>
+    <button class="btn btn-primary" type="submit">新增</button>
+  </div>
+</form>

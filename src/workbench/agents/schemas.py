@@ -1,4 +1,4 @@
-"""4 个 agent 的交卷格式。
+"""agent 的交卷格式：获客 4 个（寻客、调研、审查、文案），报价 1 个（拆询价），评测 1 个（评委）。
 
 这些类型只用来固定字段、存库和展示，不在代码里校验结论；结论质量靠提示词契约和审查 agent。
 所有字段都必填（Agents SDK 的严格 JSON Schema 要求），查不到时 agent 写"未找到"或给空列表。
@@ -17,6 +17,7 @@ class AgentRole(StrEnum):
     RESEARCHER = "researcher"
     REVIEWER = "reviewer"
     WRITER = "writer"
+    PARSER = "parser"
     JUDGE = "judge"
 
 
@@ -25,6 +26,7 @@ ROLE_LABELS: dict[AgentRole, str] = {
     AgentRole.RESEARCHER: "调研",
     AgentRole.REVIEWER: "审查",
     AgentRole.WRITER: "文案",
+    AgentRole.PARSER: "拆询价",
     AgentRole.JUDGE: "评委",
 }
 
@@ -143,6 +145,25 @@ class DraftEmail(BaseModel):
     send_tips_zh: str = Field(description="中文发送提示：发给哪个地址、什么时间、注意什么")
 
 
+# ---------- 拆询价 ----------
+
+
+class InquiryItem(BaseModel):
+    product_id: str = Field(description="对应我方产品清单里的 id，例如 GW-P04-04；对不上写空字符串")
+    description: str = Field(description="英文品名，例如 'Hex bolt'、'Blind rivet, open end'")
+    size: str = Field(description="尺寸，例如 'M12 x 60'、'4.8 x 12 mm'；客户没写就空字符串")
+    spec: str = Field(description="客户提的其他要求：标准、材质、等级、表面处理，用英文；没写就空字符串")
+    quantity: str = Field(description="数量，只写阿拉伯数字，例如 20000；客户没写就空字符串")
+    unit: Literal["pcs", "1000 pcs", "kg", "MT", "sets", "cartons"] = Field(description="数量的单位；客户没写用 pcs")
+    source_text: str = Field(description="这一行对应的询价原文片段，原样抄录")
+
+
+class InquiryParse(BaseModel):
+    items: list[InquiryItem]
+    incoterm: str = Field(description="客户要求的贸易术语和地点，例如 'CIF Jebel Ali'；没写就空字符串")
+    questions_zh: list[str] = Field(description="中文：报价前还要向客户确认的问题，例如缺尺寸、缺数量、材质不明")
+
+
 # ---------- 评委（评测集用） ----------
 
 
@@ -164,5 +185,6 @@ OUTPUT_TYPES: dict[AgentRole, type[BaseModel]] = {
     AgentRole.RESEARCHER: CompanyDossier,
     AgentRole.REVIEWER: ReviewResult,
     AgentRole.WRITER: DraftEmail,
+    AgentRole.PARSER: InquiryParse,
     AgentRole.JUDGE: JudgeResult,
 }

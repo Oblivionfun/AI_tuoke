@@ -84,14 +84,18 @@ class WorkbenchSettings(BaseSettings):
     model_researcher: str | None = None
     model_reviewer: str | None = None
     model_writer: str | None = None
+    model_parser: str | None = None
     model_judge: str | None = None
     reasoning_effort: str = "high"
+    # 拆询价是简单的抽取，用低推理档，几秒出结果
+    reasoning_effort_parser: str = "low"
     search_context_size: str = "medium"
 
     max_turns_prospector: int = 40
     max_turns_researcher: int = 30
     max_turns_reviewer: int = 25
     max_turns_writer: int = 3
+    max_turns_parser: int = 3
     max_turns_judge: int = 3
 
     research_concurrency: int = Field(4, ge=1, le=8)
@@ -117,7 +121,7 @@ class WorkbenchSettings(BaseSettings):
     seller_whatsapp: str = ""
     seller_website: str = ""
 
-    # 新报价单的默认条款，每张报价单里都能改。价格和交期没有默认值，由人填写。
+    # 新报价单的默认条款，每张报价单里都能改。价格没有默认值：报价单里手填，或用产品库的参考价。
     quote_currency: str = "USD"
     quote_incoterm: str = "FOB Tianjin"
     quote_validity_days: int = 30
@@ -146,6 +150,7 @@ class WorkbenchSettings(BaseSettings):
             AgentRole.RESEARCHER: self.model_researcher,
             AgentRole.REVIEWER: self.model_reviewer,
             AgentRole.WRITER: self.model_writer,
+            AgentRole.PARSER: self.model_parser,
             AgentRole.JUDGE: self.model_judge,
         }[role]
         return override or self.model
@@ -156,8 +161,12 @@ class WorkbenchSettings(BaseSettings):
             AgentRole.RESEARCHER: self.max_turns_researcher,
             AgentRole.REVIEWER: self.max_turns_reviewer,
             AgentRole.WRITER: self.max_turns_writer,
+            AgentRole.PARSER: self.max_turns_parser,
             AgentRole.JUDGE: self.max_turns_judge,
         }[role]
+
+    def reasoning_effort_for(self, role: AgentRole) -> str:
+        return self.reasoning_effort_parser if role is AgentRole.PARSER else self.reasoning_effort
 
 
 @lru_cache(maxsize=1)

@@ -2,7 +2,8 @@
 
     寻客 → 按域名去重 → 调研（每家一个干净上下文，并行）→ 审查（不通过最多返工一次）
     → 今日审核（每天最多 10 张）→ 人工决定 → 接受后写信 → 业务员手动发送
-    → 对方回复、询价 → 人填报价单 → 业务员手动发送
+    报价（独立于获客，任何客户都能报）：选产品 → 人填价格 → 生成报价单 PDF（存版本快照）→ 成交 / 未成交
+    客户发来的询价原文可以交给拆询价 agent 拆成明细行，价格仍由人填。
 
 agent 之间只传结构化结果，不传网页原文。代码不校验 agent 的结论，只负责去重、排队、记账和三条底线。
 入口是 `Workbench`：网页和命令行都通过它调用各环节，例如 `wb.review.decide(...)`。
@@ -40,7 +41,7 @@ class Workbench:
         self.review = ReviewQueue(self.ctx)
         self.outreach = Outreach(self.ctx)
         self.quotes = Quoting(self.ctx)
-        self.worker = Worker(self.ctx, self.prospect, self.research, self.outreach)
+        self.worker = Worker(self.ctx, self.prospect, self.research, self.outreach, self.quotes)
 
     @property
     def db(self) -> Database:

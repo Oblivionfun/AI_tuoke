@@ -68,6 +68,19 @@ def products_summary(session: Session) -> str:
     return "\n".join(lines)
 
 
+def quote_catalog(session: Session) -> str:
+    """拆询价用的产品清单：每行一个 id，方便把客户写的产品对到我方产品。"""
+    products = (
+        session.execute(select(Product).options(selectinload(Product.variants)).order_by(Product.id)).scalars().all()
+    )
+    lines = ["# 我方产品清单（id | 中文名 | 英文名 | 品类 | 规格）", ""]
+    for p in products:
+        variant = p.variants[0] if p.variants else None
+        spec = p.spec_en or (" ".join(filter(None, [variant.standard, variant.sizes])) if variant else "")
+        lines.append(f"- {p.id} | {p.name_zh} | {p.name_en} | {p.category} | {spec}")
+    return "\n".join(lines)
+
+
 class PromptLibrary:
     def __init__(self, settings: WorkbenchSettings):
         self.settings = settings
@@ -98,12 +111,15 @@ class PromptLibrary:
 
     def build(self, role: AgentRole, *, country: str | None, products: str) -> PromptBundle:
         contract, contract_version = self.contract(role)
-        parts = [contract, "# 知识包：核心摘要", self.core(), self.directory_list(), products]
-        if role is AgentRole.WRITER:
-            parts.append(_read(self.knowledge_dir / "writing.md"))
-        market = self.market(country)
-        if market:
-            parts.append(market)
+        if role is AgentRole.PARSER:
+            parts = [contract, products]
+        else:
+            parts = [contract, "# 知识包：核心摘要", self.core(), self.directory_list(), products]
+            if role is AgentRole.WRITER:
+                parts.append(_read(self.knowledge_dir / "writing.md"))
+            market = self.market(country)
+            if market:
+                parts.append(market)
         text = "\n\n---\n\n".join(p for p in parts if p)
         digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:8]
         return PromptBundle(text=text, version=f"{contract_version}+{digest}")

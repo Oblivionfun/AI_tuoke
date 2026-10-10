@@ -1,0 +1,7 @@
+{# 客户联想：AI 获客里的公司和以前报过价的客户 #}
+{% for c in customers %}
+<button class="option" type="button" data-pick-customer="{{ {'name': c.name, 'country': c.country, 'contact': c.contact, 'company_id': c.company_id or ''} | tojson | forceescape }}">
+  <span class="option-main"><strong>{{ c.name }}</strong></span>
+  <span class="option-meta">{{ c.country }}{% if c.company_id %} · AI 获客档案{% else %} · 报过价{% endif %}</span>
+</button>
+{% endfor %}

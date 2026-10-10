@@ -17,12 +17,15 @@
   <aside class="sidebar">
     <a class="brand" href="/today">{{ mark() }}冠维获客</a>
     <nav class="nav" aria-label="主导航">
+      <span class="nav-group">获客</span>
       <a href="/today" {% if nav == "today" %}aria-current="page"{% endif %}>今日审核{% if side.review %}<span class="count">{{ side.review }}</span>{% endif %}</a>
       <a href="/companies" {% if nav == "companies" %}aria-current="page"{% endif %}>客户</a>
-      <a href="/runs" {% if nav == "runs" %}aria-current="page"{% endif %}>运行{% if side.running %}<span class="live" title="有任务正在运行"></span><span class="visually-hidden">（有任务正在运行）</span>{% endif %}</a>
-      <a href="/products" {% if nav == "products" %}aria-current="page"{% endif %}>产品库</a>
       <a href="/followups" {% if nav == "followups" %}aria-current="page"{% endif %}>跟进{% if side.drafts %}<span class="count">{{ side.drafts }}</span>{% endif %}</a>
+      <a href="/runs" {% if nav == "runs" %}aria-current="page"{% endif %}>运行{% if side.running %}<span class="live" title="有任务正在运行"></span><span class="visually-hidden">（有任务正在运行）</span>{% endif %}</a>
       <a href="/tiktok" {% if nav == "tiktok" %}aria-current="page"{% endif %}>TikTok 询盘<span class="count">未接入</span></a>
+      <span class="nav-group">报价</span>
+      <a href="/quotes" {% if nav == "quotes" %}aria-current="page"{% endif %}>报价单{% if side.pending_quotes %}<span class="count">{{ side.pending_quotes }}</span>{% endif %}</a>
+      <a href="/products" {% if nav == "products" %}aria-current="page"{% endif %}>产品库</a>
     </nav>
     <div class="sidebar-foot">
       <span>近 7 天花费 <strong>${{ "%.2f" | format(side.usage.cost_usd) }}</strong></span>
