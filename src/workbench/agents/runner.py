@@ -142,10 +142,7 @@ def _usage_from(result: Any, web_search_calls: int) -> UsageRecord:
 
 def openai_client(settings: WorkbenchSettings) -> AsyncOpenAI:
     """OpenAI 官方或公司网关（AIHub）的客户端。两者都走 Responses 接口，只是地址和 key 不同。"""
-    headers = {"Host": settings.llm_host_header} if settings.llm_host_header else None
-    return AsyncOpenAI(
-        api_key=settings.api_key or None, base_url=settings.llm_base_url or None, default_headers=headers
-    )
+    return AsyncOpenAI(api_key=settings.api_key or None, base_url=settings.llm_base_url or None)
 
 
 class SdkRunner:

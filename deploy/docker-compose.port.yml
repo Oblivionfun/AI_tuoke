@@ -18,14 +18,12 @@ services:
       retries: 3
       start_period: 20s
 
-  # worker 用主机网络：经 SSH 反向隧道访问网关时，隧道端口只开在服务器的 127.0.0.1 上（见 aihub-tunnel.sh）
   worker:
     image: guanwei-workbench:latest
     env_file: .env
     volumes:
       - ./data:/data
     command: ["workbench", "worker"]
-    network_mode: host
     restart: unless-stopped
     profiles: ["agents"]
     depends_on:

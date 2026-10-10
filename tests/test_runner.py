@@ -62,16 +62,3 @@ def test_web_search_request_shape(monkeypatch):
     assert converted["type"] == "web_search"
     assert converted["user_location"] == {"type": "approximate", "country": "AE"}
     assert json.loads(json.dumps(converted))["user_location"]["country"] == "AE"
-
-
-def test_gateway_through_tunnel_keeps_host_header():
-    settings = WorkbenchSettings(
-        _env_file=None,
-        llm_base_url="http://127.0.0.1:18080/v1",
-        llm_api_key="secret",
-        llm_provider="openai",
-        llm_host_header="api.aihub.woa.com",
-    )
-    client = SdkRunner(settings).client
-    assert str(client.base_url).rstrip("/") == "http://127.0.0.1:18080/v1"
-    assert client.default_headers["Host"] == "api.aihub.woa.com"

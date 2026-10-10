@@ -72,12 +72,11 @@ class WorkbenchSettings(BaseSettings):
 
     # 模型网关。不填走 OpenAI 官方（读 OPENAI_API_KEY）。
     # 公司 AIHub：base_url=http://api.aihub.woa.com/v1，provider=openai（透传 Responses 接口，支持 web_search）。
+    # AIHub 只能在公司内网直接访问，不要经隧道或代理转发给外部服务器。
     # 不要用 /standard/v1/chat/completions：那里 function 工具和联网搜索都返回 400。
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_provider: str = ""
-    # 经 SSH 隧道访问网关时，base_url 是隧道的本地端口，这里填网关真实域名作为 Host 头
-    llm_host_header: str | None = None
 
     model: str = "gpt-5.5"
     model_prospector: str | None = None
