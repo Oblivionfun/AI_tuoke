@@ -17,10 +17,10 @@ from workbench.agents.runner import TRACE_URL, AgentRunner, SdkRunner
 from workbench.config import WorkbenchSettings, get_settings
 from workbench.pipeline import Workbench
 from workbench.store.db import Database
-from workbench.store.models import CompanyStatus, Direction, DraftStatus, Queue, RunKind, RunStatus, utcnow
+from workbench.store.models import CompanyStatus, Direction, DraftStatus, Queue, QuoteStatus, RunKind, RunStatus, utcnow
 from workbench.web import view
 from workbench.web.deps import LoginRequired, redirect
-from workbench.web.routes import auth, companies, followups, products, runs, today
+from workbench.web.routes import auth, companies, followups, products, quotes, runs, today
 
 WEB_DIR = Path(__file__).parent
 
@@ -52,6 +52,7 @@ def build_templates(settings: WorkbenchSettings) -> Jinja2Templates:
         Direction=Direction,
         DraftStatus=DraftStatus,
         Queue=Queue,
+        QuoteStatus=QuoteStatus,
         RunKind=RunKind,
         RunStatus=RunStatus,
     )
@@ -80,7 +81,7 @@ def create_app(
         https_only=settings.cookie_secure,
     )
     app.mount("/static", StaticFiles(directory=WEB_DIR / "static"), name="static")
-    for module in (auth, today, companies, runs, products, followups):
+    for module in (auth, today, companies, runs, products, followups, quotes):
         app.include_router(module.router)
 
     @app.exception_handler(LoginRequired)

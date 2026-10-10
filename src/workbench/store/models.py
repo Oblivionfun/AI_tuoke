@@ -1,10 +1,23 @@
-"""工作台数据表（最小集）：产品/SKU、公司、运行与步骤、草稿、联系记录、RFQ、拒绝联系名单、用户。"""
+"""工作台数据表（最小集）：产品/SKU、公司、运行与步骤、草稿、联系记录、RFQ、报价单、拒绝联系名单、用户。"""
 
 from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Any, ClassVar
 
-from sqlalchemy import JSON, Boolean, Date, DateTime, Enum, Float, ForeignKey, Integer, String, Text, TypeDecorator
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Date,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    TypeDecorator,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -98,6 +111,14 @@ class RfqStatus(StrEnum):
     SAMPLE = "sample"
     WON = "won"
     LOST = "lost"
+
+
+class QuoteStatus(StrEnum):
+    DRAFT = "draft"
+    SENT = "sent"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+    SUPERSEDED = "superseded"
 
 
 class Product(Base):
@@ -253,6 +274,45 @@ class Rfq(Base):
     created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
 
     company: Mapped[Company] = relationship(back_populates="rfqs")
+    quotes: Mapped[list["Quote"]] = relationship(back_populates="rfq", order_by="Quote.version.desc()")
+
+
+class Quote(Base):
+    """报价单。价格只由人填写；发出后这一版不再修改，改价出新版本。
+
+    items 每行：description、spec、quantity、unit、unit_price、unit_cost（内部成本，不打印），数字存成字符串。
+    """
+
+    __tablename__ = "quotes"
+    __table_args__ = (UniqueConstraint("rfq_id", "version"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    rfq_id: Mapped[int] = mapped_column(ForeignKey("rfqs.id"), index=True)
+    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), index=True)
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    status: Mapped[QuoteStatus] = mapped_column(enum_col(QuoteStatus), default=QuoteStatus.DRAFT, index=True)
+    currency: Mapped[str] = mapped_column(String(3), default="USD")
+    incoterm: Mapped[str] = mapped_column(String(64), default="")
+    validity_days: Mapped[int] = mapped_column(Integer, default=30)
+    lead_time: Mapped[str] = mapped_column(String(100), default="")
+    payment_terms: Mapped[str] = mapped_column(String(200), default="")
+    packing: Mapped[str] = mapped_column(String(300), default="")
+    remarks: Mapped[str] = mapped_column(Text, default="")
+    items: Mapped[list[Any]] = mapped_column(default=list)
+    outcome_note: Mapped[str] = mapped_column(Text, default="")
+    created_by: Mapped[str] = mapped_column(String(64), default="")
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow, onupdate=utcnow)
+    sent_by: Mapped[str] = mapped_column(String(64), default="")
+    sent_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
+
+    rfq: Mapped[Rfq] = relationship(back_populates="quotes")
+    company: Mapped[Company] = relationship()
+
+    @property
+    def number(self) -> str:
+        """报价单号：同一询价共用一个号，改价的版本加 -R2、-R3。"""
+        return f"GW-Q{self.rfq_id:04d}" + (f"-R{self.version}" if self.version > 1 else "")
 
 
 class Suppression(Base):

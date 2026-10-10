@@ -111,10 +111,18 @@ class WorkbenchSettings(BaseSettings):
     price_web_search_per_call: float = 0.01
 
     seller_company: str = "Handan Guanwei Fastener Manufacturing Co., Ltd."
+    seller_address: str = "Yongnian, Handan, Hebei, China"
     seller_contact_name: str = ""
     seller_email: str = ""
     seller_whatsapp: str = ""
     seller_website: str = ""
+
+    # 新报价单的默认条款，每张报价单里都能改。价格和交期没有默认值，由人填写。
+    quote_currency: str = "USD"
+    quote_incoterm: str = "FOB Tianjin"
+    quote_validity_days: int = 30
+    quote_payment_terms: str = "30% T/T deposit, balance before shipment"
+    quote_target_margin: float = 0.18
 
     session_secret: str = "change-me"
     cookie_secure: bool = False

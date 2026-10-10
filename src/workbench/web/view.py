@@ -6,13 +6,26 @@
 import re
 from dataclasses import dataclass
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, assert_never
 from urllib.parse import urlsplit
 
 from workbench.pipeline import pick_email
-from workbench.store.models import Channel, Company, CompanyStatus, Queue, RfqStatus, RunKind, RunStatus
+from workbench.pipeline.quotes import QuoteSheet
+from workbench.store.models import (
+    Channel,
+    Company,
+    CompanyStatus,
+    Queue,
+    Quote,
+    QuoteStatus,
+    RfqStatus,
+    RunKind,
+    RunStatus,
+)
 
 COUNTRIES = {"AE": "阿联酋", "ZA": "南非", "SA": "沙特"}
+COUNTRIES_EN = {"AE": "United Arab Emirates", "ZA": "South Africa", "SA": "Saudi Arabia"}
 QUEUE_LABELS = {q: q.label for q in Queue}
 STATUS_LABELS = {
     CompanyStatus.NEW: "待调研",
@@ -72,6 +85,22 @@ RFQ_LABELS = {
     RfqStatus.WON: "成交",
     RfqStatus.LOST: "未成交",
 }
+QUOTE_LABELS = {
+    QuoteStatus.DRAFT: "草稿",
+    QuoteStatus.SENT: "已发出",
+    QuoteStatus.ACCEPTED: "对方接受",
+    QuoteStatus.REJECTED: "对方未接受",
+    QuoteStatus.SUPERSEDED: "已被新版本替代",
+}
+QUOTE_TONE = {
+    QuoteStatus.DRAFT: "",
+    QuoteStatus.SENT: "blue",
+    QuoteStatus.ACCEPTED: "pass",
+    QuoteStatus.REJECTED: "reject",
+    QuoteStatus.SUPERSEDED: "",
+}
+CURRENCIES = ["USD", "EUR", "CNY"]
+QUOTE_UNITS = ["pcs", "1000 pcs", "kg", "MT", "sets", "cartons"]
 PRODUCT_GROUPS = ["自钻螺钉", "抽芯铆钉 / 拉铆螺母", "垫圈", "膨胀锚栓", "干壁钉 / 木螺钉", "螺栓螺母"]
 UNFIT_REASONS = ["同行制造商", "产品不对口", "规模太小", "联系不上", "只做零售"]
 
@@ -210,6 +239,31 @@ def review_summary(review: dict[str, Any] | None) -> tuple[str, str]:
         return "pass", f"审查通过，核对了 {len(review.get('checked_sources', []))} 个来源"
     must_fix = sum(1 for i in review.get("issues", []) if i.get("severity") == "must_fix")
     return "reject", f"审查未通过，{must_fix} 处必须修改"
+
+
+def quote_sheet(quote: Quote, tz: str, now: datetime) -> QuoteSheet:
+    return QuoteSheet.of(quote, tz, now)
+
+
+def money(value: Decimal) -> str:
+    return f"{value:,.2f}"
+
+
+def unit_price(value: Decimal | None) -> str:
+    """单价保留实际填写的位数，至少两位小数：0.0185、1.20。"""
+    if value is None:
+        return ""
+    whole, _, frac = format(value.normalize(), "f").partition(".")
+    return f"{int(whole):,}.{frac.ljust(2, '0')}"
+
+
+def quantity(value: Decimal | None) -> str:
+    return format(value.normalize(), ",f") if value is not None else ""
+
+
+def plain(value: Decimal | None) -> str:
+    """填回输入框的数字：不带千分位。"""
+    return format(value.normalize(), "f") if value is not None else ""
 
 
 def ago(value: datetime | None, now: datetime) -> str:

@@ -72,6 +72,32 @@
 <span class="ticks" role="img" aria-label="{{ done }} / {{ total }}">{% for i in range(total) %}<i class="{{ 'on' if i < done }}"></i>{% endfor %}</span>
 {%- endmacro %}
 
+{% macro quote_status(status) -%}
+<span class="status status-{{ view.QUOTE_TONE[status] }}">{{ view.QUOTE_LABELS[status] }}</span>
+{%- endmacro %}
+
+{# 询价表格里的"报价单"一栏：有报价就显示最新一版，没有就给出写报价单的按钮 #}
+{% macro rfq_quote(rfq) -%}
+{% set latest = rfq.quotes | first %}
+{% if latest %}<a href="/quotes/{{ latest.id }}" translate="no">{{ latest.number }}</a>
+<span class="muted small" style="display: block">{{ view.QUOTE_LABELS[latest.status] }}，{{ latest.currency }} {{ view.money(view.quote_sheet(latest, settings.timezone, now).total) }}</span>
+{% else %}<form method="post" action="/rfqs/{{ rfq.id }}/quote"><button class="btn btn-sm" type="submit">写报价单</button></form>{% endif %}
+{%- endmacro %}
+
+{# 报价单编辑页的一行；line 为空时是"添加一行"用的空白行 #}
+{% macro quote_line(line) -%}
+<tr data-line>
+  <td><input class="input" name="description" value="{{ line.description if line }}" aria-label="产品" placeholder="Self-drilling screw"></td>
+  <td><input class="input" name="spec" value="{{ line.spec if line }}" aria-label="规格" placeholder="DIN 7504N ST4.8×19, zinc plated"></td>
+  <td><input class="input num" name="quantity" inputmode="decimal" value="{{ view.plain(line.quantity) if line }}" aria-label="数量"></td>
+  <td><input class="input" name="unit" list="quote-units" value="{{ line.unit if line else 'pcs' }}" aria-label="单位"></td>
+  <td><input class="input num" name="unit_price" inputmode="decimal" value="{{ view.plain(line.unit_price) if line }}" aria-label="单价"></td>
+  <td><input class="input num" name="unit_cost" inputmode="decimal" value="{{ view.plain(line.unit_cost) if line }}" aria-label="成本（内部，不打印）"></td>
+  <td class="num amount" data-amount>{{ view.money(line.amount) if line and line.amount is not none else "—" }}</td>
+  <td><button class="btn btn-quiet btn-sm" type="button" data-remove-line aria-label="删除这一行">{{ icon("x") }}</button></td>
+</tr>
+{%- endmacro %}
+
 {% macro contact_value(contact) -%}
 {% if contact.kind == "email" %}<a href="mailto:{{ contact.value }}">{{ contact.value }}</a>
 {% elif contact.value.startswith("http") %}<a href="{{ contact.value }}" target="_blank" rel="noopener noreferrer">{{ contact.value | short_url }}</a>

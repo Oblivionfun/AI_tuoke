@@ -366,6 +366,84 @@ svg.icon { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: no
 .board-col .item strong { font-weight: 500; }
 .board-col .item p { font-size: var(--text-sm); color: var(--steel); margin-top: 2px; }
 
+/* ---------- 报价单 ---------- */
+
+.table-scroll { overflow-x: auto; }
+.quote-lines { min-width: 860px; }
+.quote-lines th, .quote-lines td { padding-left: 6px; padding-right: 6px; }
+.quote-lines th:first-child, .quote-lines td:first-child { padding-left: 16px; }
+.quote-lines td { padding-top: 6px; padding-bottom: 6px; }
+.quote-lines .input { min-height: 32px; padding: 5px 8px; }
+.quote-lines td:nth-child(1) { width: 22%; }
+.quote-lines td:nth-child(2) { width: 28%; }
+.quote-lines td:nth-child(3), .quote-lines td:nth-child(5), .quote-lines td:nth-child(6) { width: 10%; }
+.quote-lines td:nth-child(4) { width: 9%; }
+.quote-lines .amount { white-space: nowrap; color: var(--steel); }
+.quote-lines tfoot td { border-top: 1px solid var(--line); padding-top: 10px; padding-bottom: 10px; }
+.input.num { text-align: right; }
+.line-total { margin-left: 8px; font-size: var(--text-md); font-weight: 600; white-space: nowrap; }
+.quote-hint { padding: 0 16px 14px; }
+.terms-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 16px; }
+.terms-grid .span-2 { grid-column: span 2; }
+.terms-grid .span-4 { grid-column: 1 / -1; }
+.terms-grid .field > span .muted { font-size: var(--text-xs); }
+.quote-bar {
+  position: sticky; bottom: 12px; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 12px 16px; box-shadow: 0 6px 20px rgba(29, 39, 51, 0.08);
+}
+.quote-bar .send { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.quote-bar .send .select { width: auto; }
+.quote-total { font-size: 28px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; }
+.dl-tight { grid-template-columns: 64px minmax(0, 1fr); }
+.outcome { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.versions { list-style: none; margin: 0; padding: 6px; display: grid; gap: 2px; }
+.versions a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; padding: 8px 10px; border-radius: var(--radius-control); color: var(--graphite); font-weight: 500; }
+.versions a:hover { background: var(--zinc); text-decoration: none; }
+.versions a[aria-current="page"] { background: var(--blue-zinc-wash); }
+.versions a .muted { grid-column: 1 / -1; font-weight: 400; }
+.versions-foot { padding: 8px 12px 12px; border-top: 1px solid var(--line-soft); }
+
+/* 打印页：屏幕上是一张 A4 纸，打印时只留纸本身 */
+.print-page { background: var(--zinc-deep); }
+.print-bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 24px; background: var(--plate); border-bottom: 1px solid var(--line); }
+.print-bar .btn-primary { margin-left: auto; }
+.sheet {
+  width: 210mm; min-height: 297mm; margin: 24px auto; padding: 16mm 14mm; background: #fff; color: #161c23;
+  font-size: 12px; line-height: 1.5; box-shadow: 0 2px 12px rgba(29, 39, 51, 0.12);
+}
+.sheet h1 { font-size: 17px; }
+.sheet h3 { font-size: 11px; font-weight: 600; color: var(--steel); margin-bottom: 4px; }
+.sheet-head { display: flex; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid var(--graphite); }
+.sheet-head p { color: #46525e; }
+.sheet-title { text-align: right; }
+.sheet-title h2 { font-size: 22px; font-weight: 600; letter-spacing: 0.04em; }
+.sheet-meta { display: grid; grid-template-columns: auto auto; gap: 1px 12px; justify-content: end; margin: 6px 0 0; }
+.sheet-meta dt, .sheet-terms dt { color: var(--steel); }
+.sheet-meta dd, .sheet-terms dd { margin: 0; }
+.sheet-meta dd { font-weight: 500; text-align: right; }
+.sheet-parties { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; margin: 18px 0; }
+.sheet-terms { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 1px 10px; margin: 0; }
+.sheet-items { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.sheet-items th { text-align: left; font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--graphite); background: #f3f5f7; }
+.sheet-items td { padding: 6px 8px; border-bottom: 1px solid #dde2e7; vertical-align: top; }
+.sheet-items .num { text-align: right; white-space: nowrap; }
+.sheet-items td:nth-child(2) { width: 26%; }
+.sheet-items td:nth-child(3) { width: 30%; }
+.sheet-items tfoot td { border-bottom: 0; border-top: 1px solid var(--graphite); font-weight: 600; font-size: 13px; }
+.sheet-remarks { margin-top: 18px; }
+.sheet-remarks p { white-space: pre-wrap; }
+.sheet-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 40px; color: #46525e; }
+.sheet-sign { display: grid; gap: 2px; min-width: 220px; padding-top: 44px; border-bottom: 1px solid var(--graphite); padding-bottom: 6px; color: #161c23; }
+.sheet-sign span:first-child { color: var(--steel); }
+
+@page { size: A4; margin: 12mm; }
+@media print {
+  .print-page { background: #fff; }
+  .print-bar, .toasts { display: none; }
+  .sheet { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; }
+  .sheet-items tr { break-inside: avoid; }
+}
+
 /* ---------- 抽屉、提示、登录 ---------- */
 
 dialog.drawer {
@@ -420,4 +498,6 @@ dialog.modal::backdrop { background: rgba(29, 39, 51, 0.32); }
   .card-head { flex-direction: column; }
   .card-score { width: 100%; }
   .page-head { flex-direction: column; align-items: flex-start; }
+  .terms-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .quote-bar .send { margin-left: 0; }
 }

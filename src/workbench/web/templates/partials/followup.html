@@ -1,4 +1,5 @@
-{# 跟进：先看来往记录，再记一笔；有询价时记 RFQ。 #}
+{# 跟进：先看来往记录，再记一笔；有询价时记 RFQ，再写报价单。 #}
+{% from "components.html" import rfq_quote with context %}
 <div class="stack">
 <section class="panel panel-pad">
   <div class="section-title"><h3>来往记录</h3><span class="muted">邮件开门，WhatsApp 成交</span></div>
@@ -22,13 +23,14 @@
 </section>
 
 <section class="panel panel-pad">
-  <div class="section-title"><h3>询价（RFQ）</h3><span class="muted">{{ c.rfqs | length }} 条</span></div>
+  <div class="section-title"><h3>询价与报价</h3><span class="muted">{{ c.rfqs | length }} 条询价</span></div>
   {% if c.rfqs %}
   <table class="table" style="margin-bottom: 16px">
-    <thead><tr><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th></tr></thead>
+    <thead><tr><th>产品与规格</th><th>数量</th><th>贸易术语</th><th>状态</th><th>报价单</th></tr></thead>
     <tbody>{% for r in c.rfqs %}
       <tr><td>{{ r.products }}<span class="muted small" style="display: block">{{ r.created_at | localtime }} {{ r.notes }}</span></td><td>{{ r.quantity }}</td><td>{{ r.incoterm }}</td>
-        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td></tr>
+        <td><form method="post" action="/rfqs/{{ r.id }}/status"><select class="select" name="status" data-autosubmit aria-label="RFQ 状态">{% for st, label in view.RFQ_LABELS.items() %}<option value="{{ st.value }}" {% if r.status == st %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></form></td>
+        <td>{{ rfq_quote(r) }}</td></tr>
     {% endfor %}</tbody>
   </table>
   {% endif %}

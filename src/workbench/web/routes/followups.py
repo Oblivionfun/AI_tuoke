@@ -1,4 +1,4 @@
-"""跟进：待发送的草稿、等对方回复、已回复，三栏看板 + RFQ 列表。"""
+"""跟进：待发送的草稿、等对方回复、已回复，三栏看板 + 询价与报价列表。"""
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
@@ -45,7 +45,14 @@ def followups(request: Request, user: str = Depends(current_user)) -> HTMLRespon
             .all()
         )
         rfqs = (
-            s.execute(select(Rfq).options(selectinload(Rfq.company)).order_by(Rfq.id.desc()).limit(100)).scalars().all()
+            s.execute(
+                select(Rfq)
+                .options(selectinload(Rfq.company), selectinload(Rfq.quotes))
+                .order_by(Rfq.id.desc())
+                .limit(100)
+            )
+            .scalars()
+            .all()
         )
     return render(
         request, "pages/followups.html", nav="followups", drafts=drafts, waiting=waiting, replied=replied, rfqs=rfqs

@@ -23,6 +23,7 @@ flowchart LR
 ```
 寻客 agent → 按域名去重（代码）→ 调研 agent（每家一个干净上下文，并行）→ 审查 agent（不通过最多返工一次）
 → 今日审核（每天最多 10 张）→ 人工决定 → 文案 agent → 业务员从企业邮箱手动发送
+→ 对方回复、询价（RFQ）→ 人填报价单 → 打印成 PDF，业务员手动发送 → 登记结果
 ```
 
 ## 代码地图
@@ -41,6 +42,7 @@ src/workbench/
     research.py          调研 + 审查 + 最多一次返工
     review.py            今日审核队列、人工决定
     outreach.py          文案、草稿、联系记录、RFQ、拒绝联系
+    quotes.py            报价单：版本、合计与毛利、登记发出、对方结果（没有 agent）
     worker.py            抢占和执行排队任务、重启恢复
   store/                 数据库：models.py 表结构，db.py 连接与备份，queries.py 共用查询，migrations/
   web/                   页面：app.py 组装，routes/ 按页面拆分，view.py 展示逻辑，templates/，static/
@@ -68,6 +70,7 @@ eval/                    评测集、反例、基线名单、报告
 5. **agent 之间不传网页原文。** 每家公司的调研是干净上下文，审查 agent 只看档案。
 6. **代码不校验 agent 的结论。** 质量靠提示词契约和审查 agent；代码只负责去重、排队、记账和以上底线。评测（`evals.py`）是测量，不是生产流程里的拦截。
 7. **一张卡只能决定一次。** 重复点"接受"不会排两个文案任务。（`test_decide_twice_is_rejected`）
+8. **价格只由人填，发出的报价不再改。** 报价流程里没有 agent；登记发出后这一版锁定，改价只能出新版本，旧版本标为已替代，每一版都可追溯。拒绝联系的公司不能报价。（`tests/pipeline/test_quotes.py`）
 
 ## 横切关注点
 

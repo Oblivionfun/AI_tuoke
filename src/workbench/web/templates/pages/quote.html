@@ -1,0 +1,172 @@
+{% extends "layout.html" %}
+{% from "components.html" import icon, quote_status, quote_line %}
+{% block title %}报价单 {{ q.number }} · 冠维获客工作台{% endblock %}
+
+{% block content %}
+{% set c = q.company %}
+{% set r = q.rfq %}
+{% set draft = q.status == QuoteStatus.DRAFT %}
+{% set target = settings.quote_target_margin %}
+<a class="crumb" href="/companies/{{ c.id }}?tab=followup">{{ icon("back") }}{{ c.name }}</a>
+<div class="page-head">
+  <div style="min-width: 0">
+    <h1>报价单 <span translate="no">{{ q.number }}</span></h1>
+    <div class="card-meta">
+      <span>{{ view.COUNTRIES.get(c.country, c.country) }}</span>
+      <span>询价：{{ r.products }}{% if r.quantity %}，{{ r.quantity }}{% endif %}</span>
+      {{ quote_status(q.status) }}
+    </div>
+  </div>
+  {% if not draft %}<div class="actions"><a class="btn" href="/quotes/{{ q.id }}/print">{{ icon("page") }}预览和打印</a></div>{% endif %}
+</div>
+
+<div class="profile">
+  <div class="stack" style="min-width: 0">
+    {% if c.sanctions_hint %}
+    <div class="callout callout-reject">{{ icon("alert") }}<span>名称与制裁名单上的 {{ c.sanctions_hint.listed_name }} 相似（{{ c.sanctions_hint.source }}）。发报价前请人工核查。</span></div>
+    {% endif %}
+
+    {% if draft %}
+    <form id="quote-form" class="stack" method="post" action="/quotes/{{ q.id }}" data-quote data-dirty-guard autocomplete="off">
+      <section class="panel" aria-labelledby="lines-title">
+        <div class="toolbar">
+          <h2 id="lines-title" style="font-size: var(--text-md)">报价明细</h2>
+          <span class="muted small">产品和规格会原样打印在英文报价单上，请用英文填写</span>
+        </div>
+        <div class="table-scroll">
+          <table class="table quote-lines">
+            <thead><tr><th>产品</th><th>规格</th><th class="num">数量</th><th>单位</th><th class="num">单价</th><th class="num">成本</th><th class="num">金额</th><th><span class="visually-hidden">删除</span></th></tr></thead>
+            <tbody data-lines>{% for line in sheet.lines %}{{ quote_line(line) }}{% else %}{{ quote_line(none) }}{% endfor %}</tbody>
+            <tfoot><tr>
+              <td colspan="5"><button class="btn btn-quiet btn-sm" type="button" data-add-line>添加一行</button></td>
+              <td class="num" colspan="3"><span class="muted small">合计</span> <strong class="line-total" data-quote-total>{{ q.currency }} {{ view.money(sheet.total) }}</strong></td>
+            </tr></tfoot>
+          </table>
+        </div>
+        <p class="field-hint quote-hint">单价按所选单位计，例如按千件报价就把单位选成 1000 pcs。成本只用来算毛利，不会打印。</p>
+      </section>
+
+      <section class="panel panel-pad" aria-labelledby="terms-title">
+        <div class="section-title"><h2 id="terms-title">条款</h2><span class="muted">同样打印在报价单上</span></div>
+        <div class="terms-grid">
+          <label class="field"><span>币种</span>
+            <select class="select" name="currency">{% for cur in view.CURRENCIES %}<option {% if cur == q.currency %}selected{% endif %}>{{ cur }}</option>{% endfor %}</select></label>
+          <label class="field"><span>贸易术语</span><input class="input" name="incoterm" value="{{ q.incoterm }}" placeholder="FOB Tianjin"></label>
+          <label class="field"><span>有效期（天）</span><input class="input" type="number" name="validity_days" min="1" max="365" value="{{ q.validity_days }}"></label>
+          <label class="field"><span>交期<span class="muted">，先和工厂确认</span></span><input class="input" name="lead_time" value="{{ q.lead_time }}" placeholder="25-30 days after deposit"></label>
+          <label class="field span-2"><span>付款方式</span><input class="input" name="payment_terms" value="{{ q.payment_terms }}"></label>
+          <label class="field span-2"><span>包装</span><input class="input" name="packing" value="{{ q.packing }}" placeholder="Cartons on pallets"></label>
+          <label class="field span-4"><span>备注</span><textarea class="textarea" name="remarks" rows="3" placeholder="Samples free of charge, freight collect.">{{ q.remarks }}</textarea></label>
+        </div>
+      </section>
+
+      <div class="panel quote-bar">
+        <button class="btn" type="submit" name="action" value="save">保存草稿</button>
+        <button class="btn" type="submit" name="action" value="save" formaction="/quotes/{{ q.id }}?next=print">保存并预览打印</button>
+        <span class="send">
+          <label class="muted small" for="send-channel">发给客户后，登记</label>
+          <select class="select" id="send-channel" name="channel">
+            <option value="whatsapp">WhatsApp 发出</option>
+            <option value="email">邮件发出</option>
+          </select>
+          <button class="btn btn-primary" type="submit" name="action" value="mark_sent" data-confirm="登记后这一版不能再改，改价要出新版本。确定已经把报价发给客户了吗？">已发给客户</button>
+        </span>
+      </div>
+    </form>
+    <form id="discard-form" method="post" action="/quotes/{{ q.id }}" data-confirm="删除这份报价草稿？"><input type="hidden" name="action" value="discard"></form>
+    <template id="quote-line-template">{{ quote_line(none) }}</template>
+    <datalist id="quote-units">{% for u in view.QUOTE_UNITS %}<option value="{{ u }}"></option>{% endfor %}</datalist>
+
+    {% else %}
+    {% if q.status == QuoteStatus.SENT %}
+    <section class="panel panel-pad" aria-labelledby="outcome-title">
+      <div class="section-title"><h2 id="outcome-title">对方怎么说</h2>{% if sheet.expired %}<span class="badge badge-caution">已过有效期</span>{% endif %}</div>
+      <div class="outcome">
+        <form method="post" action="/quotes/{{ q.id }}"><input type="hidden" name="action" value="accept"><button class="btn btn-primary" type="submit">对方接受</button></form>
+        <button class="btn btn-danger" type="button" data-reveal="reject-form">对方不接受</button>
+        <form method="post" action="/quotes/{{ q.id }}"><input type="hidden" name="action" value="revise"><button class="btn" type="submit">改价，出新版本</button></form>
+        <form class="reason-form" id="reject-form" method="post" action="/quotes/{{ q.id }}">
+          <input type="hidden" name="action" value="reject">
+          <label class="visually-hidden" for="reject-note">对方不接受的原因</label>
+          <input class="input" id="reject-note" name="note" required placeholder="例如：价格比现有供应商高 8%，交期太长…" autocomplete="off">
+          <button class="btn btn-danger" type="submit">记录</button>
+          <button class="btn btn-quiet" type="button" data-close>取消</button>
+        </form>
+      </div>
+    </section>
+    {% elif q.status == QuoteStatus.REJECTED %}
+    <div class="callout callout-reject">{{ icon("x") }}<span>对方没有接受这一版：{{ q.outcome_note }}</span></div>
+    <form method="post" action="/quotes/{{ q.id }}"><input type="hidden" name="action" value="revise"><button class="btn" type="submit">改价，出新版本</button></form>
+    {% elif q.status == QuoteStatus.ACCEPTED %}
+    <div class="callout callout-pass">{{ icon("check") }}<span>对方接受了这一版报价，询价已记为成交。</span></div>
+    {% elif q.status == QuoteStatus.SUPERSEDED %}
+    {% set latest = r.quotes | first %}
+    <div class="callout">{{ icon("page") }}<span>这一版已被新版本替代，最新的是 <a href="/quotes/{{ latest.id }}">{{ latest.number }}</a>。</span></div>
+    {% endif %}
+
+    <section class="panel" aria-labelledby="lines-title">
+      <div class="toolbar"><h2 id="lines-title" style="font-size: var(--text-md)">报价明细</h2><span class="muted small">{{ sheet.lines | length }} 行</span></div>
+      <div class="table-scroll">
+        <table class="table">
+          <thead><tr><th>产品</th><th>规格</th><th class="num">数量</th><th>单位</th><th class="num">单价</th><th class="num">成本</th><th class="num">金额</th></tr></thead>
+          <tbody>{% for line in sheet.lines %}
+            <tr><td>{{ line.description }}</td><td>{{ line.spec }}</td><td class="num">{{ view.quantity(line.quantity) }}</td><td>{{ line.unit }}</td>
+              <td class="num">{{ view.unit_price(line.unit_price) }}</td><td class="num muted">{{ view.unit_price(line.unit_cost) or "—" }}</td><td class="num">{{ view.money(line.amount) if line.amount is not none else "—" }}</td></tr>
+          {% endfor %}</tbody>
+          <tfoot><tr><td colspan="7" class="num"><span class="muted small">合计</span> <strong class="line-total">{{ q.currency }} {{ view.money(sheet.total) }}</strong></td></tr></tfoot>
+        </table>
+      </div>
+    </section>
+    <section class="panel panel-pad" aria-labelledby="terms-title">
+      <div class="section-title"><h2 id="terms-title">条款</h2></div>
+      <dl class="dl">
+        <dt>贸易术语</dt><dd>{{ q.incoterm }}</dd>
+        <dt>交期</dt><dd>{{ q.lead_time }}</dd>
+        <dt>付款方式</dt><dd>{{ q.payment_terms or "—" }}</dd>
+        <dt>包装</dt><dd>{{ q.packing or "—" }}</dd>
+        <dt>有效期</dt><dd>{{ q.validity_days }} 天，至 {{ sheet.valid_until }}</dd>
+        {% if q.remarks %}<dt>备注</dt><dd style="white-space: pre-wrap">{{ q.remarks }}</dd>{% endif %}
+      </dl>
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="aside">
+    <section class="panel panel-pad" aria-labelledby="total-title">
+      <div class="section-title"><h2 id="total-title">合计</h2>{{ quote_status(q.status) }}</div>
+      <p class="quote-total" data-quote-total>{{ q.currency }} {{ view.money(sheet.total) }}</p>
+      <dl class="dl dl-tight">
+        <dt>毛利</dt>
+        <dd data-quote-margin data-target="{{ target }}">{% if sheet.margin is not none %}<span class="badge {{ 'badge-pass' if sheet.margin >= target else 'badge-caution' }}">{{ "%.1f" | format(sheet.margin * 100) }}%</span>{% else %}<span class="muted">每行都填了成本才算</span>{% endif %}</dd>
+        <dt>目标</dt><dd>{{ "%.0f" | format(target * 100) }}%<span class="muted">，低于目标时请老板确认</span></dd>
+        <dt>有效期</dt><dd>{% if draft %}发出后 {{ q.validity_days }} 天{% else %}至 {{ sheet.valid_until }}{% if sheet.expired %} <span class="badge badge-caution">已过期</span>{% endif %}{% endif %}</dd>
+        {% if q.sent_at %}<dt>发出</dt><dd>{{ q.sent_at | localtime }}，{{ q.sent_by }}</dd>{% endif %}
+      </dl>
+    </section>
+
+    <section class="panel panel-pad" aria-labelledby="rfq-title">
+      <div class="section-title"><h2 id="rfq-title">询价</h2><span class="muted">{{ view.RFQ_LABELS[r.status] }}</span></div>
+      <dl class="dl dl-tight">
+        <dt>产品</dt><dd>{{ r.products }}</dd>
+        {% if r.quantity %}<dt>数量</dt><dd>{{ r.quantity }}</dd>{% endif %}
+        {% if r.target_price %}<dt>目标价</dt><dd>{{ r.target_price }}</dd>{% endif %}
+        {% if r.incoterm %}<dt>贸易术语</dt><dd>{{ r.incoterm }}</dd>{% endif %}
+        {% if r.notes %}<dt>备注</dt><dd>{{ r.notes }}</dd>{% endif %}
+        <dt>记录于</dt><dd>{{ r.created_at | localtime }}</dd>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="versions-title">
+      <div class="toolbar"><h2 id="versions-title" style="font-size: var(--text-md)">版本</h2><span class="muted small">发出过的版本不能修改</span></div>
+      <ol class="versions">
+        {% for v in r.quotes %}
+        <li><a href="/quotes/{{ v.id }}" {% if v.id == q.id %}aria-current="page"{% endif %}>
+          <span translate="no">{{ v.number }}</span>{{ quote_status(v.status) }}
+          <span class="muted small">{{ v.currency }} {{ view.money(view.quote_sheet(v, settings.timezone, now).total) }}{% if v.sent_at %}，{{ v.sent_at | localtime("%m-%d") }} 发出{% endif %}</span></a></li>
+        {% endfor %}
+      </ol>
+      {% if draft %}<div class="versions-foot"><button class="btn btn-quiet btn-sm btn-danger" type="submit" form="discard-form">删除这份草稿</button></div>{% endif %}
+    </section>
+  </aside>
+</div>
+{% endblock %}

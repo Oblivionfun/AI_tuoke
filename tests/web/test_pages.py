@@ -9,7 +9,20 @@ from tests.factories import dossier, draft, review
 from workbench.agents.runner import ScriptedRunner
 from workbench.agents.schemas import AgentRole
 from workbench.catalog import import_catalog
-from workbench.store.models import Company, CompanyStatus, Draft, DraftStatus, Product, Queue, Run, RunKind, RunStatus
+from workbench.store.models import (
+    Company,
+    CompanyStatus,
+    Draft,
+    DraftStatus,
+    Product,
+    Queue,
+    Quote,
+    QuoteStatus,
+    Rfq,
+    Run,
+    RunKind,
+    RunStatus,
+)
 from workbench.store.users import upsert_user
 from workbench.web.app import create_app
 
@@ -128,6 +141,46 @@ def test_confirm_sku_and_rfq_and_interaction(client, db):
     client.post("/rfqs", data={"company_id": str(cid), "products": "Tek screws ST4.8x19", "quantity": "200k"})
     follow = client.get("/followups").text
     assert "要报价" in follow and "Tek screws ST4.8x19" in follow
+
+
+def test_quote_from_rfq_edit_print_and_send(client, db):
+    login(client)
+    cid = alpha_id(db)
+    client.post("/rfqs", data={"company_id": str(cid), "products": "Tek screws ST4.8x19", "quantity": "200k"})
+    with db.session() as s:
+        rfq_id = s.execute(select(Rfq.id)).scalar_one()
+    assert "写报价单" in client.get(f"/companies/{cid}?tab=followup").text
+    r = client.post(f"/rfqs/{rfq_id}/quote", follow_redirects=False)
+    quote_url = r.headers["location"]
+    page = client.get(quote_url).text
+    assert "GW-Q0001" in page and "Tek screws ST4.8x19" in page and "200000" in page
+    form = {
+        "currency": "USD",
+        "incoterm": "FOB Tianjin",
+        "validity_days": "30",
+        "lead_time": "25 days",
+        "payment_terms": "30% T/T deposit",
+        "packing": "",
+        "remarks": "",
+        "description": ["Self-drilling screw", ""],
+        "spec": ["DIN 7504N ST4.8x19", ""],
+        "quantity": ["200", ""],
+        "unit": ["1000 pcs", "pcs"],
+        "unit_price": ["18.5", ""],
+        "unit_cost": ["15", ""],
+    }
+    r = client.post(f"{quote_url}?next=print", data={**form, "action": "save"}, follow_redirects=False)
+    assert r.headers["location"] == f"{quote_url}/print"
+    sheet = client.get(f"{quote_url}/print").text
+    assert "Quotation" in sheet and "USD 3,700.00" in sheet and "United Arab Emirates" in sheet
+    assert "15" not in sheet.split("<tbody>")[1].split("</tbody>")[0]
+    bad = client.post(quote_url, data={**form, "unit_price": ["abc", ""], "action": "save"}, follow_redirects=False)
+    assert bad.headers["location"] == quote_url and "第 1 行单价" in client.get(quote_url).text
+    client.post(quote_url, data={**form, "action": "mark_sent", "channel": "email"})
+    with db.session() as s:
+        assert s.execute(select(Quote.status)).scalar_one() is QuoteStatus.SENT
+    follow = client.get("/followups").text
+    assert "GW-Q0001" in follow and "已发出，USD 3,700.00" in follow
 
 
 def test_empty_count_and_double_accept(client, db):

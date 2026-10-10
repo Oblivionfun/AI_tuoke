@@ -1,4 +1,4 @@
-// 冠维获客工作台的前端交互。服务端渲染为主，这里只做：提示消息、快捷键、复制、抽屉、运行页实时步骤。
+// 冠维获客工作台的前端交互。服务端渲染为主，这里只做：提示消息、快捷键、复制、抽屉、报价单增删行、运行页实时步骤。
 (() => {
   "use strict";
 
@@ -148,6 +148,76 @@
   });
 
   document.body.addEventListener("htmx:responseError", () => toast({ text: "操作失败，请刷新页面后重试", error: true }));
+
+  // ---------- 报价单：增删行、实时合计和毛利（只是预览，保存后以服务端计算为准） ----------
+
+  const money = (n) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  function readNumber(input) {
+    const text = (input?.value || "").replace(/[,，\s]/g, "");
+    if (!text) return null;
+    const n = Number(text);
+    return Number.isFinite(n) && n >= 0 ? n : NaN;
+  }
+
+  function quoteTotals(form) {
+    let total = 0, cost = 0, priced = 0, costComplete = true;
+    $$("[data-line]", form).forEach((row) => {
+      const qty = readNumber(row.querySelector('[name="quantity"]'));
+      const price = readNumber(row.querySelector('[name="unit_price"]'));
+      const unitCost = readNumber(row.querySelector('[name="unit_cost"]'));
+      const cell = row.querySelector("[data-amount]");
+      if (qty === null || price === null || Number.isNaN(qty) || Number.isNaN(price)) {
+        cell.textContent = "—";
+        return;
+      }
+      const amount = Math.round(qty * price * 100) / 100;
+      cell.textContent = money(amount);
+      total += amount;
+      priced += 1;
+      if (unitCost === null || Number.isNaN(unitCost)) costComplete = false;
+      else cost += qty * unitCost;
+    });
+    const currency = form.querySelector('[name="currency"]')?.value || "";
+    $$("[data-quote-total]").forEach((el) => { el.textContent = `${currency} ${money(total)}`; });
+    const marginEl = $("[data-quote-margin]");
+    if (!marginEl) return;
+    marginEl.replaceChildren();
+    const out = document.createElement("span");
+    if (priced && costComplete && total > 0) {
+      const margin = (total - cost) / total;
+      out.className = "badge " + (margin >= Number(marginEl.dataset.target) ? "badge-pass" : "badge-caution");
+      out.textContent = (margin * 100).toFixed(1) + "%";
+    } else {
+      out.className = "muted";
+      out.textContent = "每行都填了成本才算";
+    }
+    marginEl.appendChild(out);
+  }
+
+  document.addEventListener("input", (event) => {
+    const form = event.target.closest("form[data-quote]");
+    if (form) quoteTotals(form);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-print]")) { window.print(); return; }
+    const add = event.target.closest("[data-add-line]");
+    const remove = event.target.closest("[data-remove-line]");
+    const form = (add || remove)?.closest("form[data-quote]");
+    if (!form) return;
+    const body = $("[data-lines]", form);
+    if (add) {
+      body.appendChild($("#quote-line-template").content.cloneNode(true));
+      body.lastElementChild.querySelector("input")?.focus();
+    } else if (body.children.length > 1) {
+      remove.closest("[data-line]").remove();
+    } else {
+      $$("input", remove.closest("[data-line]")).forEach((input) => { input.value = input.name === "unit" ? "pcs" : ""; });
+    }
+    dirty.add(form);
+    quoteTotals(form);
+  });
 
   // ---------- 运行页：SSE 实时步骤 ----------
 

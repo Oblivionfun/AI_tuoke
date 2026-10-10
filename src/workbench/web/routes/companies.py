@@ -167,7 +167,11 @@ def _load(request: Request, company_id: int) -> tuple[Company, list[Run]]:
     with get_wb(request).db.session() as s:
         company = s.execute(
             select(Company)
-            .options(selectinload(Company.drafts), selectinload(Company.interactions), selectinload(Company.rfqs))
+            .options(
+                selectinload(Company.drafts),
+                selectinload(Company.interactions),
+                selectinload(Company.rfqs).selectinload(Rfq.quotes),
+            )
             .where(Company.id == company_id)
         ).scalar_one_or_none()
         if company is None:
