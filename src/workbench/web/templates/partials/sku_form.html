@@ -11,6 +11,7 @@
 <form method="post" action="/products/{{ p.id }}/pricing" autocomplete="off">
   <div class="drawer-body">
     <div class="section-title" style="margin-bottom: 0"><h3>报价信息</h3><span class="muted">报价时自动带出，单张报价里还能改</span></div>
+    {% if view.is_demo_priced(p) %}<p class="callout callout-caution">{{ icon("alert") }}<span><strong>示例价，未经工厂确认。</strong>保存成工厂价后，这条提示会自动去掉。</span></p>{% endif %}
     <label class="field"><span>报价单上的英文规格</span><input class="input" name="spec_en" value="{{ p.spec_en }}" placeholder="{{ [v.standard, v.material, v.finish] | select | join(', ') if v else 'DIN 7504N, carbon steel, zinc plated' }}"></label>
     <div class="form-row">
       <label class="field"><span>计价单位</span>

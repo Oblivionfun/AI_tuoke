@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from workbench.agents.prompts import quote_catalog
 from workbench.agents.schemas import AgentRole, InquiryItem, InquiryParse
+from workbench.catalog import DEMO_PRICE_NOTE
 from workbench.normalize import country_name_en
 from workbench.pipeline.context import Context
 from workbench.store.models import (
@@ -496,6 +497,10 @@ class Quoting:
         product.price_unit = price_unit.strip() or "pcs"
         product.ref_price = str(ref) if ref is not None else ""
         product.cost = str(unit_cost) if unit_cost is not None else ""
+        # 网页里改过价就去掉示例价标记，避免正式价还挂着「未经工厂确认」
+        for variant in product.variants:
+            if variant.note == DEMO_PRICE_NOTE:
+                variant.note = ""
 
     # ---------- AI 拆询价（worker 执行） ----------
 

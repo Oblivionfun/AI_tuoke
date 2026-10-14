@@ -20,6 +20,9 @@
 {% if company and company.sanctions_hint %}
 <div class="callout callout-reject" style="margin-bottom: 16px">{{ icon("alert") }}<span>名称与制裁名单上的 {{ company.sanctions_hint.listed_name }} 相似（{{ company.sanctions_hint.source }}）。报价前请人工核查。</span></div>
 {% endif %}
+{% if demo_priced %}
+<div class="callout callout-caution" style="margin-bottom: 16px">{{ icon("alert") }}<span>本单有产品带<strong>示例价，未经工厂确认</strong>。发给客户前请改成工厂确认价。</span></div>
+{% endif %}
 
 <div class="profile">
   <div class="stack" style="min-width: 0">

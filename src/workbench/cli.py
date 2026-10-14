@@ -11,7 +11,7 @@ from sqlalchemy import func, select
 from workbench.agents.prompts import PromptLibrary, products_summary
 from workbench.agents.runner import SdkRunner, live_check
 from workbench.agents.schemas import AgentRole
-from workbench.catalog import confirm_sku, import_catalog
+from workbench.catalog import apply_demo_prices, clear_demo_prices, confirm_sku, import_catalog
 from workbench.config import get_settings
 from workbench.demo import seed_demo, validate_demo_file
 from workbench.evals import (
@@ -211,6 +211,22 @@ def catalog_confirm(
             now=utcnow(),
         )
     typer.echo(f"{product_id} 已确认")
+
+
+@catalog_app.command("demo-prices")
+def catalog_demo_prices() -> None:
+    """给建议优先的 10 个常卖 SKU 填示例价（会醒目标注「示例价，未经工厂确认」）。"""
+    with _db().session() as s:
+        updated = apply_demo_prices(s)
+    typer.echo(f"已写入示例价 {len(updated)} 款：{', '.join(updated) or '（产品库里还没有这些编号）'}")
+
+
+@catalog_app.command("clear-demo-prices")
+def catalog_clear_demo_prices() -> None:
+    """清掉仍标着示例价的产品报价信息；网页里已改成工厂价的不会动。"""
+    with _db().session() as s:
+        cleared = clear_demo_prices(s)
+    typer.echo(f"已清除示例价 {len(cleared)} 款：{', '.join(cleared) or '（没有仍标示例价的产品）'}")
 
 
 # ---------- 演示数据 ----------

@@ -2,11 +2,13 @@
 {% for p, line, last in results %}
 <button class="option" type="button" data-add-line="{{ line.model_dump(mode='json') | tojson | forceescape }}"
         data-last="{{ ('上次报 ' ~ view.price_text(last.price) ~ ' / ' ~ last.unit) if last else '' }}">
-  <span class="option-main"><strong>{{ p.name_zh or p.name_en }}</strong> <span class="muted">{{ p.name_en }}</span></span>
+  <span class="option-main"><strong>{{ p.name_zh or p.name_en }}</strong> <span class="muted">{{ p.name_en }}</span>
+    {% if view.is_demo_priced(p) %}<span class="badge badge-caution">示例价</span>{% endif %}</span>
   <span class="option-meta">
     {%- if last %}上次报 {{ view.price_text(last.price) }} / {{ last.unit }}
     {%- elif p.ref_price %}参考价 {{ p.ref_price }} / {{ p.price_unit }}
-    {%- else %}未定价{% endif %} · {{ p.id }}</span>
+    {%- else %}未定价{% endif %} · {{ p.id }}
+    {%- if view.is_demo_priced(p) %} · 未经工厂确认{% endif %}</span>
 </button>
 {% else %}
 <p class="option-empty">没找到{% if q %}“{{ q }}”{% endif %}。可以用“自定义一行”，或者先去产品库新增。</p>

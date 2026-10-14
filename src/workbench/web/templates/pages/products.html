@@ -14,6 +14,10 @@
   </div>
 </div>
 
+{% if demo_priced %}
+<div class="callout callout-caution" style="margin-bottom: 16px">{{ icon("alert") }}<span>当前有 {{ demo_priced }} 款挂着<strong>示例价，未经工厂确认</strong>。只供演示报价流程；正式对外报价前请在「规格与价格」里改成工厂价，或服务器执行 <code>workbench catalog clear-demo-prices</code> 清掉。</span></div>
+{% endif %}
+
 <section class="panel">
   <div class="toolbar">
     <nav class="chips" aria-label="品类">
@@ -30,7 +34,7 @@
       <tr>
         <td><strong style="font-weight: 500">{{ p.name_zh or p.name_en }}</strong><span class="muted small" style="display: block">{{ p.name_en }}，{{ p.id }}</span></td>
         <td class="nowrap">{{ p.category }}</td>
-        <td class="num small nowrap">{% if p.ref_price %}{{ p.ref_price }}<span class="muted"> / {{ p.price_unit }}</span>{% else %}<span class="muted">未定价</span>{% endif %}</td>
+        <td class="num small nowrap">{% if p.ref_price %}{{ p.ref_price }}<span class="muted"> / {{ p.price_unit }}</span>{% if view.is_demo_priced(p) %}<span class="badge badge-caution" style="display: block; margin-top: 4px; width: fit-content; margin-left: auto">示例价</span>{% endif %}{% else %}<span class="muted">未定价</span>{% endif %}</td>
         <td class="small">
           {% if p.sales_ready and v %}<span class="badge badge-pass">{{ icon("check") }}已确认</span><span class="muted" style="display: block; margin-top: 4px">{{ [v.standard, v.sizes, v.finish] | select | join("，") }}</span>
           {% elif p.id in suggested %}<span class="badge badge-blue">建议优先确认</span><span class="muted" style="display: block; margin-top: 4px">{{ suggested[p.id] }}</span>

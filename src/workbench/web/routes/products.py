@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from workbench.agents.prompts import CATEGORY_ORDER
-from workbench.catalog import SUGGESTED_FIRST_SKUS, confirm_sku, unconfirm_sku
+from workbench.catalog import SUGGESTED_FIRST_SKUS, confirm_sku, is_demo_priced, unconfirm_sku
 from workbench.store.models import Product
 from workbench.web.deps import current_user, flash, get_wb, redirect, render
 
@@ -35,6 +35,7 @@ def products(
         rows=shown,
         total=len(rows),
         confirmed=sum(1 for p in rows if p.sales_ready),
+        demo_priced=sum(1 for p in rows if is_demo_priced(p)),
         categories=categories,
         counts=counts,
         category=category,

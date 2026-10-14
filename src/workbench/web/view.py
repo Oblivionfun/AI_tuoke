@@ -10,11 +10,12 @@ from decimal import Decimal
 from typing import Any, assert_never
 from urllib.parse import urlsplit
 
+from workbench.catalog import DEMO_PRICE_NOTE, is_demo_priced
 from workbench.pipeline import pick_email
 from workbench.pipeline.quotes import QuoteLine, QuoteSheet, money, plain, price_text, quantity_text
 from workbench.store.models import Channel, Company, CompanyStatus, Queue, Quote, QuoteStatus, RunKind, RunStatus
 
-__all__ = ["money", "plain", "price_text", "quantity_text"]
+__all__ = ["DEMO_PRICE_NOTE", "is_demo_priced", "money", "plain", "price_text", "quantity_text"]
 
 COUNTRIES = {"AE": "阿联酋", "ZA": "南非", "SA": "沙特"}
 QUEUE_LABELS = {q: q.label for q in Queue}

@@ -26,6 +26,114 @@ SUGGESTED_FIRST_SKUS: dict[str, str] = {
     "GW-P03-01": "建筑锚固，南非首推品类",
 }
 
+# 演示用参考价（USD / 1000 pcs）。正式报价前用 clear_demo_prices 清掉，或在网页里改成工厂确认价。
+DEMO_PRICE_NOTE = "示例价，未经工厂确认"
+DEMO_PRICES: dict[str, dict[str, str]] = {
+    "GW-P04-04": {
+        "spec_en": "Pan head self-drilling screw, carbon steel, zinc plated, ST4.2–ST6.3 × 13–75 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "12.50",
+        "cost": "7.80",
+    },
+    "GW-P04-01": {
+        "spec_en": "Truss head self-drilling screw, carbon steel, zinc plated, ST4.2–ST6.3 × 13–75 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "13.80",
+        "cost": "8.50",
+    },
+    "GW-P04-02": {
+        "spec_en": "Painted self-drilling screw, carbon steel, RAL color coat, ST4.8–ST5.5 × 19–75 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "18.50",
+        "cost": "11.00",
+    },
+    "GW-P05-01": {
+        "spec_en": "Drywall screw, phosphated, coarse thread, 3.5 × 25–50 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "4.20",
+        "cost": "2.50",
+    },
+    "GW-P05-02": {
+        "spec_en": "Chipboard screw, yellow zinc, 3.5–5.0 × 16–50 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "5.80",
+        "cost": "3.40",
+    },
+    "GW-P06-03": {
+        "spec_en": "Open-end blind rivet, Alu body / Steel mandrel, 4.0–4.8 × 6–16 mm",
+        "price_unit": "1000 pcs",
+        "ref_price": "6.80",
+        "cost": "4.20",
+    },
+    "GW-P09-12": {
+        "spec_en": "Rivet nut, steel zinc plated, flat head, M6–M8",
+        "price_unit": "1000 pcs",
+        "ref_price": "21.50",
+        "cost": "13.50",
+    },
+    "GW-P08-04": {
+        "spec_en": "EPDM bonded washer for self-drilling screws, 14–16 mm OD",
+        "price_unit": "1000 pcs",
+        "ref_price": "8.50",
+        "cost": "5.00",
+    },
+    "GW-P08-03": {
+        "spec_en": "Flat washer, carbon steel zinc plated, M4–M10",
+        "price_unit": "1000 pcs",
+        "ref_price": "3.20",
+        "cost": "1.80",
+    },
+    "GW-P03-01": {
+        "spec_en": "Expansion anchor assortment, carbon steel, M8–M12",
+        "price_unit": "1000 pcs",
+        "ref_price": "45.00",
+        "cost": "28.00",
+    },
+}
+
+
+def is_demo_priced(product: Product) -> bool:
+    return any(v.note == DEMO_PRICE_NOTE for v in product.variants)
+
+
+def apply_demo_prices(session: Session) -> list[str]:
+    """给常卖的几款填上示例价，并在规格备注里标「示例价，未经工厂确认」。不改 sales_ready。"""
+    updated: list[str] = []
+    for product_id, pricing in DEMO_PRICES.items():
+        product = session.get(Product, product_id)
+        if product is None:
+            continue
+        product.spec_en = pricing["spec_en"]
+        product.price_unit = pricing["price_unit"]
+        product.ref_price = pricing["ref_price"]
+        product.cost = pricing["cost"]
+        variant = product.variants[0] if product.variants else SkuVariant(product=product)
+        if not variant.confirmed_at:
+            variant.note = DEMO_PRICE_NOTE
+        session.add(variant)
+        updated.append(product_id)
+    session.flush()
+    return updated
+
+
+def clear_demo_prices(session: Session) -> list[str]:
+    """清掉仍标着示例价的产品报价信息（已改成工厂价或已确认首推的不会动）。"""
+    cleared: list[str] = []
+    for product_id in DEMO_PRICES:
+        product = session.get(Product, product_id)
+        if product is None or not is_demo_priced(product):
+            continue
+        product.spec_en = ""
+        product.price_unit = "pcs"
+        product.ref_price = ""
+        product.cost = ""
+        for variant in product.variants:
+            if variant.note == DEMO_PRICE_NOTE:
+                variant.note = ""
+        cleared.append(product_id)
+    session.flush()
+    return cleared
+
 
 @dataclass
 class ImportReport:

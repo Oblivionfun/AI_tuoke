@@ -9,10 +9,11 @@ from fastapi.responses import HTMLResponse, Response
 from sqlalchemy import Text, cast, func, or_, select
 from sqlalchemy.orm import selectinload
 
+from workbench.catalog import is_demo_priced
 from workbench.pipeline import QuoteAction
 from workbench.pipeline.quotes import Customer, QuoteLine, QuoteSheet, QuoteTerms, last_prices, parse_lines
 from workbench.quote_pdf import render_quote_pdf
-from workbench.store.models import Company, Quote, QuoteStatus, QuoteVersion, RunStatus
+from workbench.store.models import Company, Product, Quote, QuoteStatus, QuoteVersion, RunStatus
 from workbench.web.deps import current_user, flash, get_wb, redirect, render
 
 router = APIRouter()
@@ -268,9 +269,15 @@ def _required(quote_id: int | None) -> int:
 
 def _render_quote(request: Request, quote: Quote, *, download: int | None = None) -> HTMLResponse:
     wb = get_wb(request)
+    pids = {item.get("product_id") for item in quote.items if item.get("product_id")}
     with wb.db.session() as s:
         last = last_prices(s, quote.customer_name, quote.company_id, exclude_quote_id=quote.id)
         company = s.get(Company, quote.company_id) if quote.company_id else None
+        priced = (
+            s.execute(select(Product).options(selectinload(Product.variants)).where(Product.id.in_(pids))).scalars().all()
+            if pids
+            else []
+        )
     run = wb.quotes.parse_run(quote.id) if quote.id else None
     return render(
         request,
@@ -280,6 +287,7 @@ def _render_quote(request: Request, quote: Quote, *, download: int | None = None
         company=company,
         sheet=QuoteSheet.of(quote, wb.settings.timezone, wb.ctx.clock()),
         last=last,
+        demo_priced=any(is_demo_priced(p) for p in priced),
         run=run,
         parsing=run is not None and run.status in (RunStatus.QUEUED, RunStatus.RUNNING),
         download=download if download and any(v.version == download for v in quote.versions) else None,

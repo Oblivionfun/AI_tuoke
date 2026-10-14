@@ -6,7 +6,16 @@ from sqlalchemy import func, select
 from tests.conftest import NOW, ROOT
 from workbench.agents.prompts import PromptLibrary, products_summary
 from workbench.agents.schemas import AgentRole
-from workbench.catalog import SUGGESTED_FIRST_SKUS, confirm_sku, import_catalog, unconfirm_sku
+from workbench.catalog import (
+    DEMO_PRICE_NOTE,
+    SUGGESTED_FIRST_SKUS,
+    apply_demo_prices,
+    clear_demo_prices,
+    confirm_sku,
+    import_catalog,
+    is_demo_priced,
+    unconfirm_sku,
+)
 from workbench.config import WorkbenchSettings
 from workbench.store.models import Company, Product
 
@@ -56,3 +65,20 @@ def test_confirmed_sku_enters_knowledge_pack(db, settings: WorkbenchSettings, tm
         unconfirm_sku(s, "GW-P04-04")
     with db.session() as s:
         assert "暂无" in products_summary(s)
+
+
+def test_demo_prices_mark_and_clear(db):
+    with db.session() as s:
+        import_catalog(s, CATALOG, NOW)
+        updated = apply_demo_prices(s)
+        assert set(updated) == set(SUGGESTED_FIRST_SKUS)
+        rivet = s.get(Product, "GW-P06-03")
+        assert rivet is not None
+        assert rivet.ref_price == "6.80" and rivet.price_unit == "1000 pcs"
+        assert is_demo_priced(rivet) and rivet.variants[0].note == DEMO_PRICE_NOTE
+        assert not rivet.sales_ready
+    with db.session() as s:
+        cleared = clear_demo_prices(s)
+        assert "GW-P06-03" in cleared
+        rivet = s.get(Product, "GW-P06-03")
+        assert rivet is not None and rivet.ref_price == "" and not is_demo_priced(rivet)
